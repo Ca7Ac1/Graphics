@@ -63,9 +63,3 @@ std::vector<Color> &Window::operator[](int i)
 {
     return window[i];
 }
-
-int main()
-{
-    std::cout << "hello\n";
-    return 0;
-}
