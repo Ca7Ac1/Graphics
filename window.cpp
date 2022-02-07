@@ -59,6 +59,16 @@ void Window::display()
     }
 }
 
+int Window::getX()
+{
+    return xDimension;
+}
+
+int Window::getY()
+{
+    return yDimension;
+}
+
 std::vector<Color> &Window::operator[](int i)
 {
     return window[i];
