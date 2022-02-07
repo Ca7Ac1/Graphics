@@ -49,6 +49,7 @@ int main()
         }
     }
 
+    cout << file;
     win.display();
 
     return 0;
