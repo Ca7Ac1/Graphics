@@ -47,7 +47,7 @@ void Window::display(bool binary = false)
 {
     if (binary)
     {
-        output.open(file, ios::binary);
+        output.open(file, std::ios::binary);
     }
     else
     {
