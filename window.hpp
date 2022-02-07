@@ -22,6 +22,7 @@ public:
     int getGreen() const;
     int getBlue() const;
 
+    void draw(std::ofstream &output, bool binary = false);
     void print() const;
 };
 
@@ -31,16 +32,17 @@ private:
     int xDimension;
     int yDimension;
 
+    bool binary;
+
     std::vector<std::vector<Color>> window;
 
-    std::string file;
     std::ofstream output;
 
 public:
-    Window(const std::string &file, int xDimension, int yDimension);
+    Window(const std::string &file, int xDimension, int yDimension, bool binary = false);
     ~Window();
 
-    void display(bool binary = false);
+    void display();
 
     int getX();
     int getY();
