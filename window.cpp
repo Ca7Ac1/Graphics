@@ -33,11 +33,11 @@ void Color::draw(std::ofstream &output, bool binary)
     if (binary)
     {
         output.write((char *)&red, sizeof(int));
-        output.write(" ", sizeof(char));
+        output.write(" ", sizeof(char) * 2);
         output.write((char *)&green, sizeof(int));
-        output.write(" ", sizeof(char));
+        output.write(" ", sizeof(char) * 2);
         output.write((char *)&blue, sizeof(int));
-        output.write(" ", sizeof(char));
+        output.write(" ", sizeof(char) * 2);
     }
     else
     {
@@ -50,11 +50,20 @@ void Color::print() const
     std::cout << "(red: " << red << ", green: " << green << ", blue: " << blue << ")\n";
 }
 
-Window::Window(const std::string &file, int xDimension, int yDimension, bool binary) : output(file),
-                                                                                       xDimension(xDimension),
+Window::Window(const std::string &file, int xDimension, int yDimension, bool binary) : xDimension(xDimension),
                                                                                        yDimension(yDimension),
                                                                                        window(xDimension, std::vector<Color>(yDimension, Color(0, 0, 0))),
-                                                                                       binary(binary) {}
+                                                                                       binary(binary)
+{
+    if (binary)
+    {
+        output.open(file, std::ios::out | std::ios::binary);
+    }
+    else
+    {
+        output.open(file);
+    }
+}
 
 Window::~Window()
 {
@@ -63,8 +72,25 @@ Window::~Window()
 
 void Window::display()
 {
-    output << (binary ? "P6" : "P3") << '\n'
-           << xDimension << " " << yDimension << "\n255\n";
+    int scale = 255;
+
+    if (binary)
+    {
+
+        output.write("P3", sizeof(char) * 3);
+        output.write(" ", sizeof(char) * 2);
+        output.write((char *)&xDimension, sizeof(int));
+        output.write(" ", sizeof(char) * 2);
+        output.write((char *)&yDimension, sizeof(int));
+        output.write(" ", sizeof(char) * 2);
+        output.write((char *)&scale, sizeof(int));
+    }
+    else
+    {
+        output << "P3" << '\n'
+               << xDimension << " " << yDimension << '\n'
+               << scale << '\n';
+    }
 
     for (int i = 0; i < yDimension; i++)
     {
