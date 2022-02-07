@@ -33,13 +33,14 @@ private:
 
     std::vector<std::vector<Color>> window;
 
+    std::string file;
     std::ofstream output;
 
 public:
     Window(const std::string &file, int xDimension, int yDimension);
     ~Window();
-    
-    void display();
+
+    void display(bool binary = false);
 
     int getX();
     int getY();

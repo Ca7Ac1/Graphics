@@ -33,7 +33,7 @@ void Color::print() const
     std::cout << "(red: " << red << ", green: " << green << ", blue: " << blue << ")\n";
 }
 
-Window::Window(const std::string &file, int xDimension, int yDimension) : output(file),
+Window::Window(const std::string &file, int xDimension, int yDimension) : file(file),
                                                                           xDimension(xDimension),
                                                                           yDimension(yDimension),
                                                                           window(xDimension, std::vector<Color>(yDimension, Color(0, 0, 0))) {}
@@ -43,8 +43,17 @@ Window::~Window()
     output.close();
 }
 
-void Window::display()
+void Window::display(bool binary = false)
 {
+    if (binary)
+    {
+        output.open(file, ios::binary);
+    }
+    else
+    {
+        output.open(file);
+    }
+
     output << "P3\n"
            << xDimension << " " << yDimension << "\n255\n";
 
@@ -57,6 +66,9 @@ void Window::display()
 
         output << '\n';
     }
+
+    output.close();
+    output.clear();
 }
 
 int Window::getX()
