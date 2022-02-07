@@ -28,47 +28,56 @@ int Color::getBlue() const
     return blue;
 }
 
+void Color::draw(std::ofstream &output, bool binary)
+{
+    if (binary)
+    {
+        output.write((char *)&red, sizeof(int));
+        output.write(" ", sizeof(char));
+        output.write((char *)&green, sizeof(int));
+        output.write(" ", sizeof(char));
+        output.write((char *)&blue, sizeof(int));
+        output.write(" ", sizeof(char));
+    }
+    else
+    {
+        output << red << " " << green << " " << blue << " ";
+    }
+}
+
 void Color::print() const
 {
     std::cout << "(red: " << red << ", green: " << green << ", blue: " << blue << ")\n";
 }
 
-Window::Window(const std::string &file, int xDimension, int yDimension) : file(file),
-                                                                          xDimension(xDimension),
-                                                                          yDimension(yDimension),
-                                                                          window(xDimension, std::vector<Color>(yDimension, Color(0, 0, 0))) {}
+Window::Window(const std::string &file, int xDimension, int yDimension, bool binary) : output(file),
+                                                                                       xDimension(xDimension),
+                                                                                       yDimension(yDimension),
+                                                                                       window(xDimension, std::vector<Color>(yDimension, Color(0, 0, 0))),
+                                                                                       binary(binary) {}
 
 Window::~Window()
 {
     output.close();
 }
 
-void Window::display(bool binary)
+void Window::display()
 {
-    if (binary)
-    {
-        output.open(file, std::ios::binary);
-    }
-    else
-    {
-        output.open(file);
-    }
-
-    output << "P3\n"
+    output << (binary ? "P6" : "P3") << '\n'
            << xDimension << " " << yDimension << "\n255\n";
 
     for (int i = 0; i < yDimension; i++)
     {
         for (int j = 0; j < xDimension; j++)
         {
-            output << window[j][i].getRed() << " " << window[j][i].getGreen() << " " << window[j][i].getBlue() << " ";
+            window[j][i].draw(output, binary);
         }
-
-        output << '\n';
     }
 
-    output.close();
-    output.clear();
+    if (!binary)
+    {
+        output << '\n';
+    }
 }
 
 int Window::getX()
