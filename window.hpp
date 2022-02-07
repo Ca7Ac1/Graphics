@@ -41,6 +41,9 @@ public:
     
     void display();
 
+    int getX();
+    int getY();
+
     std::vector<Color> &operator[](int i);
 };
 
