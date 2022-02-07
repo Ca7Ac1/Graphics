@@ -34,3 +34,8 @@
 
 # VScode
 .vscode
+
+# Image files
+*.jpg
+*.ppm
+*.png
