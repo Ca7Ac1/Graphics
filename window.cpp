@@ -48,11 +48,11 @@ void Window::display()
     output << "P3\n"
            << xDimension << " " << yDimension << "\n255\n";
 
-    for (int i = 0; i < xDimension; i++)
+    for (int i = 0; i < yDimension; i++)
     {
-        for (int j = 0; j < yDimension; j++)
+        for (int j = 0; j < xDimension; j++)
         {
-            output << window[i][j].getRed() << " " << window[i][j].getGreen() << " " << window[i][j].getBlue();
+            output << window[j][i].getRed() << " " << window[j][i].getGreen() << " " << window[j][i].getBlue() << " ";
         }
 
         output << '\n';
