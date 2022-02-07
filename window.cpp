@@ -43,7 +43,7 @@ Window::~Window()
     output.close();
 }
 
-void Window::display(bool binary = false)
+void Window::display(bool binary)
 {
     if (binary)
     {
