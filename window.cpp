@@ -144,7 +144,7 @@ void Window::setColorScale(int colorScale)
 
     for (int x = 0; x < xDimension; x++)
     {
-        for (int y = 0; y = yDimension; y++)
+        for (int y = 0; y < yDimension; y++)
         {
             window[x][y].setScale(colorScale);
         }
