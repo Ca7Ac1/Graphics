@@ -13,10 +13,13 @@ private:
     int green;
     int blue;
 
+    int scale;
+
 public:
     Color(int red, int green, int blue);
 
     void set(int red, int green, int blue);
+    void setScale(int scale);
 
     int getRed() const;
     int getGreen() const;
@@ -32,6 +35,8 @@ private:
     int xDimension;
     int yDimension;
 
+    int colorScale;
+
     bool binary;
 
     std::vector<std::vector<Color>> window;
@@ -39,13 +44,15 @@ private:
     std::ofstream output;
 
 public:
-    Window(const std::string &file, int xDimension, int yDimension, bool binary = false);
+    Window(const std::string &file, int xDimension, int yDimension, int colorScale, bool binary = false);
     ~Window();
 
     void display();
 
     int getX();
     int getY();
+
+    void setColorScale();
 
     std::vector<Color> &operator[](int i);
 };

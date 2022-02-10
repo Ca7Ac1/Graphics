@@ -4,13 +4,25 @@
 
 #include "window.hpp"
 
-Color::Color(int red, int green, int blue) : red(red), green(green), blue(blue) {}
+Color::Color(int red, int green, int blue, int scale) : red(red % scale),
+                                                        green(green % scale),
+                                                        blue(blue % scale),
+                                                        scale(scale) {}
 
 void Color::set(int red, int green, int blue)
 {
-    this->red = red;
-    this->green = green;
-    this->blue = blue;
+    this->red = red % scale;
+    this->green = green % scale;
+    this->blue = blue % scale;
+}
+
+void Color::setScale(int scale)
+{
+    this->scale = scale;
+
+    red %= scale;
+    green %= scale;
+    blue %= scale;
 }
 
 int Color::getRed() const
@@ -50,10 +62,12 @@ void Color::print() const
     std::cout << "(red: " << red << ", green: " << green << ", blue: " << blue << ")\n";
 }
 
-Window::Window(const std::string &file, int xDimension, int yDimension, bool binary) : xDimension(xDimension),
-                                                                                       yDimension(yDimension),
-                                                                                       window(xDimension, std::vector<Color>(yDimension, Color(0, 0, 0))),
-                                                                                       binary(binary)
+Window::Window(const std::string &file, int xDimension, int yDimension, int colorScale, bool binary) : xDimension(xDimension),
+                                                                                                       yDimension(yDimension),
+                                                                                                       binary(binary),
+                                                                                                       colorScale(colorScale),
+                                                                                                       window(xDimension, std::vector<Color>(yDimension, Color(0, 0, 0, colorScale))),
+
 {
     if (binary)
     {
@@ -72,8 +86,6 @@ Window::~Window()
 
 void Window::display()
 {
-    int scale = 255;
-
     if (binary)
     {
 
@@ -83,20 +95,20 @@ void Window::display()
         output.write(" ", sizeof(char) * 2);
         output.write((char *)&yDimension, sizeof(int));
         output.write(" ", sizeof(char) * 2);
-        output.write((char *)&scale, sizeof(int));
+        output.write((char *)&colorScale, sizeof(int));
     }
     else
     {
         output << "P3" << '\n'
                << xDimension << " " << yDimension << '\n'
-               << scale << '\n';
+               << colorScale << '\n';
     }
 
-    for (int i = 0; i < yDimension; i++)
+    for (int y = 0; y < yDimensyon; y++)
     {
-        for (int j = 0; j < xDimension; j++)
+        for (int x = 0; x < xDimension; x++)
         {
-            window[j][i].draw(output, binary);
+            window[x][y].draw(output, binary);
         }
     }
 
@@ -114,6 +126,19 @@ int Window::getX()
 int Window::getY()
 {
     return yDimension;
+}
+
+void Window::setColorScale(int colorScale)
+{
+    this->colorScale = colorScale;
+
+    for (int x = 0; x < xDimension; x++)
+    {
+        for (int y = 0; y = yDimension; y++)
+        {
+            window[i][j].setScale(colorScale);
+        }
+    }
 }
 
 std::vector<Color> &Window::operator[](int i)
