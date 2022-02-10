@@ -40,34 +40,16 @@ int Color::getBlue() const
     return blue;
 }
 
-void Color::draw(std::ofstream &output, bool binary)
-{
-    if (binary)
-    {
-        output.write((char *)&red, sizeof(int));
-        output.write(" ", sizeof(char) * 2);
-        output.write((char *)&green, sizeof(int));
-        output.write(" ", sizeof(char) * 2);
-        output.write((char *)&blue, sizeof(int));
-        output.write(" ", sizeof(char) * 2);
-    }
-    else
-    {
-        output << red << " " << green << " " << blue << " ";
-    }
-}
-
 void Color::print() const
 {
     std::cout << "(red: " << red << ", green: " << green << ", blue: " << blue << ")\n";
 }
 
-Window::Window(const std::string &file, int xDimension, int yDimension) : xDimension(xDimension),
-                                                                          yDimension(yDimension),
-                                                                          colorScale(255),
-                                                                          binary(false),
-                                                                          window(xDimension, std::vector<Color>(yDimension, Color(0, 0, 0, colorScale)))
-
+Window::Window(const std::string &file, int xDimension, int yDimension, bool binary) : xDimension(xDimension),
+                                                                                       yDimension(yDimension),
+                                                                                       colorScale(255),
+                                                                                       binary(binary),
+                                                                                       window(xDimension, std::vector<Color>(yDimension, Color(0, 0, 0, colorScale)))
 {
     if (binary)
     {
@@ -86,29 +68,26 @@ Window::~Window()
 
 void Window::display()
 {
-    if (binary)
-    {
-
-        output.write("P3", sizeof(char) * 3);
-        output.write(" ", sizeof(char) * 2);
-        output.write((char *)&xDimension, sizeof(int));
-        output.write(" ", sizeof(char) * 2);
-        output.write((char *)&yDimension, sizeof(int));
-        output.write(" ", sizeof(char) * 2);
-        output.write((char *)&colorScale, sizeof(int));
-    }
-    else
-    {
-        output << "P3" << '\n'
-               << xDimension << " " << yDimension << '\n'
-               << colorScale << '\n';
-    }
+    output << (binary ? "P6" : "P3") << '\n'
+           << xDimension << " " << yDimension << '\n'
+           << colorScale << '\n';
 
     for (int y = 0; y < yDimension; y++)
     {
         for (int x = 0; x < xDimension; x++)
         {
-            window[x][y].draw(output, binary);
+            int red = window[x][y].getRed();
+            int blue = window[x][y].getBlue();
+            int green = window[x][y].getGreen();
+
+            if (binary)
+            {
+                output << red << " " << green << " " << blue << " ";
+            }
+            else
+            {
+                output << (char)red << (char)green << (char)blue << " ";
+            }
         }
     }
 
@@ -116,16 +95,6 @@ void Window::display()
     {
         output << '\n';
     }
-}
-
-void Window::setBinary()
-{
-    binary = true;
-}
-
-void Window::setAscii()
-{
-    binary = false;
 }
 
 int Window::getX() const
