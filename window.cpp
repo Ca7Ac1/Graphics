@@ -62,11 +62,11 @@ void Color::print() const
     std::cout << "(red: " << red << ", green: " << green << ", blue: " << blue << ")\n";
 }
 
-Window::Window(const std::string &file, int xDimension, int yDimension, int colorScale) : xDimension(xDimension),
-                                                                                          yDimension(yDimension),
-                                                                                          colorScale(255),
-                                                                                          binary(false),
-                                                                                          window(xDimension, std::vector<Color>(yDimension, Color(0, 0, 0, colorScale)))
+Window::Window(const std::string &file, int xDimension, int yDimension) : xDimension(xDimension),
+                                                                          yDimension(yDimension),
+                                                                          colorScale(255),
+                                                                          binary(false),
+                                                                          window(xDimension, std::vector<Color>(yDimension, Color(0, 0, 0, colorScale)))
 
 {
     if (binary)
