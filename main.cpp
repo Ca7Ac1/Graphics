@@ -8,7 +8,7 @@ using namespace std;
 int main()
 {
     string file = "pic.ppm";
-    Window win(file, 600, 600);
+    Window win(file, 600, 600, true);
 
     for (int i = 0; i < win.getX(); i++)
     {
