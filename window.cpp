@@ -11,18 +11,18 @@ Color::Color(int red, int green, int blue, int scale) : red(red % scale),
 
 void Color::set(int red, int green, int blue)
 {
-    this->red = red % scale;
-    this->green = green % scale;
-    this->blue = blue % scale;
+    this->red = red % (scale + 1);
+    this->green = green % (scale + 1);
+    this->blue = blue % (scale + 1);
 }
 
 void Color::setScale(int scale)
 {
     this->scale = scale;
 
-    red %= scale;
-    green %= scale;
-    blue %= scale;
+    red %= (scale + 1);
+    green %= (scale + 1);
+    blue %= (scale + 1);
 }
 
 int Color::getRed() const
@@ -62,11 +62,11 @@ void Color::print() const
     std::cout << "(red: " << red << ", green: " << green << ", blue: " << blue << ")\n";
 }
 
-Window::Window(const std::string &file, int xDimension, int yDimension, int colorScale, bool binary) : xDimension(xDimension),
-                                                                                                       yDimension(yDimension),
-                                                                                                       binary(binary),
-                                                                                                       colorScale(colorScale),
-                                                                                                       window(xDimension, std::vector<Color>(yDimension, Color(0, 0, 0, colorScale)))
+Window::Window(const std::string &file, int xDimension, int yDimension, int colorScale) : xDimension(xDimension),
+                                                                                          yDimension(yDimension),
+                                                                                          colorScale(255),
+                                                                                          binary(false),
+                                                                                          window(xDimension, std::vector<Color>(yDimension, Color(0, 0, 0, colorScale)))
 
 {
     if (binary)
@@ -118,12 +118,22 @@ void Window::display()
     }
 }
 
-int Window::getX()
+void Window::setBinary()
+{
+    binary = true;
+}
+
+void Window::setAscii()
+{
+    binary = false;
+}
+
+int Window::getX() const
 {
     return xDimension;
 }
 
-int Window::getY()
+int Window::getY() const
 {
     return yDimension;
 }
@@ -139,6 +149,11 @@ void Window::setColorScale(int colorScale)
             window[x][y].setScale(colorScale);
         }
     }
+}
+
+int Window::getColorScale() const
+{
+    return colorScale;
 }
 
 std::vector<Color> &Window::operator[](int i)
