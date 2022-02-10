@@ -82,11 +82,11 @@ void Window::display()
 
             if (binary)
             {
-                output << red << " " << green << " " << blue << " ";
+                output << (char)red << (char)green << (char)blue << " ";
             }
             else
             {
-                output << (char)red << (char)green << (char)blue << " ";
+                output << red << " " << green << " " << blue << " ";
             }
         }
     }
