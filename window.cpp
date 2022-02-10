@@ -66,7 +66,7 @@ Window::Window(const std::string &file, int xDimension, int yDimension, int colo
                                                                                                        yDimension(yDimension),
                                                                                                        binary(binary),
                                                                                                        colorScale(colorScale),
-                                                                                                       window(xDimension, std::vector<Color>(yDimension, Color(0, 0, 0, colorScale))),
+                                                                                                       window(xDimension, std::vector<Color>(yDimension, Color(0, 0, 0, colorScale)))
 
 {
     if (binary)
@@ -104,7 +104,7 @@ void Window::display()
                << colorScale << '\n';
     }
 
-    for (int y = 0; y < yDimensyon; y++)
+    for (int y = 0; y < yDimension; y++)
     {
         for (int x = 0; x < xDimension; x++)
         {
@@ -136,7 +136,7 @@ void Window::setColorScale(int colorScale)
     {
         for (int y = 0; y = yDimension; y++)
         {
-            window[i][j].setScale(colorScale);
+            window[x][y].setScale(colorScale);
         }
     }
 }

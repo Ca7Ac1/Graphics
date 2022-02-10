@@ -16,7 +16,7 @@ private:
     int scale;
 
 public:
-    Color(int red, int green, int blue);
+    Color(int red, int green, int blue, int scale);
 
     void set(int red, int green, int blue);
     void setScale(int scale);
@@ -52,7 +52,7 @@ public:
     int getX();
     int getY();
 
-    void setColorScale();
+    void setColorScale(int colorScale);
 
     std::vector<Color> &operator[](int i);
 };
