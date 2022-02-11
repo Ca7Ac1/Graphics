@@ -44,7 +44,6 @@ private:
 
 public:
     Window(const std::string &file, int xDimension, int yDimension, bool binary = false);
-    ~Window();
 
     void display();
 
