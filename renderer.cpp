@@ -32,7 +32,7 @@ void Renderer::fill()
 void Renderer::line(int x1, int y1, int x2, int y2)
 {
     int origX = x1 < x2 ? x1 : x2;
-    int origY = x1 < x2 : y1 : y2;
+    int origY = x1 < x2 ? y1 : y2;
 
     int endX = x1 < x2 ? x2 : x2;
     int endY = x1 < x2 ? y2 : y1;
