@@ -47,8 +47,8 @@ public:
 
     void display();
 
-    int getX() const;
-    int getY() const;
+    int getXDimension() const;
+    int getYDimension() const;
 
     void setColorScale(int colorScale);
     int getColorScale() const;
