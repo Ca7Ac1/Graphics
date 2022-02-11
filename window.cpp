@@ -61,11 +61,6 @@ Window::Window(const std::string &file, int xDimension, int yDimension, bool bin
     }
 }
 
-Window::~Window()
-{
-    output.close();
-}
-
 void Window::display()
 {
     output << (binary ? "P6" : "P3") << '\n'
