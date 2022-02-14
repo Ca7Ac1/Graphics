@@ -51,4 +51,5 @@ int main() {
     draw.line(XRES/2, 0, XRES/2, YRES-1);
 
     win.display();
+    std::cout << "main.ppm";
 }
