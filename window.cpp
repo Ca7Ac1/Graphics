@@ -49,8 +49,8 @@ Window::Window(const std::string &file, int xDimension, int yDimension, bool bin
                                                                                        yDimension(yDimension),
                                                                                        colorScale(255),
                                                                                        binary(binary),
-                                                                                       invertX(false),
-                                                                                       invertY(false),
+                                                                                       xInverted(false),
+                                                                                       xInverted(false),
                                                                                        window(xDimension, std::vector<Color>(yDimension, Color(0, 0, 0, colorScale)))
 {
     if (binary)
