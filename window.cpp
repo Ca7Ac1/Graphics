@@ -92,12 +92,12 @@ void Window::display()
     }
 }
 
-int Window::getX() const
+int Window::getXDimension() const
 {
     return xDimension;
 }
 
-int Window::getY() const
+int Window::getYDimension() const
 {
     return yDimension;
 }
