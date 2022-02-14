@@ -49,6 +49,8 @@ Window::Window(const std::string &file, int xDimension, int yDimension, bool bin
                                                                                        yDimension(yDimension),
                                                                                        colorScale(255),
                                                                                        binary(binary),
+                                                                                       invertX(false),
+                                                                                       invertY(false);
                                                                                        window(xDimension, std::vector<Color>(yDimension, Color(0, 0, 0, colorScale)))
 {
     if (binary)
@@ -71,9 +73,9 @@ void Window::display()
     {
         for (int x = 0; x < xDimension; x++)
         {
-            int red = window[x][y].getRed();
-            int blue = window[x][y].getBlue();
-            int green = window[x][y].getGreen();
+            int red = window[invertX ? xDimension - x - 1 : x][invertY ? yDimension - y - 1 : y].getRed();
+            int blue = window[invertX ? xDimension - x - 1 : x][invertY ? yDimension - y - 1 : y].getBlue();
+            int green = window[invertX ? xDimension - x - 1 : x][invertY ? yDimension - y - 1 : y].getGreen();
 
             if (binary)
             {
@@ -100,6 +102,16 @@ int Window::getXDimension() const
 int Window::getYDimension() const
 {
     return yDimension;
+}
+
+void invertX()
+{
+    invertX != invertX;
+}
+
+void invertY()
+{
+    invertY != invertY;
 }
 
 void Window::setColorScale(int colorScale)

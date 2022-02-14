@@ -34,6 +34,9 @@ private:
     const int xDimension;
     const int yDimension;
 
+    bool xInverted; 
+    bool yInverted;
+
     int colorScale;
 
     const bool binary;
@@ -49,6 +52,9 @@ public:
 
     int getXDimension() const;
     int getYDimension() const;
+
+    void invertX();
+    void invertY();
 
     void setColorScale(int colorScale);
     int getColorScale() const;
