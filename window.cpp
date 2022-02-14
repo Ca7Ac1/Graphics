@@ -106,12 +106,12 @@ int Window::getYDimension() const
 
 void invertX()
 {
-    invertX != invertX;
+    invertX = !invertX;
 }
 
 void invertY()
 {
-    invertY != invertY;
+    invertY = !invertY;
 }
 
 void Window::setColorScale(int colorScale)
