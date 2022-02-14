@@ -73,9 +73,9 @@ void Window::display()
     {
         for (int x = 0; x < xDimension; x++)
         {
-            int red = window[invertX ? xDimension - x - 1 : x][invertY ? yDimension - y - 1 : y].getRed();
-            int blue = window[invertX ? xDimension - x - 1 : x][invertY ? yDimension - y - 1 : y].getBlue();
-            int green = window[invertX ? xDimension - x - 1 : x][invertY ? yDimension - y - 1 : y].getGreen();
+            int red = window[xInverted ? xDimension - x - 1 : x][yInverted ? yDimension - y - 1 : y].getRed();
+            int blue = window[xInverted ? xDimension - x - 1 : x][yInverted ? yDimension - y - 1 : y].getBlue();
+            int green = window[xInverted ? xDimension - x - 1 : x][yInverted ? yDimension - y - 1 : y].getGreen();
 
             if (binary)
             {
