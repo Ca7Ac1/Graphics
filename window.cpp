@@ -50,7 +50,7 @@ Window::Window(const std::string &file, int xDimension, int yDimension, bool bin
                                                                                        colorScale(255),
                                                                                        binary(binary),
                                                                                        invertX(false),
-                                                                                       invertY(false);
+                                                                                       invertY(false),
                                                                                        window(xDimension, std::vector<Color>(yDimension, Color(0, 0, 0, colorScale)))
 {
     if (binary)
@@ -104,12 +104,12 @@ int Window::getYDimension() const
     return yDimension;
 }
 
-void invertX()
+void Window::invertX()
 {
     invertX = !invertX;
 }
 
-void invertY()
+void Window::invertY()
 {
     invertY = !invertY;
 }
