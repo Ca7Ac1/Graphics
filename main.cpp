@@ -11,6 +11,9 @@ int main() {
     Window win("main.ppm", XRES, YRES, true);
     Renderer draw(win);
 
+    // win.invertX();
+    win.invertY();
+
     draw.setColor(0, 0, 0);
     draw.fill();
 
