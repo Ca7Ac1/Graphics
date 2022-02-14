@@ -87,7 +87,7 @@ void Renderer::line(int x1, int y1, int x2, int y2)
             {
                 plot(origX, origY);
 
-                if (dist > 0)
+                if (dist < 0)
                 {
                     origY--;
                     dist -= B;
@@ -103,7 +103,7 @@ void Renderer::line(int x1, int y1, int x2, int y2)
             {
                 plot(origX, origY);
 
-                if (dist < 0)
+                if (dist > 0)
                 {
                     origX++;
                     dist += A;
