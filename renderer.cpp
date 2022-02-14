@@ -15,7 +15,10 @@ void Renderer::setColor(int red, int green, int blue)
 
 void Renderer::plot(int x, int y)
 {
-    window[x][y].set(red, green, blue);
+    if (x >= 0 & x < window.getXDimension() && y >= 0 & y < window.getYDimension())
+    {
+        window[x][y].set(red, green, blue);
+    }
 }
 
 void Renderer::fill()
