@@ -104,12 +104,12 @@ int Window::getYDimension() const
     return yDimension;
 }
 
-void invertX()
+void Window::invertX()
 {
     invertX = !invertX;
 }
 
-void invertY()
+void Window::invertY()
 {
     invertY = !invertY;
 }
