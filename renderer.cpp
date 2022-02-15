@@ -30,7 +30,7 @@ void Renderer::fill()
             plot(x, y);
         }
     }
-} 
+}
 
 void Renderer::line(int x1, int y1, int x2, int y2)
 {
@@ -42,15 +42,16 @@ void Renderer::line(int x1, int y1, int x2, int y2)
 
     // y = mx + b
     // Ax + By + C = 0
-    // delta(y)x + -delta(x)y + (y-intercept / delta(x)) 
+    // delta(y)x + -delta(x)y + (y-intercept / delta(x))
     int A = 2 * (endY - origY);
     int B = 2 * (origX - endX);
-    int dist = A + (B / 2);
 
     if (endY >= origY)
     {
         if (endX - origX > endY - origY)
         {
+            int dist = A + (B / 2);
+
             while (origX <= endX)
             {
                 plot(origX, origY);
@@ -67,6 +68,8 @@ void Renderer::line(int x1, int y1, int x2, int y2)
         }
         else
         {
+            int dist = B + (A / 2);
+
             while (origY <= endY)
             {
                 plot(origX, origY);
@@ -86,6 +89,8 @@ void Renderer::line(int x1, int y1, int x2, int y2)
     {
         if (endX - origX > origY - endY)
         {
+            int dist = A - (B / 2);
+
             while (origX <= endX)
             {
                 plot(origX, origY);
@@ -102,6 +107,8 @@ void Renderer::line(int x1, int y1, int x2, int y2)
         }
         else
         {
+            int dist = -B + (A / 2);
+
             while (origY >= endY)
             {
                 plot(origX, origY);
