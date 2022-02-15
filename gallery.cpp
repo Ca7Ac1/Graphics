@@ -71,7 +71,7 @@ int main() {
     cross(SIDE + (SQUARE / 2), SIDE + ABOVE - (SQUARE / 2), X, X, draw);
 
     draw.setColor(0, 255, 0);
-    draw.line(SIDE, SIDE + ABOVE - SQUARE, SIDE + (5 * SQUARE / 2) + X / 2, SIDE + ABOVE + (3 * SQUARE / 2) + X / 2);
+    draw.line(SIDE + GAP, SIDE + ABOVE - SQUARE + GAP, SIDE + (5 * SQUARE / 2) + X / 2, SIDE + ABOVE + (3 * SQUARE / 2) + X / 2);
 
     win.display();
     std::cout << "gallery.ppm";
