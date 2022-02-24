@@ -125,3 +125,12 @@ void Renderer::line(int x1, int y1, int x2, int y2)
         }
     }
 }
+
+void Renderer::draw(const Graphics &g)
+{
+    for (int i = 0; i < g.getEdgeCount(); i += 2)
+    {
+        line(g[i].getX(), g[i].getY(),
+             g[i + 1].getX(), g[i + 1].getY());
+    }
+}

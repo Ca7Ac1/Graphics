@@ -2,6 +2,7 @@
 #define RENDERER_H
 
 #include "window.hpp"
+#include "graphics.hpp"
 
 class Renderer
 {
@@ -20,6 +21,8 @@ public:
     void plot(int x, int y);
     void fill();
     void line(int x1, int y1, int x2, int y2);
+
+    void draw(const Graphics &g);
 };
 
 #endif
