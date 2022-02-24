@@ -6,37 +6,61 @@
 class Point
 {
 private:
-    int x;
-    int y;
-    int z;
-    int t;
+    double x;
+    double y;
+    double z;
+    double t;
 
 public:
-    Point(int x, int y, int z, int t = 0);
+    Point(double x, double y, double z, double t = 0);
 
-    int getX() const;
-    int getY() const;
-    int getZ() const;
-    int getT() const;
+    double getX() const;
+    double getY() const;
+    double getZ() const;
+    double getT() const;
 
-    void set(int x, int y, int z, int t = 1);
-    int operator[](int i) const;
+    void setX(double x);
+    void setY(double y);
+    void setZ(double z);
+    void setT(double t);
+    void set(double x, double y, double z, double t = 1);
+    
+    double &operator[](double i);
+};
+
+class Matrix
+{
+private:
+    std::vector<Point> matrix;
+
+public:
+    Matrix();
+
+    void add(Point p);
+    void setIdentity();
+    void print();
+    void mult();
+
+    int getSize() const;
+
+    const Point &operator[](int i) const;
 };
 
 class Graphics
 {
 private:
-    std::vector<Point> edges;
+    Matrix edges;
 
 public:
     Graphics();
 
     void addEdge(Point p1, Point p2);
-    void addEdge(int x1, int y1, int z1, int t1, int x2, int y2, int z2, int t2);
-    void addEdge(int x1, int y1, int z1, int x2, int y2, int z2);
+    void addEdge(double x1, double y1, double z1, double t1, double x2, double y2, double z2, double t2);
+    void addEdge(double x1, double y1, double z1, double x2, double y2, double z2);
+    void printEdges();
 
     int getEdgeCount() const;
-    
+
     const Point &operator[](int i) const;
 };
 

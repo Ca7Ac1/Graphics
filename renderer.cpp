@@ -130,7 +130,7 @@ void Renderer::draw(const Graphics &g)
 {
     for (int i = 0; i < g.getEdgeCount(); i += 2)
     {
-        line(g[i].getX(), g[i].getY(),
-             g[i + 1].getX(), g[i + 1].getY());
+        line((int) g[i].getX(), (int) g[i].getY(),
+             (int) g[i + 1].getX(), (int) g[i + 1].getY());
     }
 }
