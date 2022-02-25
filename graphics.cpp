@@ -163,9 +163,9 @@ void Graphics::addEdge(double x1, double y1, double z1, double x2, double y2, do
     addEdge(x1, y1, z1, 1, x2, y2, z2, 1);
 }
 
-int Graphics::getEdgeCount() const
+int Graphics::getCount() const
 {
-    return edges.getSize() / 2;
+    return edges.getSize();
 }
 
 void Graphics::transform(Matrix &m)

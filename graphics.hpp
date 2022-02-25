@@ -61,7 +61,7 @@ public:
     void transform(Matrix &m);
     void printEdges();
     
-    int getEdgeCount() const;
+    int getCount() const;
 
     const Point &operator[](int i) const;
 };
