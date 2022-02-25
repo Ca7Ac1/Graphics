@@ -49,6 +49,23 @@ void Point::set(double x, double y, double z, double t)
     setT(t);
 }
 
+double &Point::operator[](int i)
+{
+    switch (i)
+    {
+    case 0:
+        return x;
+    case 1:
+        return y;
+    case 2:
+        return z;
+    case 3:
+        return t;
+    default:
+        throw std::exception("Wrong index for point");
+    }
+}
+
 Matrix::Matrix() : matrix() {}
 
 void Matrix::add(Point p)

@@ -25,7 +25,7 @@ public:
     void setT(double t);
     void set(double x, double y, double z, double t = 1);
     
-    double &operator[](double i);
+    double &operator[](int i);
 };
 
 class Matrix
