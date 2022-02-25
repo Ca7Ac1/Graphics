@@ -12,7 +12,7 @@ private:
     double t;
 
 public:
-    Point(double x, double y, double z, double t = 0);
+    Point(double x, double y, double z, double t = 1);
 
     double getX() const;
     double getY() const;
