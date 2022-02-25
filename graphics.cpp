@@ -41,7 +41,7 @@ void Point::setT(double t)
     this->t = t;
 }
 
-void Point::set(double x, double y, double z, double t = 1)
+void Point::set(double x, double y, double z, double t)
 {
     setX(x);
     setY(y);
