@@ -58,19 +58,17 @@ void Matrix::add(Point p)
 
 void Matrix::setIdentity()
 {
-    matrix.resize(4);
+    matrix.clear();
 
     for (int i = 0; i < 4; i++)
     {
+        matrix.push_back(Point(0, 0, 0, 0));
+
         for (int j = 0; j < 4; j++)
         {
             if (i == j)
             {
                 matrix[i][j] = 1;
-            }
-            else
-            {
-                matrix[i][j] = 0;
             }
         }
     }
