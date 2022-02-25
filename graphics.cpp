@@ -40,7 +40,7 @@ void Point::setT(double t)
 {
     this->t = t;
 }
-    
+
 void Point::set(double x, double y, double z, double t = 1)
 {
     setX(x);
@@ -76,9 +76,27 @@ void Matrix::setIdentity()
     }
 }
 
-void Matrix::mult()
-{   
-    //TODO
+void Matrix::mult(Matrix &m)
+{
+    if (matrix.size() != 4)
+    {
+        throw std::exception("Trying to multiply wrong sized matrix");
+    }
+
+    for (int i = 0; i < matrix.size(); i++)
+    {
+        double sums[] = {0.0, 0.0, 0.0, 0.0};
+
+        for (int j = 0; j < 4; j++)
+        {
+            for (int k = 0; k < 4; k++)
+            {
+                sums[j] = matrix[k][j] * m[i][j];
+            }
+        }
+
+        matrix[i].set(sums[0], sums[1], sums[2], sums[3]);
+    }
 }
 
 void Matrix::print()
@@ -100,6 +118,11 @@ int Matrix::getSize() const
 }
 
 const Point &Matrix::operator[](int i) const
+{
+    return matrix[i];
+}
+
+Point &Matrix::operator[](int i)
 {
     return matrix[i];
 }
@@ -128,6 +151,11 @@ void Graphics::addEdge(double x1, double y1, double z1, double x2, double y2, do
 int Graphics::getEdgeCount() const
 {
     return edges.getSize() / 2;
+}
+
+void Graphics::transform(Matrix &m)
+{
+    m.mult(edges);
 }
 
 void Graphics::printEdges()
