@@ -2,7 +2,7 @@
 
 #include "graphics.hpp"
 
-Point::Point(double x, double y, double z, double t) : x(x), y(x), z(z), t(t) {}
+Point::Point(double x, double y, double z, double t) : x(x), y(y), z(z), t(t) {}
 
 double Point::getX() const
 {
