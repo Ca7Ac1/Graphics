@@ -10,15 +10,15 @@ void testMatrix()
 {
     Matrix m1;
     Graphics m2;
-    cout << "\nTesting add_edge. Adding (1, 2, 3), (4, 5, 6) m2 =";
+    cout << "\nTesting add_edge. Adding (1, 2, 3), (4, 5, 6) m2 =\n";
     m2.addEdge(1, 2, 3, 4, 5, 6);
     m2.printEdges();
 
-    cout << "Testing ident. m1 = ";
+    cout << "Testing ident. m1 = \n";
     m1.setIdentity();
     m1.print();
 
-    cout << "\nTesting matrix_mult. m1 * m2 =";
+    cout << "\nTesting matrix_mult. m1 * m2 =\n";
     m2.transform(m1);
     m2.printEdges();
 
@@ -28,16 +28,18 @@ void testMatrix()
     m1.add(Point(7, 8, 9));
     m1.add(Point(10, 11, 12));
 
-    cout << "\nTesting Matrix mult. m1 =";
+    cout << "\nTesting Matrix mult. m1 =\n";
     m1.print();
 
-    cout << "\nTesting Matrix mult. m1 * m2 =";
+    cout << "\nTesting Matrix mult. m1 * m2 =\n";
     m2.transform(m1);
     m2.printEdges();
 }
 
 int main()
 {
+    testMatrix();
+
     Window win("main.ppm", 500, 500, true);
     Renderer r(win);
     Graphics g;
@@ -69,7 +71,7 @@ int main()
     r.setColor(255, 255, 255);
     r.draw(g);
  
-    std::cout << "\n\n";
+    cout << "\n\n";
 
     win.display();
 }
