@@ -103,7 +103,7 @@ void Matrix::mult(Matrix &m)
         throw std::exception("Trying to multiply wrong sized matrix");
     }
 
-    for (int i = 0; i < matrix.size(); i++)
+    for (int i = 0; i < m.getSize(); i++)
     {
         double sums[] = {0.0, 0.0, 0.0, 0.0};
 
@@ -111,7 +111,7 @@ void Matrix::mult(Matrix &m)
         {
             for (int k = 0; k < 4; k++)
             {
-                sums[j] = matrix[k][j] * m[i][j];
+                sums[j] += matrix[k][j] * m[i][k];
             }
         }
 
