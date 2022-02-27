@@ -73,6 +73,11 @@ void Matrix::add(Point p)
     matrix.push_back(p);
 }
 
+void Matrix::clear()
+{
+    matrix.clear();
+}
+
 void Matrix::setIdentity()
 {
     matrix.clear();
@@ -176,6 +181,11 @@ void Graphics::transform(Matrix &m)
 void Graphics::printEdges()
 {
     edges.print();
+}
+
+void Graphics::clear()
+{
+    edges.clear();
 }
 
 const Point &Graphics::operator[](int i) const
