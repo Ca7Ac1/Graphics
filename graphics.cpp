@@ -115,7 +115,7 @@ void Matrix::mult(Matrix &m)
             }
         }
 
-        matrix[i].set(sums[0], sums[1], sums[2], sums[3]);
+        m[i].set(sums[0], sums[1], sums[2], sums[3]);
     }
 }
 
