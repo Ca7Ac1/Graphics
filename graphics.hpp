@@ -37,6 +37,7 @@ public:
     Matrix();
 
     void add(Point p);
+    void clear();
     void setIdentity();
     void print();
     void mult(Matrix &m);
@@ -60,6 +61,7 @@ public:
     void addEdge(double x1, double y1, double z1, double x2, double y2, double z2);
     void transform(Matrix &m);
     void printEdges();
+    void clear();
     
     int getCount() const;
 
