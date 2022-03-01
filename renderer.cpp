@@ -1,5 +1,6 @@
 #include "renderer.hpp"
 #include "window.hpp"
+#include "graphics.hpp"
 
 Renderer::Renderer(Window &window) : window(window),
                                      red(0),

@@ -62,7 +62,7 @@ double &Point::operator[](int i)
     case 3:
         return t;
     default:
-        throw std::exception("Wrong index for point");
+        throw std::runtime_error("Wrong index for point");
     }
 }
 
@@ -100,7 +100,7 @@ void Matrix::mult(Matrix &m)
 {
     if (matrix.size() != 4)
     {
-        throw std::exception("Trying to multiply wrong sized matrix");
+        throw std::runtime_error("Trying to multiply wrong sized matrix");
     }
 
     for (int i = 0; i < m.getSize(); i++)
