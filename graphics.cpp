@@ -178,6 +178,11 @@ void Graphics::transform(Matrix &m)
     m.mult(edges);
 }
 
+void Graphics::transform(Transform &t)
+{
+    t.apply(edges);
+}
+
 void Graphics::printEdges()
 {
     edges.print();

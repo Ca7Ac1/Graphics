@@ -3,6 +3,8 @@
 
 #include <vector>
 
+#include "transform.hpp"
+
 class Point
 {
 private:
@@ -60,6 +62,7 @@ public:
     void addEdge(double x1, double y1, double z1, double t1, double x2, double y2, double z2, double t2);
     void addEdge(double x1, double y1, double z1, double x2, double y2, double z2);
     void transform(Matrix &m);
+    void transform(Transform &t);
     void printEdges();
     void clear();
     
