@@ -45,14 +45,15 @@ void Color::print() const
     std::cout << "(red: " << red << ", green: " << green << ", blue: " << blue << ")\n";
 }
 
-Window::Window(int xDimension, int yDimension) : xDimension(xDimension),yDimension(yDimension),
+Window::Window(int xDimension, int yDimension) : xDimension(xDimension),yDimension(yDimension), 
+                                                 colorScale(255), xInverted(false), yInverted(false),
                                                  window(xDimension, std::vector<Color>(yDimension, Color(0, 0, 0, colorScale))) {}
 
 void Window::draw(const std::string &file, bool binary=true)
 {
     output = file;
     std::ofstream outputFile(output);
-    
+
     outputFile << (binary ? "P6" : "P3") << '\n'
            << xDimension << " " << yDimension << '\n'
            << colorScale << '\n';
@@ -80,6 +81,11 @@ void Window::draw(const std::string &file, bool binary=true)
     {
         outputFile << '\n';
     }
+}
+
+void Window::display()
+{
+
 }
 
 int Window::getXDimension() const
