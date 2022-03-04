@@ -52,7 +52,7 @@ Window::Window(int xDimension, int yDimension) : xDimension(xDimension),yDimensi
                                                  colorScale(255), xInverted(false), yInverted(false),
                                                  window(xDimension, std::vector<Color>(yDimension, Color(0, 0, 0, colorScale))) {}
 
-void Window::draw(const std::string &file, bool binary=true)
+void Window::draw(const std::string &file, bool binary)
 {
     output = file;
     std::ofstream outputFile(output);
