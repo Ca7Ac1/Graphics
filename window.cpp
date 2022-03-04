@@ -48,7 +48,7 @@ void Color::print() const
     std::cout << "(red: " << red << ", green: " << green << ", blue: " << blue << ")\n";
 }
 
-Window::Window(int xDimension, int yDimension) : xDimension(xDimension),yDimension(yDimension), 
+Window::Window(int xDimension, int yDimension) : xDimension(xDimension), yDimension(yDimension),
                                                  colorScale(255), xInverted(false), yInverted(false),
                                                  window(xDimension, std::vector<Color>(yDimension, Color(0, 0, 0, colorScale))) {}
 
@@ -58,8 +58,8 @@ void Window::draw(const std::string &file, bool binary)
     std::ofstream outputFile(output);
 
     outputFile << (binary ? "P6" : "P3") << '\n'
-           << xDimension << " " << yDimension << '\n'
-           << colorScale << '\n';
+               << xDimension << " " << yDimension << '\n'
+               << colorScale << '\n';
 
     for (int y = 0; y < yDimension; y++)
     {
@@ -98,9 +98,9 @@ void Window::display()
     {
         char outputFile[output.size() + 1];
         strcpy(outputFile, output.c_str());
-        char *const args[] = {"display", outputFile, "\0"};
+        char *const args[] = {(char *)"display", outputFile, (char *)"\0"};
 
-        execvp("display",  args);
+        execvp("display", args);
     }
 }
 
