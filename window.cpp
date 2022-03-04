@@ -45,27 +45,15 @@ void Color::print() const
     std::cout << "(red: " << red << ", green: " << green << ", blue: " << blue << ")\n";
 }
 
-Window::Window(const std::string &file, int xDimension, int yDimension, bool binary) : xDimension(xDimension),
-                                                                                       yDimension(yDimension),
-                                                                                       colorScale(255),
-                                                                                       binary(binary),
-                                                                                       xInverted(false),
-                                                                                       yInverted(false),
-                                                                                       window(xDimension, std::vector<Color>(yDimension, Color(0, 0, 0, colorScale)))
-{
-    if (binary)
-    {
-        output.open(file, std::ios::out | std::ios::binary);
-    }
-    else
-    {
-        output.open(file);
-    }
-}
+Window::Window(int xDimension, int yDimension) : xDimension(xDimension),yDimension(yDimension),
+                                                 window(xDimension, std::vector<Color>(yDimension, Color(0, 0, 0, colorScale))) {}
 
-void Window::display()
+void Window::draw(const std::string &file, bool binary=true)
 {
-    output << (binary ? "P6" : "P3") << '\n'
+    output = file;
+    std::ofstream outputFile(output);
+    
+    outputFile << (binary ? "P6" : "P3") << '\n'
            << xDimension << " " << yDimension << '\n'
            << colorScale << '\n';
 
@@ -79,18 +67,18 @@ void Window::display()
 
             if (binary)
             {
-                output << (char)red << (char)green << (char)blue;
+                outputFile << (char)red << (char)green << (char)blue;
             }
             else
             {
-                output << red << " " << green << " " << blue << " ";
+                outputFile << red << " " << green << " " << blue << " ";
             }
         }
     }
 
     if (!binary)
     {
-        output << '\n';
+        outputFile << '\n';
     }
 }
 

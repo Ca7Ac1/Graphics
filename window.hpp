@@ -4,7 +4,6 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <fstream>
 
 class Color
 {
@@ -39,15 +38,14 @@ private:
 
     int colorScale;
 
-    const bool binary;
+    std::string output;
 
     std::vector<std::vector<Color>> window;
 
-    std::ofstream output;
-
 public:
-    Window(const std::string &file, int xDimension, int yDimension, bool binary = false);
+    Window(int xDimension, int yDimension);
 
+    void draw(const std::string &file, bool binary=true);
     void display();
 
     int getXDimension() const;
