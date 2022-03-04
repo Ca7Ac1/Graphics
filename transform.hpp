@@ -1,7 +1,7 @@
 #ifndef TRANSFORM_H
 #define TRANSFORM_H
 
-#include "graphics.hpp"
+#include "matrix.hpp"
 
 enum Axis { X, Y, Z };
 
