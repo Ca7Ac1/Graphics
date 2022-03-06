@@ -77,10 +77,7 @@ void parse(Window &w, Renderer &r, std::string fileName)
             r.setColor(color[0], color[1], color[2]);
             r.draw(g);
 
-            std::string outputFile;
-            file >> outputFile;
-
-            w.draw(outputFile);
+            w.draw("temp.ppm");
             w.display();
         }
         else if (cmd == "save")
@@ -99,6 +96,10 @@ void parse(Window &w, Renderer &r, std::string fileName)
         else if (cmd == "color")
         {
             file >> color[0] >> color[1] >> color[2];
+        }
+        else if (cmd == "")
+        {
+            continue;
         }
         else
         {
