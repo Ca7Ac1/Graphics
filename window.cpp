@@ -53,7 +53,7 @@ Window::Window(int xDimension, int yDimension) : xDimension(xDimension), yDimens
 void Window::draw(const std::string &file, bool binary)
 {
     output = file;
-    std::ofstream outputFile(output);
+    std::ofstream outputFile(output, std::ofstream::trunc);
 
     outputFile << (binary ? "P6" : "P3") << '\n'
                << xDimension << " " << yDimension << '\n'
