@@ -1,6 +1,8 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <thread>
+#include <chrono>
 
 #include "window.hpp"
 #include "renderer.hpp"
@@ -79,6 +81,8 @@ void parse(Window &w, Renderer &r, std::string fileName)
 
             w.draw("temp.ppm");
             w.display();
+
+            std::this_thread::sleep_for(std::chrono::seconds(8));
         }
         else if (cmd == "save")
         {
