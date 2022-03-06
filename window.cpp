@@ -90,7 +90,7 @@ void Window::display()
 {
     int c = fork();
 
-    if (c)
+    if (c != 0)
     {
         wait(&c);
     }
@@ -100,7 +100,7 @@ void Window::display()
         strcpy(outputFile, output.c_str());
         char *const args[] = {(char *)"display", outputFile, (char *)"\0"};
 
-        execvp("display", args);
+        execvp((char *)"display", args);
     }
 }
 
