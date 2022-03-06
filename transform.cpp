@@ -13,9 +13,14 @@ void Transform::reset()
     transformation.setIdentity();
 }
 
+void Transform::addTransformation(Matrix &m)
+{
+    m.mult(transformation);
+}
+
 void Transform::addTransformation(Transform &t)
 {
-    t.transformation.mult(transformation);
+    addTransformation(t.transformation);
 }
 
 void Transform::addTranslation(double x, double y, double z)

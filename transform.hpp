@@ -16,6 +16,7 @@ public:
     Transform();
 
     void reset();
+    void addTransformation(Matrix &m);
     void addTransformation(Transform &t);
     void addTranslation(double x, double y, double z);
     void addDilation(double x, double y, double z);
