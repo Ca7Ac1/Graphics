@@ -1,9 +1,7 @@
 #include <vector>
 #include <string>
 #include <fstream>
-#include <unistd.h>
-#include <string.h>
-#include <sys/wait.h>
+#include <cstdlib>
 
 #include "window.hpp"
 
@@ -88,20 +86,7 @@ void Window::draw(const std::string &file, bool binary)
 
 void Window::display()
 {
-    int c = fork();
-
-    if (c != 0)
-    {
-        wait(&c);
-    }
-    else
-    {
-        char outputFile[output.size() + 1];
-        strcpy(outputFile, output.c_str());
-        char *const args[] = {(char *)"display", outputFile, (char *)"\0"};
-
-        execvp((char *)"display", args);
-    }
+    system(output.c_str());
 }
 
 int Window::getXDimension() const
