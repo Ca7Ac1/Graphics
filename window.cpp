@@ -86,7 +86,7 @@ void Window::draw(const std::string &file, bool binary)
 
 void Window::display()
 {
-    system(output.c_str());
+    system(("display " + output).c_str());
 }
 
 int Window::getXDimension() const
