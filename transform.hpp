@@ -10,8 +10,6 @@ class Transform
 private:
     Matrix transformation;
 
-    bool radians;
-
 public:
     Transform();
 
@@ -20,10 +18,7 @@ public:
     void addTransformation(Transform &t);
     void addTranslation(double x, double y, double z);
     void addDilation(double x, double y, double z);
-    void addRotation(double angle, Axis axis);
-
-    void setRadiansMode();
-    void setDegreesMode();
+    void addRotation(double angle, Axis axis, bool degrees=false);
 
     void apply(Matrix &m);
 };

@@ -48,12 +48,12 @@ void Transform::addDilation(double x, double y, double z)
     dilation.mult(transformation);
 }
 
-void Transform::addRotation(double angle, Axis axis)
+void Transform::addRotation(double angle, Axis axis, bool degrees)
 {
     Matrix rotation;
     rotation.setIdentity();
 
-    if (!radians)
+    if (degrees)
     {
         angle = (angle / 360.0) * 2.0 * M_PI;
     }
@@ -86,16 +86,6 @@ void Transform::addRotation(double angle, Axis axis)
     }
 
     rotation.mult(transformation);
-}
-
-void Transform::setRadiansMode()
-{
-    radians = true;
-}
-
-void Transform::setDegreesMode()
-{
-    radians = false;
 }
 
 void Transform::apply(Matrix &m)
