@@ -4,7 +4,7 @@
 #include "transform.hpp"
 #include "graphics.hpp"
 
-Transform::Transform() : transformation(), radians(false)
+Transform::Transform() : transformation()
 {
     reset();
 }
