@@ -18,7 +18,7 @@ public:
     void addTransformation(Transform &t);
     void addTranslation(double x, double y, double z);
     void addDilation(double x, double y, double z);
-    void addRotation(double angle, Axis axis, bool degrees=false);
+    void addRotation(double angle, Axis axis, bool degrees=true);
 
     void apply(Matrix &m);
 };
