@@ -69,9 +69,9 @@ void Transform::addRotation(double angle, Axis axis, bool degrees)
         break;
  
     case Axis::Y:
-        rotation[3][2] = cos(angle);
+        rotation[2][2] = cos(angle);
         rotation[0][2] = -sin(angle);
-        rotation[3][0] = sin(angle);
+        rotation[2][0] = sin(angle);
         rotation[0][0] = cos(angle);
 
         break;
