@@ -83,7 +83,7 @@ void parse(Window &w, Renderer &r, std::string fileName)
             w.draw("temp.ppm");
             w.display();
 
-            system("rm temp.ppm".c_str());
+            system("rm temp.ppm");
             // std::this_thread::sleep_for(std::chrono::seconds(8));
         }
         else if (cmd == "save")
