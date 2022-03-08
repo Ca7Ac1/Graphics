@@ -21,3 +21,6 @@ transform.o: transform.cpp transform.hpp graphics.hpp matrix.hpp
 
 script.o: script.cpp script.hpp window.hpp renderer.hpp graphics.hpp transform.hpp
 	g++ -std=c++11 -c script.cpp
+
+matrix.o: matrix.cpp matrix.hpp
+	g++ -std=c++11 -c matrix.cpp
