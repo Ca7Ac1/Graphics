@@ -1,4 +1,6 @@
 #include "graphics.hpp"
+#include "matrix.hpp"
+#include "transform.hpp"
 
 Graphics::Graphics() : edges() {}
 
