@@ -37,7 +37,7 @@ void parse(Window &w, Renderer &r, std::string fileName)
         }
         else if (cmd == "scale")
         {
-            int factor[3];
+            double factor[3];
             file >> factor[0] >> factor[1] >> factor[2];
 
             t.addDilation(factor[0], factor[1], factor[2]);
@@ -83,8 +83,8 @@ void parse(Window &w, Renderer &r, std::string fileName)
             w.draw("temp.ppm");
             w.display();
 
+            std::this_thread::sleep_for(std::chrono::seconds(8));
             system("rm temp.ppm");
-            // std::this_thread::sleep_for(std::chrono::seconds(8));
         }
         else if (cmd == "save")
         {
