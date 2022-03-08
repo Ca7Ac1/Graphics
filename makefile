@@ -2,7 +2,7 @@ show: compile
 	./main.exe
 
 compile: main.o window.o graphics.o renderer.o matrix.o script.o transform.o 
-	g++ -std=c++11 -o main.exe main.o window.o graphics.o renderer.o 
+	g++ -std=c++11 -o main.exe main.o window.o graphics.o renderer.o script.o transform.o matrix.o
 
 main.o: main.cpp window.hpp renderer.hpp script.hpp
 	g++ -std=c++11 -c main.cpp 
