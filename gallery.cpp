@@ -8,10 +8,8 @@ using namespace std;
 
 int main()
 {
-    Window win(900, 450);
+    Window win(900, 400);
     Renderer r(win);
-
-    win.invertY();
 
     parse(win, r, "gallery_script");
 }

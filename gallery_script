@@ -11892,5 +11892,8 @@ bezier
 431 468 431 468 431 468 432 470
 line
 432 470 0 432 470 0
+move
+0 -10 0
+apply
 save
 gallery.ppm
