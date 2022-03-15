@@ -31,6 +31,31 @@ void parse(Window &w, Renderer &r, std::string fileName)
 
             g.addEdge(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
         }
+        else if (cmd == "circle")
+        {
+            int coords[3];
+            int radius;
+
+            file >> coords[0] >> coords[1] >> coords[2] >> radius;
+            g.addCircle(coords[0], coords[1], coords[2], radius);
+        }
+        else if (cmd == "bezier")
+        {
+            int coords[8];
+
+            file >> coords[0] >> coords[1] >> coords[2] >> coords[3] >> coords[5] >> coords[6] >> coords[7];
+            g.addBezierCurve(coords[0], coords[1], 0, coords[2], coords[3], 0,
+                             coords[4], coords[5], 0, coords[6], coords[7], 0);
+        }
+        else if (cmd == "hermite")
+        {
+            int coords[4];
+            int rates[4];
+
+            file >> coords[0] >> coords[1] >> coords[2] >> coords[3] >> rates[0] >> rates[1] >> rates[2] >> rates[3];
+            g.addHermiteCurve(coords[0], coords[1], 0, rates[0], rates[1], 0,
+                             coords[2], coords[3], 0, rates[2], rates[3], 0);
+        }
         else if (cmd == "ident")
         {
             t.reset();

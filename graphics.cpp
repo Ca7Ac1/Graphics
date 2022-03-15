@@ -1,3 +1,4 @@
+#define _USE_MATH_DEFINES
 #include <cmath>
 #include "graphics.hpp"
 #include "matrix.hpp"
