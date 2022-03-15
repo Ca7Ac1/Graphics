@@ -24,18 +24,18 @@ void Graphics::addEdge(double x1, double y1, double z1, double x2, double y2, do
     addEdge(x1, y1, z1, 1, x2, y2, z2, 1);
 }
 
-void addCurve(Matrix x, Matrix y, Matrix z, int steps)
+void Graphics::addCurve(Matrix x, Matrix y, Matrix z, int steps)
 {
-    double prevX = x[3];
-    double prevY = y[3];
-    double prevZ = z[3];
+    double prevX = x[0][3];
+    double prevY = y[0][3];
+    double prevZ = z[0][3];
 
     double step = 1.0 / (double) steps;
     for (double t = step; t <= 1; t += step)
     {
-        double currX = (t * t * t * x[0]) + (t * t * x[1]) + (t * x[2]) + x[3];
-        double currY = (t * t * t * y[0]) + (t * t * y[1]) + (t * y[2]) + y[3];
-        double currZ = (t * t * t * z[0]) + (t * t * z[1]) + (t * z[2]) + z[3];
+        double currX = (t * t * t * x[0][0]) + (t * t * x[0][1]) + (t * x[0][2]) + x[0][3];
+        double currY = (t * t * t * y[0][0]) + (t * t * y[0][1]) + (t * y[0][2]) + y[0][3];
+        double currZ = (t * t * t * z[0][0]) + (t * t * z[0][1]) + (t * z[0][2]) + z[0][3];
 
         addEdge(prevX, prevY, prevZ, currX, currY, currZ);
 
@@ -45,7 +45,7 @@ void addCurve(Matrix x, Matrix y, Matrix z, int steps)
     }
 }
 
-void addBezierCurve(double x[4], double y[4], double z[4], int steps)
+void Graphics::addBezierCurve(double x[4], double y[4], double z[4], int steps)
 {
     Matrix xCoeficients;
     Matrix yCoeficients;
@@ -82,7 +82,7 @@ void addBezierCurve(double x[4], double y[4], double z[4], int steps)
     addCurve(xCoeficients, yCoeficients, zCoeficients, steps);
 }
 
-void addBezierCurve(double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3, double x4, double y4, double z4, int steps)
+void Graphics::addBezierCurve(double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3, double x4, double y4, double z4, int steps)
 {
     double x[4] = {x1, x2, x3, x4};
     double y[4] = {y1, y2, y3, y4};
@@ -91,11 +91,15 @@ void addBezierCurve(double x1, double y1, double z1, double x2, double y2, doubl
     addBezierCurve(x, y, z, steps);
 }
 
-void addHermiteCurve(double x1, double y1, double z1, double dx1, double dy1, double x2, double y2, double z2, double dx2, double dy2, int steps=100)
+void Graphics::addHermiteCurve(double x1, double y1, double z1, double dx1, double dy1, double dz1, double x2, double y2, double z2, double dx2, double dy2, double dz2, int steps=100)
 {
     Matrix xCoeficients;
     Matrix yCoeficients;
-    Matrix yCoeficients;
+    Matrix zCoeficients;
+
+    xCoeficients.add(Point(x1, x2, dx1, dx2));
+    yCoeficients.add(Point(y1, y2, dy1, dy2));
+    zCoeficients.add(Point(z1, z2, dz1, dz2));
 
     Matrix hermite;
     hermite.setIdentity();
@@ -124,18 +128,18 @@ void addHermiteCurve(double x1, double y1, double z1, double dx1, double dy1, do
     addCurve(xCoeficients, yCoeficients, zCoeficients, steps);
 }
 
-void addCircle(double cX, double cY, double cZ, double r, bool radians, int steps)
+void Graphics::addCircle(double cX, double cY, double cZ, double r, int steps)
 {
-    double prevX = cX + (r * cos(0.0))
+    double prevX = cX + (r * cos(0.0));
     double prevY = cY + (r * sin(0.0));
 
     double step = (2.0 * M_PI) / (double) steps;
     for (double t = step; t <= (2 * M_PI); t += step)
     {
-        double currX = cX + (r * cos(t))
+        double currX = cX + (r * cos(t));
         double currY = cY + (r * sin(t));
 
-        addEdge(prevX, prevY, z, currX, currY, z);
+        addEdge(prevX, prevY, cZ, currX, currY, cZ);
 
         prevX = currX;
         prevY = currY;
