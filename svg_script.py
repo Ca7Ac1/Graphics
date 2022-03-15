@@ -25,13 +25,16 @@ script_info = ""
 
 for i in info:
     prev_x = 0.0
-    prev_y = 472.0
+    prev_y = 0
 
     curr_x = 0.0
-    curr_y = 472.0
+    curr_y = 0
 
-    scale_x = 1
-    scale_y = 1
+    scale_x = .1
+    scale_y = -.1
+
+    translate_x = 0.0
+    translate_y = 472.0
 
     j = 0
 
@@ -76,7 +79,7 @@ for i in info:
                     print(cmd)
                     quit()
 
-                script_info += f"bezier\n{int(curr_x* scale_x)} {int(curr_y* scale_y)} {int(x0* scale_x)} {int(y0* scale_y)} {int(x1* scale_x)} {int(y1* scale_y)} {int(x2* scale_x)} {int(y2* scale_y)}\n"
+                script_info += f"bezier\n{int(curr_x * scale_x + translate_x)} {int(curr_y * scale_y + translate_y)} {int(x0 * scale_x + translate_x)} {int(y0 * scale_y + translate_y)} {int(x1 * scale_x + translate_x)} {int(y1 * scale_y + translate_y)} {int(x2 * scale_x + translate_x)} {int(y2 * scale_y + translate_y)}\n"
 
                 curr_x = x2
                 curr_y = y2
@@ -84,13 +87,14 @@ for i in info:
                 j += 6
 
         elif cmd[j] == 'z':
-            script_info += f"line\n{int(curr_x * scale_x)} {int(curr_y * scale_y)} 0 {int(prev_x * scale_x)} {int(prev_y * scale_y)} 0\n"
+            script_info += f"line\n{int(curr_x * scale_x + translate_x)} {int(curr_y * scale_y + translate_y)} 0 {int(prev_x * scale_x + translate_x)} {int(prev_y * scale_y + translate_y)} 0\n"
             j += 1
 
         else:
             print("bad: " + cmd[j])
             quit()
 
+script_info += "save\ngallery.ppm"
 
 with open(output_file, 'w') as f:
     f.write(script_info)
