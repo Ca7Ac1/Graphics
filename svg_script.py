@@ -1,7 +1,7 @@
 # <g transform ="translate(0.000000,472.000000) scale(0.100000,-0.100000)"
 # fill="#000000" stroke="none">
 
-input_file = "v36.svg"
+input_file = "gallery_img.svg"
 output_file = "gallery_script"
 
 info = []
