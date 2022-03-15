@@ -1,8 +1,17 @@
 show: compile
 	./main.exe
 
+gallery: compile_gallery
+	./gallery.exe
+
+compile_gallery: gallery.o window.o graphics.o renderer.o matrix.o script.o transform.o 
+	g++ -std=c++11 -o gallery.exe gallery.o window.o graphics.o renderer.o script.o transform.o matrix.o
+
 compile: main.o window.o graphics.o renderer.o matrix.o script.o transform.o 
 	g++ -std=c++11 -o main.exe main.o window.o graphics.o renderer.o script.o transform.o matrix.o
+
+gallery.o: gallery.cpp window.hpp renderer.hpp script.hpp
+	g++ -std=c++11 -c gallery.cpp 
 
 main.o: main.cpp window.hpp renderer.hpp script.hpp
 	g++ -std=c++11 -c main.cpp 
