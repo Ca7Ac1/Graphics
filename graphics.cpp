@@ -31,7 +31,7 @@ void Graphics::addCurve(Matrix x, Matrix y, Matrix z, int steps)
     double prevY = y[0][3];
     double prevZ = z[0][3];
 
-    double step = 1.0 / (double) steps;
+    double step = 1.0 / (double)steps;
     for (double t = step; t <= 1; t += step)
     {
         double currX = (t * t * t * x[0][0]) + (t * t * x[0][1]) + (t * x[0][2]) + x[0][3];
@@ -92,7 +92,7 @@ void Graphics::addBezierCurve(double x1, double y1, double z1, double x2, double
     addBezierCurve(x, y, z, steps);
 }
 
-void Graphics::addHermiteCurve(double x1, double y1, double z1, double dx1, double dy1, double dz1, double x2, double y2, double z2, double dx2, double dy2, double dz2, int steps=100)
+void Graphics::addHermiteCurve(double x1, double y1, double z1, double dx1, double dy1, double dz1, double x2, double y2, double z2, double dx2, double dy2, double dz2, int steps)
 {
     Matrix xCoeficients;
     Matrix yCoeficients;
@@ -134,7 +134,7 @@ void Graphics::addCircle(double cX, double cY, double cZ, double r, int steps)
     double prevX = cX + (r * cos(0.0));
     double prevY = cY + (r * sin(0.0));
 
-    double step = (2.0 * M_PI) / (double) steps;
+    double step = (2.0 * M_PI) / (double)steps;
     for (double t = step; t <= (2 * M_PI); t += step)
     {
         double currX = cX + (r * cos(t));
