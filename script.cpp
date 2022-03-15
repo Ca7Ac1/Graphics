@@ -43,7 +43,7 @@ void parse(Window &w, Renderer &r, std::string fileName)
         {
             int coords[8];
 
-            file >> coords[0] >> coords[1] >> coords[2] >> coords[3] >> coords[5] >> coords[6] >> coords[7];
+            file >> coords[0] >> coords[1] >> coords[2] >> coords[3] >> coords[4] >> coords[5] >> coords[6] >> coords[7];
             g.addBezierCurve(coords[0], coords[1], 0, coords[2], coords[3], 0,
                              coords[4], coords[5], 0, coords[6], coords[7], 0);
         }
