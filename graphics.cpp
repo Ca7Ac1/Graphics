@@ -32,8 +32,10 @@ void Graphics::addCurve(Matrix x, Matrix y, Matrix z, int steps)
     double prevZ = z[0][3];
 
     double step = 1.0 / (double)steps;
-    for (double t = step; t <= 1; t += step)
+    for (int i = 1; i <= steps; i++)
     {
+        double t = i * step;
+
         double currX = (t * t * t * x[0][0]) + (t * t * x[0][1]) + (t * x[0][2]) + x[0][3];
         double currY = (t * t * t * y[0][0]) + (t * t * y[0][1]) + (t * y[0][2]) + y[0][3];
         double currZ = (t * t * t * z[0][0]) + (t * t * z[0][1]) + (t * z[0][2]) + z[0][3];
@@ -135,8 +137,10 @@ void Graphics::addCircle(double cX, double cY, double cZ, double r, int steps)
     double prevY = cY + (r * sin(0.0));
 
     double step = (2.0 * M_PI) / (double)steps;
-    for (double t = step; t <= (2 * M_PI); t += step)
-    {
+    for (int i = 1; i <= steps; i++)
+    {   
+        double t = i * step;
+        
         double currX = cX + (r * cos(t));
         double currY = cY + (r * sin(t));
 
