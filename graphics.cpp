@@ -209,7 +209,7 @@ void Graphics::addBox(int x, int y, int z, int w, int h, int d)
     addEdge(x, y - h, z + d, x, y, z + d);
 }
 
-void Graphics::addSphere(int x, int y, int z, int r, int steps = 20, int turns = 20)
+void Graphics::addSphere(int x, int y, int z, int r, int steps, int turns)
 {
     std::vector<Point> points = generateSphere(x, y, z, r, steps, turns);
 
@@ -219,7 +219,7 @@ void Graphics::addSphere(int x, int y, int z, int r, int steps = 20, int turns =
     }
 }
 
-void Graphics::addTorus(int x, int y, int z, int r1, int r2, int steps = 20, int turns = 20)
+void Graphics::addTorus(int x, int y, int z, int r1, int r2, int steps, int turns)
 {
     std::vector<Point> points = generateTorus(x, y, z, r1, r2, steps, turns);
 
