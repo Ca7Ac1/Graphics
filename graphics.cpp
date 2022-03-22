@@ -1,5 +1,7 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
+#include <vector>
+
 #include "graphics.hpp"
 #include "matrix.hpp"
 #include "transform.hpp"
@@ -150,6 +152,83 @@ void Graphics::addCircle(double cX, double cY, double cZ, double r, int steps)
         prevY = currY;
     }
 }
+
+std::vector<Point> &Graphics::generateSphere(int x, int y, int z, int r, int steps, int turns)
+{
+    std::vector<Point> points;
+
+    for (int i = 0; i <= turns; i++)
+    {
+        for (int j = 0; j <= steps; j++)
+        {
+            double rot = i * 2.0 * M_PI / turns;
+            double cir = j * M_PI / steps;
+
+            points.push_back(Point(r * cos(cir) + x, 
+                                   r * sin(cir) * cos(rot) + y, 
+                                   r * sin(cir) * cos(rot) + z));
+        }
+    }
+
+    return points;
+}
+
+std::vector<Point> &Graphics::generateTorus(int x, int y, int z, int r1, int r2, int steps, int turns)
+{
+    std::vector<Point> points;
+
+    for (int i = 0; i <= turns; i++)
+    {
+        for (int j = 0; j <= steps; j++)
+        {
+            double rot = i * 2.0 * M_PI / turns;
+            double cir = j * M_PI / steps;
+
+            points.push_back(Point(cos(rot) * (r1 * cos(cir) + r2) + x, 
+                                   r1 * sin(cir) + y, 
+                                   -sin(rot) * (r1 * cos(cir) + r2) + z));
+        }
+    }
+
+    return points;
+}
+
+void Graphics::addBox(int x, int y, int z, int w, int h, int d)
+{
+    addEdge(x, y, z, x + w, y, z);
+    addEdge(x + w, y, z, x + w, y - h, z);
+    addEdge(x + w, y - h, z, x, y - h, z);
+    addEdge(x, y - h, z, x, y, z);
+    addEdge(x, y, z, x, y, z + d);
+    addEdge(x + w, y, z, x + w, y, z + d);
+    addEdge(x + w, y - h, z, x + w, y - d, z + d);
+    addEdge(x, y - h, z, x, y - h, z + d);
+    addEdge(x, y, z + d, x + w, y, z + d);
+    addEdge(x + w, y, z + d, x + w, y - h, z + d);
+    addEdge(x + w, y - h, z + d, x, y - h, z + d);
+    addEdge(x, y - h, z + d, x, y, z + d);
+}
+
+void Graphics::addSphere(int x, int y, int z, int r, int steps = 20, int turns = 20)
+{
+    std::vector<Point> points = generateSphere(x, y, z, r, steps, turns);
+
+    for (const Point &p : points)
+    {
+        addEdge(p, Point(p.getX() + 1, p.getY(), p.getZ()));
+    }
+}
+
+void Graphics::addTorus(int x, int y, int z, int r1, int r2, int steps = 20, int turns = 20)
+{
+    std::vector<Point> points = generateTorus(x, y, z, r1, r2, steps, turns);
+
+    for (const Point &p : points)
+    {
+        addEdge(p, Point(p.getX() + 1, p.getY(), p.getZ()));
+    }
+}
+
 
 int Graphics::getCount() const
 {
