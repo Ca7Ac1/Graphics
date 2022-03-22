@@ -56,6 +56,30 @@ void parse(Window &w, Renderer &r, std::string fileName)
             g.addHermiteCurve(coords[0], coords[1], 0, rates[0], rates[1], 0,
                              coords[2], coords[3], 0, rates[2], rates[3], 0);
         }
+        else if (cmd == "box")
+        {
+            int coords[3];
+            int dimensions[3];
+
+            file >> coords[0] >> coords[1] >> coords[2] >> dimensions[0] >> dimensions[1] >> dimensions[2];
+            g.addBox(coords[0], coords[1], coords[2], dimensions[0], dimensions[1], dimensions[2]);
+        }
+        else if (cmd == "sphere")
+        {
+            int coords[3];
+            int radius;
+
+            file >> coords[0] >> coords[1] >> coords[2] >> radius;
+            g.addSphere(coords[0], coords[1], coords[2], radius);
+        }
+        else if (cmd == "torus")
+        {
+            int coords[3];
+            int radii[2];
+
+            file >> coords[0] >> coords[1] >> coords[2] >> radii[0] >> radii[1];
+            g.addTorus(coords[0], coords[1], coords[2], radii[0], radii[1]);
+        }
         else if (cmd == "ident")
         {
             t.reset();
@@ -127,6 +151,10 @@ void parse(Window &w, Renderer &r, std::string fileName)
         else if (cmd == "color")
         {
             file >> color[0] >> color[1] >> color[2];
+        }
+        else if (cmd == "clear")
+        {
+            g.clear();
         }
         else if (cmd == "")
         {
