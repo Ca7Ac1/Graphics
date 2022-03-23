@@ -201,7 +201,7 @@ void Graphics::addBox(int x, int y, int z, int w, int h, int d)
     addEdge(x, y - h, z, x, y, z);
     addEdge(x, y, z, x, y, z + d);
     addEdge(x + w, y, z, x + w, y, z + d);
-    addEdge(x + w, y - h, z, x + w, y - d, z + d);
+    addEdge(x + w, y - h, z, x + w, y - h, z + d);
     addEdge(x, y - h, z, x, y - h, z + d);
     addEdge(x, y, z + d, x + w, y, z + d);
     addEdge(x + w, y, z + d, x + w, y - h, z + d);
