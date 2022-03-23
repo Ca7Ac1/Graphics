@@ -163,7 +163,7 @@ void parse(Window &w, Renderer &r, std::string fileName)
         else if (cmd.find("#") != std::string::npos)
         {
             std::string skip;
-            getline(std::cin, skip);
+            getline(file, skip);
         }
         else
         {
