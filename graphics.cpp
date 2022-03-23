@@ -153,9 +153,9 @@ void Graphics::addCircle(double cX, double cY, double cZ, double r, int steps)
     }
 }
 
-std::vector<Point> &Graphics::generateSphere(int x, int y, int z, int r, int steps, int turns)
+std::vector<Point> *Graphics::generateSphere(int x, int y, int z, int r, int steps, int turns)
 {
-    std::vector<Point> points;
+    std::vector<Point> *points = new std::vector<Point>();
 
     for (int i = 0; i <= turns; i++)
     {
@@ -164,7 +164,7 @@ std::vector<Point> &Graphics::generateSphere(int x, int y, int z, int r, int ste
             double rot = i * 2.0 * M_PI / turns;
             double cir = j * M_PI / steps;
 
-            points.push_back(Point(r * cos(cir) + x, 
+            points->push_back(Point(r * cos(cir) + x, 
                                    r * sin(cir) * cos(rot) + y, 
                                    r * sin(cir) * cos(rot) + z));
         }
@@ -173,9 +173,9 @@ std::vector<Point> &Graphics::generateSphere(int x, int y, int z, int r, int ste
     return points;
 }
 
-std::vector<Point> &Graphics::generateTorus(int x, int y, int z, int r1, int r2, int steps, int turns)
+std::vector<Point> *Graphics::generateTorus(int x, int y, int z, int r1, int r2, int steps, int turns)
 {
-    std::vector<Point> points;
+    std::vector<Point> *points = new std::vector<Point>();
 
     for (int i = 0; i <= turns; i++)
     {
@@ -184,7 +184,7 @@ std::vector<Point> &Graphics::generateTorus(int x, int y, int z, int r1, int r2,
             double rot = i * 2.0 * M_PI / turns;
             double cir = j * M_PI / steps;
 
-            points.push_back(Point(cos(rot) * (r1 * cos(cir) + r2) + x, 
+            points->push_back(Point(cos(rot) * (r1 * cos(cir) + r2) + x, 
                                    r1 * sin(cir) + y, 
                                    -sin(rot) * (r1 * cos(cir) + r2) + z));
         }
@@ -211,22 +211,26 @@ void Graphics::addBox(int x, int y, int z, int w, int h, int d)
 
 void Graphics::addSphere(int x, int y, int z, int r, int steps, int turns)
 {
-    std::vector<Point> points = generateSphere(x, y, z, r, steps, turns);
+    std::vector<Point> *points = generateSphere(x, y, z, r, steps, turns);
 
-    for (const Point &p : points)
+    for (const Point &p : *points)
     {
         addEdge(p, Point(p.getX() + 1, p.getY(), p.getZ()));
     }
+
+    delete points;
 }
 
 void Graphics::addTorus(int x, int y, int z, int r1, int r2, int steps, int turns)
 {
-    std::vector<Point> points = generateTorus(x, y, z, r1, r2, steps, turns);
+    std::vector<Point> *points = generateTorus(x, y, z, r1, r2, steps, turns);
 
-    for (const Point &p : points)
+    for (const Point &p : *points)
     {
         addEdge(p, Point(p.getX() + 1, p.getY(), p.getZ()));
     }
+
+    delete points;
 }
 
 
