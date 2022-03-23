@@ -160,6 +160,11 @@ void parse(Window &w, Renderer &r, std::string fileName)
         {
             continue;
         }
+        else if (cmd.find("#") != std::string::npos)
+        {
+            std::string skip;
+            getline(std::cin, skip);
+        }
         else
         {
             std::cout << "bad command given {" << cmd << "}\n";
