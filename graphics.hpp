@@ -29,8 +29,8 @@ public:
     void addCircle(double cX, double cY, double cZ, double r, int steps = 100);
 
     void addBox(int x, int y, int z, int w, int h, int d);
-    void addSphere(int x, int y, int z, int r, int steps = 20, int turns = 20);
-    void addTorus(int x, int y, int z, int r1, int r2, int steps = 20, int turns = 20);
+    void addSphere(int x, int y, int z, int r, int steps = 30, int turns = 40);
+    void addTorus(int x, int y, int z, int r1, int r2, int steps = 30, int turns = 40);
 
     void transform(Matrix &m);
     void transform(Transform &t);
