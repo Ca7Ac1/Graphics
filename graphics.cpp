@@ -166,7 +166,7 @@ std::vector<Point> *Graphics::generateSphere(int x, int y, int z, int r, int ste
 
             points->push_back(Point(r * cos(cir) + x, 
                                    r * sin(cir) * cos(rot) + y, 
-                                   r * sin(cir) * cos(rot) + z));
+                                   r * sin(cir) * sin(rot) + z));
         }
     }
 
@@ -182,7 +182,7 @@ std::vector<Point> *Graphics::generateTorus(int x, int y, int z, int r1, int r2,
         for (int j = 0; j <= steps; j++)
         {
             double rot = i * 2.0 * M_PI / turns;
-            double cir = j * M_PI / steps;
+            double cir = j * 2.0 * M_PI / steps;
 
             points->push_back(Point(cos(rot) * (r1 * cos(cir) + r2) + x, 
                                    r1 * sin(cir) + y, 
