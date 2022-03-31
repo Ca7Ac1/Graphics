@@ -79,24 +79,24 @@ void Graphics3D::addBox(int x, int y, int z, int w, int h, int d)
     addPolygon(x + w, y, z, x, y - h, z, x + w, y - h, z);
 
     // Back
-    addPolygon(x, y, z + d, x + w, y, z + d, x, y - h, z + d);
-    addPolygon(x + w, y, z + d, x + w, y - h, z + d, x, y - h, z + d);
+    addPolygon(x, y, z - d, x + w, y, z - d, x, y - h, z - d);
+    addPolygon(x + w, y, z - d, x + w, y - h, z - d, x, y - h, z - d);
 
     // Top
-    addPolygon(x, y, z + d, x, y, z, x + w, y, z + d);
-    addPolygon(x + w, y, z + d, x, y, z, x + w, y, z);
+    addPolygon(x, y, z - d, x, y, z, x + w, y, z - d);
+    addPolygon(x + w, y, z - d, x, y, z, x + w, y, z);
 
     // Bottom
-    addPolygon(x, y - h, z + d, x + w, y - h, z + d, x, y - h, z);
-    addPolygon(x + w, y - h, z + d, x + w, y - h, z, x, y - h, z);
+    addPolygon(x, y - h, z - d, x + w, y - h, z - d, x, y - h, z);
+    addPolygon(x + w, y - h, z - d, x + w, y - h, z, x, y - h, z);
 
     // Left
-    addPolygon(x, y, z, x, y, z + d, x, y - h, z + d);
-    addPolygon(x, y, z, x, y - h, z + d, x, y - h, z);
+    addPolygon(x, y, z, x, y, z - d, x, y - h, z - d);
+    addPolygon(x, y, z, x, y - h, z - d, x, y - h, z);
 
     // Right
-    addPolygon(x + w, y, z, x + w, y - h, z + d, x + w, y, z + d);
-    addPolygon(x + w, y, z, x + w, y - h, z, x + w, y - h, z + d);
+    addPolygon(x + w, y, z, x + w, y - h, z - d, x + w, y, z - d);
+    addPolygon(x + w, y, z, x + w, y - h, z, x + w, y - h, z - d);
 }
 
 void Graphics3D::addSphere(int x, int y, int z, int r, int steps, int turns)

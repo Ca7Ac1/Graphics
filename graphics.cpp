@@ -199,14 +199,14 @@ void Graphics::addBox(int x, int y, int z, int w, int h, int d)
     addEdge(x + w, y, z, x + w, y - h, z);
     addEdge(x + w, y - h, z, x, y - h, z);
     addEdge(x, y - h, z, x, y, z);
-    addEdge(x, y, z, x, y, z + d);
-    addEdge(x + w, y, z, x + w, y, z + d);
-    addEdge(x + w, y - h, z, x + w, y - h, z + d);
-    addEdge(x, y - h, z, x, y - h, z + d);
-    addEdge(x, y, z + d, x + w, y, z + d);
-    addEdge(x + w, y, z + d, x + w, y - h, z + d);
-    addEdge(x + w, y - h, z + d, x, y - h, z + d);
-    addEdge(x, y - h, z + d, x, y, z + d);
+    addEdge(x, y, z, x, y, z - d);
+    addEdge(x + w, y, z, x + w, y, z - d);
+    addEdge(x + w, y - h, z, x + w, y - h, z - d);
+    addEdge(x, y - h, z, x, y - h, z - d);
+    addEdge(x, y, z - d, x + w, y, z - d);
+    addEdge(x + w, y, z - d, x + w, y - h, z - d);
+    addEdge(x + w, y - h, z - d, x, y - h, z - d);
+    addEdge(x, y - h, z - d, x, y, z - d);
 }
 
 void Graphics::addSphere(int x, int y, int z, int r, int steps, int turns)
