@@ -179,7 +179,7 @@ std::vector<Point> *Graphics::generateTorus(int x, int y, int z, int r1, int r2,
 
     for (int i = 0; i < turns; i++)
     {
-        for (int j = 0; j <= steps; j++)
+        for (int j = 0; j < steps; j++)
         {
             double rot = i * 2.0 * M_PI / turns;
             double cir = j * 2.0 * M_PI / steps;

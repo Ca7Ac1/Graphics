@@ -36,7 +36,7 @@ std::vector<Point> *Graphics3D::generateSphere(int x, int y, int z, int r, int s
 {
     std::vector<Point> *points = new std::vector<Point>();
 
-    for (int i = 0; i <= turns; i++)
+    for (int i = 0; i < turns; i++)
     {
         for (int j = 0; j <= steps; j++)
         {
@@ -56,9 +56,9 @@ std::vector<Point> *Graphics3D::generateTorus(int x, int y, int z, int r1, int r
 {
     std::vector<Point> *points = new std::vector<Point>();
 
-    for (int i = 0; i <= turns; i++)
+    for (int i = 0; i < turns; i++)
     {
-        for (int j = 0; j <= steps; j++)
+        for (int j = 0; j < steps; j++)
         {
             double rot = i * 2.0 * M_PI / turns;
             double cir = j * 2.0 * M_PI / steps;
@@ -74,27 +74,49 @@ std::vector<Point> *Graphics3D::generateTorus(int x, int y, int z, int r1, int r
 
 void Graphics3D::addBox(int x, int y, int z, int w, int h, int d)
 {
-    addPolygon(x, y, z, x + w, y, z);
-    addPolygon(x + w, y, z, x + w, y - h, z);
-    addPolygon(x + w, y - h, z, x, y - h, z);
-    addPolygon(x, y - h, z, x, y, z);
-    addPolygon(x, y, z, x, y, z + d);
-    addPolygon(x + w, y, z, x + w, y, z + d);
-    addPolygon(x + w, y - h, z, x + w, y - h, z + d);
-    addPolygon(x, y - h, z, x, y - h, z + d);
-    addPolygon(x, y, z + d, x + w, y, z + d);
-    addPolygon(x + w, y, z + d, x + w, y - h, z + d);
-    addPolygon(x + w, y - h, z + d, x, y - h, z + d);
-    addPolygon(x, y - h, z + d, x, y, z + d);
+    // Front
+    addPolygon(x, y, z, x, y - h, z, x + w, y, z);
+    addPolygon(x + w, y, z, x, y - h, z, x + w, y - h, z);
+
+    // Back
+    addPolygon(x, y, z + d, x + w, y, z + d, x, y - h, z + d);
+    addPolygon(x + w, y, z + d, x + w, y - h, z + d, x, y - h, z + d);
+
+    // Top
+    addPolygon(x, y, z + d, x, y, z, x + w, y, z + d);
+    addPolygon(x + w, y, z + d, x, y, z, x + w, y, z);
+
+    // Bottom
+    addPolygon(x, y - h, z + d, x + w, y - h, z + d, x, y - h, z);
+    addPolygon(x + w, y - h, z + d, x + w, y - h, z, x, y - h, z);
+
+    // Left
+    addPolygon(x, y, z, x, y, z + d, x, y - h, z + d);
+    addPolygon(x, y, z, x, y - h, z + d, x, y - h, z);
+
+    // Right
+    addPolygon(x + w, y, z, x + w, y - h, z + d, x + w, y, z + d);
+    addPolygon(x + w, y, z, x + w, y - h, z, x + w, y - h, z + d);
 }
 
 void Graphics3D::addSphere(int x, int y, int z, int r, int steps, int turns)
 {
     std::vector<Point> *points = generateSphere(x, y, z, r, steps, turns);
+    int numPoints = points->size();
 
-    for (const Point &p : *points)
+    for (int i = 0; i < numPoints; i++)
     {
-        addPolygon(p, Point(p.getX() + 1, p.getY(), p.getZ()), Point(0, 0, 0));
+        if (i % steps == 0)
+        {
+            continue;
+        }
+
+        addPolygon((*points)[i], (*points)[i + 1], (*points)[(i + 2 + steps) % numPoints]);
+
+        if (i % (steps + 1) != 0)
+        {
+            addPolygon((*points)[i], (*points)[(i + 3 + steps) % numPoints], (*points)[(i + 2 + steps) % numPoints]);
+        }
     }
 
     delete points;
@@ -103,10 +125,17 @@ void Graphics3D::addSphere(int x, int y, int z, int r, int steps, int turns)
 void Graphics3D::addTorus(int x, int y, int z, int r1, int r2, int steps, int turns)
 {
     std::vector<Point> *points = generateTorus(x, y, z, r1, r2, steps, turns);
+    int numPoints = points->size();
 
-    for (const Point &p : *points)
+    for (int i = 0; i < numPoints; i++)
     {
-        addPolygon(p, Point(p.getX() + 1, p.getY(), p.getZ()), Point(0, 0, 0));
+        if (i % steps == 0)
+        {
+            continue;
+        }
+
+        addPolygon((*points)[i], (*points)[(i + steps) % numPoints], (*points)[i + 1]);
+        addPolygon((*points)[i + 1], (*points)[(i + steps) % numPoints], (*points)[(i + 1 + steps) % numPoints]);
     }
 
     delete points;
