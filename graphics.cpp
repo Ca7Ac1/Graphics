@@ -157,7 +157,7 @@ std::vector<Point> *Graphics::generateSphere(int x, int y, int z, int r, int ste
 {
     std::vector<Point> *points = new std::vector<Point>();
 
-    for (int i = 0; i <= turns; i++)
+    for (int i = 0; i < turns; i++)
     {
         for (int j = 0; j <= steps; j++)
         {
@@ -177,7 +177,7 @@ std::vector<Point> *Graphics::generateTorus(int x, int y, int z, int r1, int r2,
 {
     std::vector<Point> *points = new std::vector<Point>();
 
-    for (int i = 0; i <= turns; i++)
+    for (int i = 0; i < turns; i++)
     {
         for (int j = 0; j <= steps; j++)
         {
