@@ -72,6 +72,24 @@ std::vector<Point> *Graphics3D::generateTorus(int x, int y, int z, int r1, int r
     return points;
 }
 
+Point crossProduct(Point a, Point b)
+{
+    return Point(
+        a.getY() * b.getZ() - a.getZ() * b.getY(),
+        a.getZ() * b.getX() - a.getX() * b.getZ(),
+        a.getX() * b.getY() - a.getY() * b.getX()
+    );
+}
+
+double dotProduct(Point a, Point b)
+{
+    return a.getX() * b.getX() + 
+           a.getY() * b.getY() + 
+           a.getZ() * b.getZ();
+}
+
+
+
 void Graphics3D::addBox(int x, int y, int z, int w, int h, int d)
 {
     // Front

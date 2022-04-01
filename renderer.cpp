@@ -1,6 +1,7 @@
 #include "renderer.hpp"
 #include "window.hpp"
 #include "graphics.hpp"
+#include "graphics3d.hpp"
 
 Renderer::Renderer(Window &window) : window(window),
                                      red(0),
@@ -133,5 +134,13 @@ void Renderer::draw(const Graphics &g)
     {
         line((int) g[i].getX(), (int) g[i].getY(),
              (int) g[i + 1].getX(), (int) g[i + 1].getY());
+    }
+}
+
+void Renderer::draw(const Graphics3D &g3d)
+{
+    for (int i = 0; i < g3d.getCount(); i++)
+    {
+        draw(g3d[i]);
     }
 }

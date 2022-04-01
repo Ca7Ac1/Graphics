@@ -8,6 +8,7 @@
 #include "window.hpp"
 #include "renderer.hpp"
 #include "graphics.hpp"
+#include "graphics3d.hpp"
 #include "transform.hpp"
 
 void parse(Window &w, Renderer &r, std::string fileName)
@@ -15,6 +16,7 @@ void parse(Window &w, Renderer &r, std::string fileName)
     std::ifstream file(fileName);
 
     Graphics g;
+    Graphics3D g3d;
     Transform t;
 
     int color[] = {255, 255, 255};
@@ -62,7 +64,7 @@ void parse(Window &w, Renderer &r, std::string fileName)
             int dimensions[3];
 
             file >> coords[0] >> coords[1] >> coords[2] >> dimensions[0] >> dimensions[1] >> dimensions[2];
-            g.addBox(coords[0], coords[1], coords[2], dimensions[0], dimensions[1], dimensions[2]);
+            g3d.addBox(coords[0], coords[1], coords[2], dimensions[0], dimensions[1], dimensions[2]);
         }
         else if (cmd == "sphere")
         {
@@ -70,7 +72,7 @@ void parse(Window &w, Renderer &r, std::string fileName)
             int radius;
 
             file >> coords[0] >> coords[1] >> coords[2] >> radius;
-            g.addSphere(coords[0], coords[1], coords[2], radius);
+            g3d.addSphere(coords[0], coords[1], coords[2], radius);
         }
         else if (cmd == "torus")
         {
@@ -78,7 +80,7 @@ void parse(Window &w, Renderer &r, std::string fileName)
             int radii[2];
 
             file >> coords[0] >> coords[1] >> coords[2] >> radii[0] >> radii[1];
-            g.addTorus(coords[0], coords[1], coords[2], radii[0], radii[1]);
+            g3d.addTorus(coords[0], coords[1], coords[2], radii[0], radii[1]);
         }
         else if (cmd == "ident")
         {
@@ -120,6 +122,7 @@ void parse(Window &w, Renderer &r, std::string fileName)
         else if (cmd == "apply")
         {
             g.transform(t);
+            g3d.transform(t);
         }
         else if (cmd == "display")
         {
@@ -128,6 +131,7 @@ void parse(Window &w, Renderer &r, std::string fileName)
 
             r.setColor(color[0], color[1], color[2]);
             r.draw(g);
+            r.draw(g3d);
 
             w.draw("temp.ppm");
             w.display();
