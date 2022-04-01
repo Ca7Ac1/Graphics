@@ -146,6 +146,7 @@ void parse(Window &w, Renderer &r, std::string fileName)
 
             r.setColor(color[0], color[1], color[2]);
             r.draw(g);
+            r.draw(g3d);
 
             std::string outputFile;
             file >> outputFile;
@@ -159,6 +160,7 @@ void parse(Window &w, Renderer &r, std::string fileName)
         else if (cmd == "clear")
         {
             g.clear();
+            g3d.clear();
         }
         else if (cmd == "")
         {

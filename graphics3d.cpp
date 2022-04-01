@@ -7,7 +7,7 @@
 #include "matrix.hpp"
 #include "transform.hpp"
 
-Graphics::Graphics() : edges() {}
+Graphics3D::Graphics3D() : polygons() {}
 
 void Graphics3D::addPolygon(Point p1, Point p2, Point p3)
 {
