@@ -13,5 +13,5 @@ int main()
 
     win.invertY();
 
-    parse(win, r, "face_script");
+    parse(win, r, "script");
 }
