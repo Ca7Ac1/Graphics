@@ -173,9 +173,9 @@ std::vector<std::vector<Point>> *Graphics::generateSphere(int x, int y, int z, i
     return points;
 }
 
-std::vector<Point> *Graphics::generateTorus(int x, int y, int z, int r1, int r2, int steps, int turns)
+std::vector<std::vector<Point>> *Graphics::generateTorus(int x, int y, int z, int r1, int r2, int steps, int turns)
 {
-    std::vector<Point> *points = new std::vector<Point>();
+    std::vector<std::vector<Point>> *points = new std::vector<std::vector<Point>>(steps, std::vector<Point>(turns, Point(0, 0, 0)));
 
     for (int i = 0; i < turns; i++)
     {
@@ -184,9 +184,9 @@ std::vector<Point> *Graphics::generateTorus(int x, int y, int z, int r1, int r2,
             double rot = i * 2.0 * M_PI / turns;
             double cir = j * 2.0 * M_PI / steps;
 
-            points->push_back(Point(cos(rot) * (r1 * cos(cir) + r2) + x,
+            (*points)[j][i].set(cos(rot) * (r1 * cos(cir) + r2) + x,
                                     r1 * sin(cir) + y,
-                                    -sin(rot) * (r1 * cos(cir) + r2) + z));
+                                    -sin(rot) * (r1 * cos(cir) + r2) + z);
         }
     }
 
@@ -227,11 +227,15 @@ void Graphics::addSphere(int x, int y, int z, int r, int steps, int turns)
 
 void Graphics::addTorus(int x, int y, int z, int r1, int r2, int steps, int turns)
 {
-    std::vector<Point> *points = generateTorus(x, y, z, r1, r2, steps, turns);
+    std::vector<std::vector<Point>> *points = generateTorus(x, y, z, r1, r2, steps, turns);
 
-    for (const Point &p : *points)
+    for (int i = 0; i < turns; i++)
     {
-        addEdge(p, Point(p.getX() + 1, p.getY(), p.getZ()));
+        for (int j = 0; j < steps; j++)
+        {
+            Point p = (*points)[j][i];
+            addEdge(p, Point(p.getX() + 1, p.getY(), p.getZ()));
+        }
     }
 
     delete points;

@@ -52,9 +52,9 @@ std::vector<std::vector<Point>> *Graphics3D::generateSphere(int x, int y, int z,
     return points;
 }
 
-std::vector<Point> *Graphics3D::generateTorus(int x, int y, int z, int r1, int r2, int steps, int turns)
+std::vector<std::vector<Point>> *Graphics::generateTorus(int x, int y, int z, int r1, int r2, int steps, int turns)
 {
-    std::vector<Point> *points = new std::vector<Point>();
+    std::vector<std::vector<Point>> *points = new std::vector<std::vector<Point>>(steps, std::vector<Point>(turns, Point(0, 0, 0)));
 
     for (int i = 0; i < turns; i++)
     {
@@ -63,9 +63,9 @@ std::vector<Point> *Graphics3D::generateTorus(int x, int y, int z, int r1, int r
             double rot = i * 2.0 * M_PI / turns;
             double cir = j * 2.0 * M_PI / steps;
 
-            points->push_back(Point(cos(rot) * (r1 * cos(cir) + r2) + x,
+            (*points)[j][i].set(cos(rot) * (r1 * cos(cir) + r2) + x,
                                     r1 * sin(cir) + y,
-                                    -sin(rot) * (r1 * cos(cir) + r2) + z));
+                                    -sin(rot) * (r1 * cos(cir) + r2) + z);
         }
     }
 
@@ -144,18 +144,16 @@ void Graphics3D::addSphere(int x, int y, int z, int r, int steps, int turns)
 
 void Graphics3D::addTorus(int x, int y, int z, int r1, int r2, int steps, int turns)
 {
-    std::vector<Point> *points = generateTorus(x, y, z, r1, r2, steps, turns);
+    std::vector<std::vector<Point>> *points = generateTorus(x, y, z, r1, r2, steps, turns);
     int numPoints = points->size();
 
-    for (int i = 0; i < numPoints; i++)
+    for (int i = 0; i < turns; i++)
     {
-        if (i % steps == 0)
+        for (int j = 0; j < steps; j++)
         {
-            continue;
-        }
-
-        addPolygon((*points)[i], (*points)[(i + steps) % numPoints], (*points)[i + 1]);
-        addPolygon((*points)[i + 1], (*points)[(i + steps) % numPoints], (*points)[(i + 1 + steps) % numPoints]);
+            addPolygon((*points)[j][i], (*points)[(j + 1) % steps][i], (*points)[j][(i + 1) % turns]);
+            addPolygon((*points)[(j + 1) % steps][i], (*points)[(j + 1) % steps][(i + 1) % turns], (*points)[j][(i + 1) % turns]);
+        }  
     }
 
     delete points;
