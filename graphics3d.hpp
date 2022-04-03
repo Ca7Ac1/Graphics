@@ -13,7 +13,7 @@ private:
     std::vector<Graphics> polygons;
 
     std::vector<std::vector<Point>> *generateSphere(int x, int y, int z, int r, int steps, int turns);
-    std::vector<Point> *generateTorus(int x, int y, int z, int r1, int r2, int steps, int turns);
+    std::vector<std::vector<Point>> *generateTorus(int x, int y, int z, int r1, int r2, int steps, int turns);
 
     Point crossProduct(Point a, Point b);
     double dotProduct(Point a, Point b);
