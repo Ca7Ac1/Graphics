@@ -52,7 +52,7 @@ std::vector<std::vector<Point>> *Graphics3D::generateSphere(int x, int y, int z,
     return points;
 }
 
-std::vector<std::vector<Point>> *Graphics::generateTorus(int x, int y, int z, int r1, int r2, int steps, int turns)
+std::vector<std::vector<Point>> *Graphics3D::generateTorus(int x, int y, int z, int r1, int r2, int steps, int turns)
 {
     std::vector<std::vector<Point>> *points = new std::vector<std::vector<Point>>(steps, std::vector<Point>(turns, Point(0, 0, 0)));
 
