@@ -12,7 +12,7 @@ Graphics3D::Graphics3D() : polygons() {}
 void Graphics3D::addPolygon(Point p1, Point p2, Point p3)
 {
     polygons.push_back(Graphics());
-    
+
     polygons[polygons.size() - 1].addEdge(p1, p2);
     polygons[polygons.size() - 1].addEdge(p2, p3);
     polygons[polygons.size() - 1].addEdge(p3, p1);
@@ -32,9 +32,9 @@ void Graphics3D::addPolygon(double x1, double y1, double z1, double x2, double y
     addPolygon(x1, y1, z1, 1, x2, y2, z2, 1, x3, y3, z3, 1);
 }
 
-std::vector<Point> *Graphics3D::generateSphere(int x, int y, int z, int r, int steps, int turns)
+std::vector<std::vector<Point>> *Graphics3D::generateSphere(int x, int y, int z, int r, int steps, int turns)
 {
-    std::vector<Point> *points = new std::vector<Point>();
+    std::vector<std::vector<Point>> *points = new std::vector<std::vector<Point>>(steps + 1, std::vector<Point>(turns, Point(0, 0, 0)));
 
     for (int i = 0; i < turns; i++)
     {
@@ -43,9 +43,9 @@ std::vector<Point> *Graphics3D::generateSphere(int x, int y, int z, int r, int s
             double rot = i * 2.0 * M_PI / turns;
             double cir = j * M_PI / steps;
 
-            points->push_back(Point(r * cos(cir) + x, 
-                                   r * sin(cir) * cos(rot) + y, 
-                                   r * sin(cir) * sin(rot) + z));
+            (*points)[j][i].set(r * cos(cir) + x,
+                                r * sin(cir) * cos(rot) + y,
+                                r * sin(cir) * sin(rot) + z);
         }
     }
 
@@ -63,9 +63,9 @@ std::vector<Point> *Graphics3D::generateTorus(int x, int y, int z, int r1, int r
             double rot = i * 2.0 * M_PI / turns;
             double cir = j * 2.0 * M_PI / steps;
 
-            points->push_back(Point(cos(rot) * (r1 * cos(cir) + r2) + x, 
-                                   r1 * sin(cir) + y, 
-                                   -sin(rot) * (r1 * cos(cir) + r2) + z));
+            points->push_back(Point(cos(rot) * (r1 * cos(cir) + r2) + x,
+                                    r1 * sin(cir) + y,
+                                    -sin(rot) * (r1 * cos(cir) + r2) + z));
         }
     }
 
@@ -77,18 +77,15 @@ Point crossProduct(Point a, Point b)
     return Point(
         a.getY() * b.getZ() - a.getZ() * b.getY(),
         a.getZ() * b.getX() - a.getX() * b.getZ(),
-        a.getX() * b.getY() - a.getY() * b.getX()
-    );
+        a.getX() * b.getY() - a.getY() * b.getX());
 }
 
 double dotProduct(Point a, Point b)
 {
-    return a.getX() * b.getX() + 
-           a.getY() * b.getY() + 
+    return a.getX() * b.getX() +
+           a.getY() * b.getY() +
            a.getZ() * b.getZ();
 }
-
-
 
 void Graphics3D::addBox(int x, int y, int z, int w, int h, int d)
 {
@@ -119,21 +116,26 @@ void Graphics3D::addBox(int x, int y, int z, int w, int h, int d)
 
 void Graphics3D::addSphere(int x, int y, int z, int r, int steps, int turns)
 {
-    std::vector<Point> *points = generateSphere(x, y, z, r, steps, turns);
+    std::vector<std::vector<Point>> *points = generateSphere(x, y, z, r, steps, turns);
     int numPoints = points->size();
 
-    for (int i = 0; i < numPoints; i++)
+    for (int i = 0; i < turns; i++)
     {
-        if (i % steps == 0)
+        for (int j = 0; j < steps; j++)
         {
-            continue;
-        }
-
-        addPolygon((*points)[i], (*points)[i + 1], (*points)[(i + 2 + steps) % numPoints]);
-
-        if (i % (steps + 1) != 0)
-        {
-            addPolygon((*points)[i], (*points)[(i + 3 + steps) % numPoints], (*points)[(i + 2 + steps) % numPoints]);
+            if (j == 0)
+            {
+                addPolygon((*points)[j][i], (*points)[j + 1][i], (*points)[j + 1][(i + 1) % turns]);
+            }
+            else if (j == steps - 1)
+            {
+                addPolygon((*points)[j][i], (*points)[j + 1][(i + 1) % turns], (*points)[j][(i + 1) % turns]);
+            }
+            else
+            {
+                addPolygon((*points)[j][i], (*points)[j + 1][i], (*points)[j + 1][(i + 1) % turns]);
+                addPolygon((*points)[j][i], (*points)[j + 1][(i + 1) % turns], (*points)[j][(i + 1) % turns]);
+            }
         }
     }
 
@@ -158,7 +160,6 @@ void Graphics3D::addTorus(int x, int y, int z, int r1, int r2, int steps, int tu
 
     delete points;
 }
-
 
 int Graphics3D::getCount() const
 {

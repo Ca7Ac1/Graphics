@@ -140,9 +140,9 @@ void Graphics::addCircle(double cX, double cY, double cZ, double r, int steps)
 
     double step = (2.0 * M_PI) / (double)steps;
     for (int i = 1; i <= steps; i++)
-    {   
+    {
         double t = i * step;
-        
+
         double currX = cX + (r * cos(t));
         double currY = cY + (r * sin(t));
 
@@ -153,9 +153,9 @@ void Graphics::addCircle(double cX, double cY, double cZ, double r, int steps)
     }
 }
 
-std::vector<Point> *Graphics::generateSphere(int x, int y, int z, int r, int steps, int turns)
+std::vector<std::vector<Point>> *Graphics::generateSphere(int x, int y, int z, int r, int steps, int turns)
 {
-    std::vector<Point> *points = new std::vector<Point>();
+    std::vector<std::vector<Point>> *points = new std::vector<std::vector<Point>>(steps + 1, std::vector<Point>(turns, Point(0, 0, 0)));
 
     for (int i = 0; i < turns; i++)
     {
@@ -164,9 +164,9 @@ std::vector<Point> *Graphics::generateSphere(int x, int y, int z, int r, int ste
             double rot = i * 2.0 * M_PI / turns;
             double cir = j * M_PI / steps;
 
-            points->push_back(Point(r * cos(cir) + x, 
-                                   r * sin(cir) * cos(rot) + y, 
-                                   r * sin(cir) * sin(rot) + z));
+            (*points)[j][i].set(r * cos(cir) + x,
+                             r * sin(cir) * cos(rot) + y,
+                             r * sin(cir) * sin(rot) + z);
         }
     }
 
@@ -184,9 +184,9 @@ std::vector<Point> *Graphics::generateTorus(int x, int y, int z, int r1, int r2,
             double rot = i * 2.0 * M_PI / turns;
             double cir = j * 2.0 * M_PI / steps;
 
-            points->push_back(Point(cos(rot) * (r1 * cos(cir) + r2) + x, 
-                                   r1 * sin(cir) + y, 
-                                   -sin(rot) * (r1 * cos(cir) + r2) + z));
+            points->push_back(Point(cos(rot) * (r1 * cos(cir) + r2) + x,
+                                    r1 * sin(cir) + y,
+                                    -sin(rot) * (r1 * cos(cir) + r2) + z));
         }
     }
 
@@ -211,11 +211,15 @@ void Graphics::addBox(int x, int y, int z, int w, int h, int d)
 
 void Graphics::addSphere(int x, int y, int z, int r, int steps, int turns)
 {
-    std::vector<Point> *points = generateSphere(x, y, z, r, steps, turns);
+    std::vector<std::vector<Point>> *points = generateSphere(x, y, z, r, steps, turns);
 
-    for (const Point &p : *points)
+    for (int i = 0; i < turns; i++)
     {
-        addEdge(p, Point(p.getX() + 1, p.getY(), p.getZ()));
+        for (int j = 0; j <= steps; j++)
+        {
+            Point p = (*points)[j][i];
+            addEdge(p, Point(p.getX() + 1, p.getY(), p.getZ()));
+        }
     }
 
     delete points;
@@ -232,7 +236,6 @@ void Graphics::addTorus(int x, int y, int z, int r1, int r2, int steps, int turn
 
     delete points;
 }
-
 
 int Graphics::getCount() const
 {
