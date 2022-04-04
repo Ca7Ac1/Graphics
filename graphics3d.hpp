@@ -15,8 +15,8 @@ private:
     std::vector<std::vector<Point>> *generateSphere(int x, int y, int z, int r, int steps, int turns);
     std::vector<std::vector<Point>> *generateTorus(int x, int y, int z, int r1, int r2, int steps, int turns);
 
-    Point crossProduct(Point a, Point b);
-    double dotProduct(Point a, Point b);
+    Point crossProduct(Point a, Point b) const;
+    double dotProduct(Point a, Point b) const;
 
 public:
     Graphics3D();
@@ -25,7 +25,7 @@ public:
     void addPolygon(double x1, double y1, double z1, double t1, double x2, double y2, double z2, double t2, double x3, double y3, double z3, double t3);
     void addPolygon(double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3);
 
-    bool cullFace(int i);
+    bool drawFace(int i) const;
 
     void addBox(int x, int y, int z, int w, int h, int d);
     void addSphere(int x, int y, int z, int r, int steps = 30, int turns = 40);
