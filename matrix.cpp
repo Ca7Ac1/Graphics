@@ -52,6 +52,16 @@ void Point::set(double x, double y, double z, double t)
     setT(t);
 }
 
+Point Point::operator+(const Point p) const
+{
+    return Point(x + p.getX(), y + p.getY(), z + p.getZ());
+}
+
+Point Point::operator-(const Point p) const
+{
+    return Point(x - p.getX(), y - p.getY(), z - p.getZ());
+}
+
 double &Point::operator[](int i)
 {
     switch (i)
