@@ -25,8 +25,8 @@ public:
     void setT(double t);
     void set(double x, double y, double z, double t = 1);
 
-    Point operator+(const Point p) const;
-    Point operator-(const Point p) const;
+    Point operator+(const Point &p) const;
+    Point operator-(const Point &p) const;
 
     double &operator[](int i);
 };
