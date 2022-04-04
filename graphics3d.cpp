@@ -71,8 +71,8 @@ std::vector<std::vector<Point>> *Graphics3D::generateTorus(int x, int y, int z, 
             double cir = j * 2.0 * M_PI / steps;
 
             (*points)[j][i].set(cos(rot) * (r1 * cos(cir) + r2) + x,
-                                    r1 * sin(cir) + y,
-                                    -sin(rot) * (r1 * cos(cir) + r2) + z);
+                                r1 * sin(cir) + y,
+                                -sin(rot) * (r1 * cos(cir) + r2) + z);
         }
     }
 
@@ -160,7 +160,7 @@ void Graphics3D::addTorus(int x, int y, int z, int r1, int r2, int steps, int tu
         {
             addPolygon((*points)[j][i], (*points)[(j + 1) % steps][i], (*points)[j][(i + 1) % turns]);
             addPolygon((*points)[(j + 1) % steps][i], (*points)[(j + 1) % steps][(i + 1) % turns], (*points)[j][(i + 1) % turns]);
-        }  
+        }
     }
 
     delete points;

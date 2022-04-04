@@ -3,7 +3,12 @@
 
 #include "matrix.hpp"
 
-enum Axis { X, Y, Z };
+enum Axis
+{
+    X,
+    Y,
+    Z
+};
 
 class Transform
 {
@@ -18,7 +23,7 @@ public:
     void addTransformation(Transform &t);
     void addTranslation(double x, double y, double z);
     void addDilation(double x, double y, double z);
-    void addRotation(double angle, Axis axis, bool degrees=true);
+    void addRotation(double angle, Axis axis, bool degrees = true);
 
     void apply(Matrix &m);
 };

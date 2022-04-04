@@ -165,8 +165,8 @@ std::vector<std::vector<Point>> *Graphics::generateSphere(int x, int y, int z, i
             double cir = j * M_PI / steps;
 
             (*points)[j][i].set(r * cos(cir) + x,
-                             r * sin(cir) * cos(rot) + y,
-                             r * sin(cir) * sin(rot) + z);
+                                r * sin(cir) * cos(rot) + y,
+                                r * sin(cir) * sin(rot) + z);
         }
     }
 
@@ -185,8 +185,8 @@ std::vector<std::vector<Point>> *Graphics::generateTorus(int x, int y, int z, in
             double cir = j * 2.0 * M_PI / steps;
 
             (*points)[j][i].set(cos(rot) * (r1 * cos(cir) + r2) + x,
-                                    r1 * sin(cir) + y,
-                                    -sin(rot) * (r1 * cos(cir) + r2) + z);
+                                r1 * sin(cir) + y,
+                                -sin(rot) * (r1 * cos(cir) + r2) + z);
         }
     }
 

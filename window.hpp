@@ -33,7 +33,7 @@ private:
     const int xDimension;
     const int yDimension;
 
-    bool xInverted; 
+    bool xInverted;
     bool yInverted;
 
     int colorScale;
@@ -45,7 +45,7 @@ private:
 public:
     Window(int xDimension, int yDimension);
 
-    void draw(const std::string &file, bool binary=true);
+    void draw(const std::string &file, bool binary = true);
     void display();
 
     int getXDimension() const;

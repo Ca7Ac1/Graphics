@@ -56,7 +56,7 @@ void parse(Window &w, Renderer &r, std::string fileName)
 
             file >> coords[0] >> coords[1] >> coords[2] >> coords[3] >> rates[0] >> rates[1] >> rates[2] >> rates[3];
             g.addHermiteCurve(coords[0], coords[1], 0, rates[0], rates[1], 0,
-                             coords[2], coords[3], 0, rates[2], rates[3], 0);
+                              coords[2], coords[3], 0, rates[2], rates[3], 0);
         }
         else if (cmd == "box")
         {
