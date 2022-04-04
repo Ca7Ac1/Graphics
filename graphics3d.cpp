@@ -34,7 +34,7 @@ void Graphics3D::addPolygon(double x1, double y1, double z1, double x2, double y
 
 bool Graphics3D::drawFace(int i) const
 {
-    Point normal = crossProduct(polygons[i][1] - polygons[i][0], polygons[i][2] - polygons[i][0]);
+    Point normal = crossProduct(polygons[i][2] - polygons[i][0], polygons[i][4] - polygons[i][0]);
 
     return dotProduct(normal, Point(0, 0, 1)) > 0;
 }
@@ -158,8 +158,8 @@ void Graphics3D::addTorus(int x, int y, int z, int r1, int r2, int steps, int tu
     {
         for (int j = 0; j < steps; j++)
         {
-            addPolygon((*points)[j][i], (*points)[(j + 1) % steps][i], (*points)[j][(i + 1) % turns]);
-            addPolygon((*points)[(j + 1) % steps][i], (*points)[(j + 1) % steps][(i + 1) % turns], (*points)[j][(i + 1) % turns]);
+            addPolygon((*points)[j][i], (*points)[j][(i + 1) % turns], (*points)[(j + 1) % steps][i]);
+            addPolygon((*points)[(j + 1) % steps][i], (*points)[j][(i + 1) % turns], (*points)[(j + 1) % steps][(i + 1) % turns]);
         }
     }
 
