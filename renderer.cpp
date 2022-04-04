@@ -132,15 +132,18 @@ void Renderer::draw(const Graphics &g)
 {
     for (int i = 0; i < g.getCount(); i += 2)
     {
-        line((int) g[i].getX(), (int) g[i].getY(),
-             (int) g[i + 1].getX(), (int) g[i + 1].getY());
+        line((int)g[i].getX(), (int)g[i].getY(),
+             (int)g[i + 1].getX(), (int)g[i + 1].getY());
     }
 }
 
-void Renderer::draw(const Graphics3D &g3d)
+void Renderer::draw(const Graphics3D &g3d, bool cullBackFaces)
 {
     for (int i = 0; i < g3d.getCount(); i++)
     {
-        draw(g3d[i]);
+        if (!cullBackFaces || g3d.drawFace(i))
+        {
+            draw(g3d[i]);
+        }
     }
 }

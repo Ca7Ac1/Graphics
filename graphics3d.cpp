@@ -32,6 +32,13 @@ void Graphics3D::addPolygon(double x1, double y1, double z1, double x2, double y
     addPolygon(x1, y1, z1, 1, x2, y2, z2, 1, x3, y3, z3, 1);
 }
 
+bool Graphics3D::drawFace(int i) const
+{
+    Point normal = crossProduct(polygons[i][1] - polygons[i][0], polygons[i][2] - polygons[i][0]);
+
+    return dotProduct(normal, Point(0, 0, 1)) > 0;
+}
+
 std::vector<std::vector<Point>> *Graphics3D::generateSphere(int x, int y, int z, int r, int steps, int turns)
 {
     std::vector<std::vector<Point>> *points = new std::vector<std::vector<Point>>(steps + 1, std::vector<Point>(turns, Point(0, 0, 0)));
@@ -64,15 +71,15 @@ std::vector<std::vector<Point>> *Graphics3D::generateTorus(int x, int y, int z, 
             double cir = j * 2.0 * M_PI / steps;
 
             (*points)[j][i].set(cos(rot) * (r1 * cos(cir) + r2) + x,
-                                    r1 * sin(cir) + y,
-                                    -sin(rot) * (r1 * cos(cir) + r2) + z);
+                                r1 * sin(cir) + y,
+                                -sin(rot) * (r1 * cos(cir) + r2) + z);
         }
     }
 
     return points;
 }
 
-Point crossProduct(Point a, Point b)
+Point Graphics3D::crossProduct(Point a, Point b) const
 {
     return Point(
         a.getY() * b.getZ() - a.getZ() * b.getY(),
@@ -80,7 +87,7 @@ Point crossProduct(Point a, Point b)
         a.getX() * b.getY() - a.getY() * b.getX());
 }
 
-double dotProduct(Point a, Point b)
+double Graphics3D::dotProduct(Point a, Point b) const
 {
     return a.getX() * b.getX() +
            a.getY() * b.getY() +
@@ -153,7 +160,7 @@ void Graphics3D::addTorus(int x, int y, int z, int r1, int r2, int steps, int tu
         {
             addPolygon((*points)[j][i], (*points)[(j + 1) % steps][i], (*points)[j][(i + 1) % turns]);
             addPolygon((*points)[(j + 1) % steps][i], (*points)[(j + 1) % steps][(i + 1) % turns], (*points)[j][(i + 1) % turns]);
-        }  
+        }
     }
 
     delete points;
