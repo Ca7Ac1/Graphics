@@ -159,3 +159,16 @@ Point &Matrix::operator[](int i)
 {
     return matrix[i];
 }
+
+Matrix &Matrix::operator=(Matrix &m)
+{
+    if (&m == this)
+    {
+        return *this;
+    }
+
+    setIdentity();
+    m.mult(*this);
+
+    return *this;
+}
