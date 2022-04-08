@@ -203,7 +203,7 @@ void Graphics3D::clear()
     }
 }
 
-const Graphics &Graphics3D::operator[](int i) const
+Graphics &Graphics3D::operator[](int i)
 {
     return polygons[i];
 }

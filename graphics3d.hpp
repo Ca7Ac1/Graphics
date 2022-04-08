@@ -38,7 +38,7 @@ public:
 
     int getCount() const;
 
-    const Graphics &operator[](int i) const;
+    Graphics &operator[](int i);
 };
 
 #endif

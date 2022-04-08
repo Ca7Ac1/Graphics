@@ -2,6 +2,8 @@
 
 #include "context.hpp"
 #include "transform.hpp"
+#include "graphics.hpp"
+#include "graphics3d.hpp"
 
 Context::Context() : coordinateSystem()
 {
@@ -43,7 +45,7 @@ void Context::addTransformation(Transform &t)
 
 }
 
-void Context::apply(Matrix &m)
+void Context::apply(Graphics g)
 {
-    coordinateSystem.top().apply(m);
+    g.transform(coordinateSystem.top());
 }

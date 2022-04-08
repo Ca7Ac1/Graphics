@@ -5,6 +5,7 @@
 
 #include "matrix.hpp"
 #include "transform.hpp"
+#include "graphics.hpp"
 
 class Context
 {
@@ -20,7 +21,7 @@ public:
     void addTransformation(Matrix &m);
     void addTransformation(Transform &t);
 
-    void apply(Matrix &m);
+    void apply(Graphics &g);
 };
 
 #endif
