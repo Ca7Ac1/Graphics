@@ -5,7 +5,7 @@
 #include "graphics3d.hpp"
 
 Renderer::Renderer(Window &window) : window(window),
-                                     context(),
+                                     plane(),
                                      red(0),
                                      green(0),
                                      blue(0) {}
@@ -142,12 +142,12 @@ void Renderer::deletePlane()
 
 void Renderer::transformPlane(Transform &t)
 {
-    plane.addTranformation(t);
+    plane.addTransformation(t);
 }
 
 void Renderer::draw(Graphics &g)
 {
-    context.apply(g);
+    plane.apply(g);
 
     for (int i = 0; i < g.getCount(); i += 2)
     {
