@@ -45,7 +45,7 @@ void Context::addTransformation(Transform &t)
 
 }
 
-void Context::apply(Graphics g)
+void Context::apply(Graphics &g)
 {
     g.transform(coordinateSystem.top());
 }
