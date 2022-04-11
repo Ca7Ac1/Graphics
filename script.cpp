@@ -26,14 +26,16 @@ void parse(Window &w, Renderer &r, std::string fileName)
         std::string cmd;
         file >> cmd;
 
+        g.clear();
+        g3d.clear();
+        t.reset();
+
         if (cmd == "line")
         {
             int coords[6];
             file >> coords[0] >> coords[1] >> coords[2] >> coords[3] >> coords[4] >> coords[5];
 
             g.addEdge(coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
-            
-            r.draw(g);
         }
         else if (cmd == "circle")
         {
@@ -42,8 +44,6 @@ void parse(Window &w, Renderer &r, std::string fileName)
 
             file >> coords[0] >> coords[1] >> coords[2] >> radius;
             g.addCircle(coords[0], coords[1], coords[2], radius);
-            
-            r.draw(g);
         }
         else if (cmd == "bezier")
         {
@@ -52,8 +52,6 @@ void parse(Window &w, Renderer &r, std::string fileName)
             file >> coords[0] >> coords[1] >> coords[2] >> coords[3] >> coords[4] >> coords[5] >> coords[6] >> coords[7];
             g.addBezierCurve(coords[0], coords[1], 0, coords[2], coords[3], 0,
                              coords[4], coords[5], 0, coords[6], coords[7], 0);
-            
-            r.draw(g);
         }
         else if (cmd == "hermite")
         {
@@ -63,8 +61,6 @@ void parse(Window &w, Renderer &r, std::string fileName)
             file >> coords[0] >> coords[1] >> coords[2] >> coords[3] >> rates[0] >> rates[1] >> rates[2] >> rates[3];
             g.addHermiteCurve(coords[0], coords[1], 0, rates[0], rates[1], 0,
                               coords[2], coords[3], 0, rates[2], rates[3], 0);
-            
-            r.draw(g);
         }
         else if (cmd == "box")
         {
@@ -73,8 +69,6 @@ void parse(Window &w, Renderer &r, std::string fileName)
 
             file >> coords[0] >> coords[1] >> coords[2] >> dimensions[0] >> dimensions[1] >> dimensions[2];
             g3d.addBox(coords[0], coords[1], coords[2], dimensions[0], dimensions[1], dimensions[2]);
-
-            r.draw(g3d);
         }
         else if (cmd == "sphere")
         {
@@ -83,8 +77,6 @@ void parse(Window &w, Renderer &r, std::string fileName)
 
             file >> coords[0] >> coords[1] >> coords[2] >> radius;
             g3d.addSphere(coords[0], coords[1], coords[2], radius);
-
-            r.draw(g3d);
         }
         else if (cmd == "torus")
         {
@@ -93,8 +85,6 @@ void parse(Window &w, Renderer &r, std::string fileName)
 
             file >> coords[0] >> coords[1] >> coords[2] >> radii[0] >> radii[1];
             g3d.addTorus(coords[0], coords[1], coords[2], radii[0], radii[1]);
-
-            r.draw(g3d);
         }
         else if (cmd == "ident")
         {
@@ -138,11 +128,17 @@ void parse(Window &w, Renderer &r, std::string fileName)
             g.transform(t);
             g3d.transform(t);
         }
+        else if (cmd == "pop")
+        {
+            r.deletePlane();
+        }
+        else if (cmd == "push")
+        {
+            r.addPlane();
+        }
         else if (cmd == "display")
         {
             r.setColor(color[0], color[1], color[2]);
-            r.draw(g);
-            r.draw(g3d);
 
             w.draw("temp.ppm");
             w.display();
@@ -153,8 +149,6 @@ void parse(Window &w, Renderer &r, std::string fileName)
         else if (cmd == "save")
         {
             r.setColor(color[0], color[1], color[2]);
-            r.draw(g);
-            r.draw(g3d);
 
             std::string outputFile;
             file >> outputFile;
@@ -167,9 +161,6 @@ void parse(Window &w, Renderer &r, std::string fileName)
         }
         else if (cmd == "clear")
         {
-            g.clear();
-            g3d.clear();
-
             r.setColor(0, 0, 0);
             r.fill();
         }
@@ -193,5 +184,10 @@ void parse(Window &w, Renderer &r, std::string fileName)
         {
             std::cout << "bad command given {" << cmd << "}\n";
         }
+
+        r.transformPlane(t);
+
+        r.draw(g);
+        r.draw(g3d);
     }
 }
