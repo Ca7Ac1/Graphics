@@ -38,10 +38,10 @@ void Context::addTransformation(Matrix &m)
 void Context::addTransformation(Transform &t)
 {
     Transform top;
-    t.addTransformation(t);
-    t.addTransformation(coordinateSystem.top());
+    top.addTransformation(t);
+    top.addTransformation(coordinateSystem.top());
     
-    coordinateSystem.top() = t;
+    coordinateSystem.top() = top;
 
 }
 
