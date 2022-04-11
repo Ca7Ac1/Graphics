@@ -197,10 +197,7 @@ void Graphics3D::printPolygons()
 
 void Graphics3D::clear()
 {
-    for (Graphics &triangle : polygons)
-    {
-        triangle.clear();
-    }
+    polygons.clear();
 }
 
 Graphics &Graphics3D::operator[](int i)

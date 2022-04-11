@@ -143,7 +143,7 @@ void parse(Window &w, Renderer &r, std::string fileName)
             w.draw("temp.ppm");
             w.display();
 
-            // std::cin.ignore();
+            std::cin.ignore();
             system("rm temp.ppm");
         }
         else if (cmd == "save")
@@ -171,16 +171,12 @@ void parse(Window &w, Renderer &r, std::string fileName)
 
             r.setColor(fillColor[0], fillColor[1], fillColor[2]);
         }
-        else if (cmd == "")
-        {
-            continue;
-        }
         else if (cmd.find("#") != std::string::npos)
         {
             std::string skip;
             getline(file, skip);
         }
-        else
+        else if (cmd != "")
         {
             std::cout << "bad command given {" << cmd << "}\n";
         }
