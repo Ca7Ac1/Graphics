@@ -183,6 +183,7 @@ void parse(Window &w, Renderer &r, std::string fileName)
 
         r.transformPlane(t);
 
+        r.setColor(color[0], color[1], color[2]);
         r.draw(g);
         r.draw(g3d);
     }
