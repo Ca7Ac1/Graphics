@@ -143,7 +143,7 @@ void parse(Window &w, Renderer &r, std::string fileName)
             w.draw("temp.ppm");
             w.display();
 
-            std::cin.ignore();
+            // std::cin.ignore();
             system("rm temp.ppm");
         }
         else if (cmd == "save")
