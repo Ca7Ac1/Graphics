@@ -170,6 +170,7 @@ void parse(Window &w, Renderer &r, std::string fileName)
             file >> fillColor[0] >> fillColor[1] >> fillColor[2];
 
             r.setColor(fillColor[0], fillColor[1], fillColor[2]);
+            r.fill();
         }
         else if (cmd.find("#") != std::string::npos)
         {
