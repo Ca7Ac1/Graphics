@@ -136,7 +136,7 @@ void Renderer::addPlane()
 }
 
 void Renderer::deletePlane()
-{   
+{
     plane.pop();
 }
 
@@ -145,9 +145,12 @@ void Renderer::transformPlane(Transform &t)
     plane.addTransformation(t);
 }
 
-void Renderer::draw(Graphics &g)
+void Renderer::draw(Graphics &g, bool applyContext)
 {
-    plane.apply(g);
+    if (applyContext)
+    {
+        plane.apply(g);
+    }
 
     for (int i = 0; i < g.getCount(); i += 2)
     {
@@ -158,13 +161,18 @@ void Renderer::draw(Graphics &g)
     g.clear();
 }
 
-void Renderer::draw(Graphics3D &g3d, bool cullBackFaces)
-{  
+void Renderer::draw(Graphics3D &g3d, bool cullBackFaces, bool applyContext)
+{
     for (int i = 0; i < g3d.getCount(); i++)
     {
+        if (applyContext)
+        {
+            plane.apply(g3d[i]);
+        }
+
         if (!cullBackFaces || g3d.drawFace(i))
         {
-            draw(g3d[i]);
+            draw(g3d[i], false);
         }
     }
 
