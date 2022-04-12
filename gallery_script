@@ -1,0 +1,95 @@
+fill 
+255 255 255
+push 
+move
+250 250 0
+scale
+1.2 1.2 1.2
+rotate 
+y -50
+#Body
+color
+73 177 255
+sphere
+0 0 0 60
+sphere
+0 -110 -15 50
+#Tail
+color
+26 25 35
+line 
+0 0 -60 0 15 -120
+line 
+0 15 -120 0 -15 -100
+line 
+0 -15 -100 0 -35 -130
+line 
+0 -35 -130 0 -50 -100
+line 
+0 -50 -100 0 -65 -130
+line 
+0 -65 -130 0 -85 -90
+line 
+0 -85 -90 0 -105 -90
+line 
+0 -105 -90 0 -110 -60
+#Ears
+color
+73 177 255
+push
+move 
+-60 70 0
+rotate
+x 90
+torus
+0 0 0 10 20
+color
+233 169 198
+sphere
+0 0 0 10
+pop
+color
+73 177 255
+push
+move 
+60 70 0
+rotate
+x 90
+torus
+0 0 0 10 20
+color
+233 169 198
+sphere
+0 0 0 10
+pop
+#Feet
+color
+73 177 255
+push
+move 
+-40 -45 30
+rotate
+y 15
+rotate
+x 30
+scale
+1 2 1
+sphere
+0 0 0 10
+pop
+move 
+40 -45 30
+rotate
+y 35
+rotate
+x 30
+scale
+1 2 1
+sphere
+0 0 0 10
+pop
+
+
+#SAVE
+save
+Azurill.ppm
