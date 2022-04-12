@@ -26,8 +26,8 @@ public:
     void fill();
     void line(int x1, int y1, int x2, int y2);
 
-    void draw(Graphics &g);
-    void draw(Graphics3D &g3d, bool cullBackFaces = true);
+    void draw(Graphics &g, bool applyContext = true);
+    void draw(Graphics3D &g3d, bool cullBackFaces = true, bool applyContext = true);
 
     void addPlane();
     void deletePlane();
