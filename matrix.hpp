@@ -49,7 +49,7 @@ public:
 
     Point &operator[](int i);
     const Point &operator[](int i) const;
-    Matrix &Matrix::operator=(Matrix &m);
+    Matrix &operator=(Matrix &m);
 };
 
 #endif
