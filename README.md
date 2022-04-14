@@ -1,2 +1,1 @@
-# Graphics
-Graphics Programming 
+# gfx-08-solids
