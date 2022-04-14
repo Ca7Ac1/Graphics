@@ -1,3 +1,8 @@
+#include <vector>
+#include <float.h>
+#include <exception>
+#include <algorithm>
+
 #include "renderer.hpp"
 #include "window.hpp"
 #include "transform.hpp"
@@ -6,6 +11,10 @@
 
 Renderer::Renderer(Window &window) : window(window),
                                      plane(),
+                                     zBuffer(window.getXDimension(), std::vector<double>(window.getYDimension(), -DBL_MAX)),
+                                     zBufferEnabled(false),
+                                     fillEnabled(true),
+                                     backfaceCullingEnabled(true),
                                      red(0),
                                      green(0),
                                      blue(0) {}
@@ -161,7 +170,56 @@ void Renderer::draw(Graphics &g, bool applyContext)
     g.clear();
 }
 
-void Renderer::draw(Graphics3D &g3d, bool cullBackFaces, bool applyContext)
+void Renderer::drawFilled(Graphics &g)
+{
+    if (g.getCount() != 3)
+    {
+        throw "Trying to draw bad matrix";
+    }
+
+    Point *top = NULL;
+    Point *mid = NULL;
+    Point *bottom = NULL;
+
+    for (int i = 0; i < 3; i++)
+    {
+        if (top == NULL && g[i].getY() == std::max({g[0].getY(), g[1].getY(), g[2].getY()}))
+        {
+            *top = g[i]; 
+        }
+        else if (bottom == NULL && g[i].getY() == std::min({g[0].getY(), g[1].getY(), g[2].getY()}))
+        {
+            *bottom = g[i];
+        }
+        else
+        {
+            *mid = g[i];
+        }
+    }
+
+    double x0 = bottom->getX();
+    double deltaX0 = (top->getX() - x0) / (top->getY() - bottom->getY());
+    double x1 = bottom->getX();
+    double deltaX1 = (mid->getX() - x1) / (mid->getY() - bottom->getY());
+    for (int y = (int)bottom->getY(); y <= (int)top->getY(); y++)
+    {
+        for (int i = (int)x0; i <= (int)x1; i++)
+        {
+            plot(i, y);
+        }
+
+        if (y == (int)mid->getY())
+        {
+            deltaX1 = (top->getX() - x1) / (top->getY() - bottom->getY());
+        }
+
+        x0 += deltaX0;
+        x1 += deltaX1;
+        
+    }
+}
+
+void Renderer::draw(Graphics3D &g3d, bool applyContext)
 {
     for (int i = 0; i < g3d.getCount(); i++)
     {
@@ -170,9 +228,25 @@ void Renderer::draw(Graphics3D &g3d, bool cullBackFaces, bool applyContext)
             plane.apply(g3d[i]);
         }
 
-        if (!cullBackFaces || g3d.drawFace(i))
+        if (!backfaceCullingEnabled || g3d.drawFace(i))
         {
-            draw(g3d[i], false);
+            if (fillEnabled)
+            {
+                drawFilled(g3d[i]);
+
+                int tempR = red;
+                int tempG = green;
+                int tempB = blue;
+
+                setColor(0, 0, 0);
+                draw(g3d[i], false);
+                setColor(tempR, tempG, tempB);
+
+            }
+            else
+            {
+                draw(g3d[i], false);
+            }
         }
     }
 
