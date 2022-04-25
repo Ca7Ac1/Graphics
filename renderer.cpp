@@ -172,28 +172,28 @@ void Renderer::draw(Graphics &g, bool applyContext)
 
 void Renderer::drawFilled(Graphics &g)
 {
-    if (g.getCount() != 3)
+    if (g.getCount() != 6)
     {
         throw "Trying to draw bad matrix";
     }
 
-    Point *top = NULL;
-    Point *mid = NULL;
-    Point *bottom = NULL;
+    const Point *top = NULL;
+    const Point *mid = NULL;
+    const Point *bottom = NULL;
 
     for (int i = 0; i < 3; i++)
     {
         if (top == NULL && g[i].getY() == std::max({g[0].getY(), g[1].getY(), g[2].getY()}))
         {
-            *top = g[i]; 
+            top = &(g[i]); 
         }
         else if (bottom == NULL && g[i].getY() == std::min({g[0].getY(), g[1].getY(), g[2].getY()}))
         {
-            *bottom = g[i];
+            bottom = &(g[i]);
         }
         else
         {
-            *mid = g[i];
+            mid = &(g[i]);
         }
     }
 
@@ -232,7 +232,7 @@ void Renderer::draw(Graphics3D &g3d, bool applyContext)
         {
             if (fillEnabled)
             {
-                drawFilled(g3d[i]);
+                // drawFilled(g3d[i]);
 
                 int tempR = red;
                 int tempG = green;
