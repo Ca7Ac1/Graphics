@@ -163,6 +163,7 @@ void parse(Window &w, Renderer &r, std::string fileName)
         {
             r.setColor(0, 0, 0);
             r.fill();
+            r.clearZBuffer();
         }
         else if (cmd == "fill")
         {

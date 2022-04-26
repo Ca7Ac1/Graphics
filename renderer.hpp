@@ -33,8 +33,12 @@ public:
 
     void setColor(int red, int green, int blue);
 
+    void enableBackFaceCulling();
+    void disableBackFaceCulling();
+
     void enableZBuffer();
     void disableZBuffer();
+    void clearZBuffer();
 
     void enableFill();
     void disableFill();
