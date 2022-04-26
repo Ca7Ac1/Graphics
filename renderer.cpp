@@ -26,7 +26,32 @@ void Renderer::setColor(int red, int green, int blue)
     this->green = green;
 }
 
-void Renderer::plot(int x, int y)
+void Renderer::enableZBuffer()
+{
+    zBufferEnabled = true;
+}
+
+void Renderer::disableZBuffer()
+{
+    zBufferEnabled = false;
+}
+
+void Renderer::enableFill()
+{
+    fillEnabled = true;
+}
+
+void Renderer::disableFill()
+{
+    fillEnabled = false;
+}
+
+void Renderer::plot(int x, int y, int z)
+{
+    plotColor(x, y, z, red, green, blue);
+}
+
+void Renderer::plotColor(int x, int y, int z, int red, int green, int blue)
 {
     if (x >= 0 && x < window.getXDimension() && y >= 0 && y < window.getYDimension())
     {
@@ -172,50 +197,41 @@ void Renderer::draw(Graphics &g, bool applyContext)
 
 void Renderer::drawFilled(Graphics &g)
 {
+    int cR = rand();
+    int cG = rand();
+    int cB = rand();
+
     if (g.getCount() != 6)
     {
         throw "Trying to draw bad matrix";
     }
 
-    const Point *top = NULL;
-    const Point *mid = NULL;
-    const Point *bottom = NULL;
+    Point pts[] = {g[0], g[2], g[4]};
+    std::sort(pts, pts + 3, cmprY);
 
-    for (int i = 0; i < 3; i++)
-    {
-        if (top == NULL && g[i].getY() == std::max({g[0].getY(), g[1].getY(), g[2].getY()}))
-        {
-            top = &(g[i]); 
-        }
-        else if (bottom == NULL && g[i].getY() == std::min({g[0].getY(), g[1].getY(), g[2].getY()}))
-        {
-            bottom = &(g[i]);
-        }
-        else
-        {
-            mid = &(g[i]);
-        }
-    }
+    double x0 = pts[0].getX();
+    double deltaX0 = (pts[2].getX() - x0) / (pts[2].getY() - pts[0].getY());
+    double x1 = pts[0].getX();
+    double deltaX1 = (pts[1].getX() - x1) / (pts[1].getY() - pts[0].getY());
 
-    double x0 = bottom->getX();
-    double deltaX0 = (top->getX() - x0) / (top->getY() - bottom->getY());
-    double x1 = bottom->getX();
-    double deltaX1 = (mid->getX() - x1) / (mid->getY() - bottom->getY());
-    for (int y = (int)bottom->getY(); y <= (int)top->getY(); y++)
+    bool flip = false;
+    for (int y = (int)pts[0].getY(); y <= (int)pts[2].getY(); y++)
     {
+        if (y >= (int)pts[1].getY() && !flip)
+        {
+            x1 = pts[1].getX();
+            deltaX1 = (pts[2].getX() - x1) / (pts[2].getY() - pts[0].getY());
+            
+            flip = true;
+        }
+
         for (int i = (int)x0; i <= (int)x1; i++)
         {
-            plot(i, y);
-        }
-
-        if (y == (int)mid->getY())
-        {
-            deltaX1 = (top->getX() - x1) / (top->getY() - bottom->getY());
+            plotColor(i, y, 0, cR, cG, cB);
         }
 
         x0 += deltaX0;
         x1 += deltaX1;
-        
     }
 }
 
@@ -232,7 +248,7 @@ void Renderer::draw(Graphics3D &g3d, bool applyContext)
         {
             if (fillEnabled)
             {
-                // drawFilled(g3d[i]);
+                drawFilled(g3d[i]);
 
                 int tempR = red;
                 int tempG = green;
@@ -241,7 +257,6 @@ void Renderer::draw(Graphics3D &g3d, bool applyContext)
                 setColor(0, 0, 0);
                 draw(g3d[i], false);
                 setColor(tempR, tempG, tempB);
-
             }
             else
             {
