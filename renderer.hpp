@@ -16,15 +16,16 @@ private:
     Context plane;
 
     std::vector<std::vector<double>> zBuffer;
-    
+
     bool zBufferEnabled;
     bool fillEnabled;
     bool backfaceCullingEnabled;
-    
+
     int red;
     int green;
     int blue;
 
+    void plotColor(int x, int y, int z, int red, int green, int blue);
     void drawFilled(Graphics &g);
 
 public:
@@ -38,7 +39,7 @@ public:
     void enableFill();
     void disableFill();
 
-    void plot(int x, int y);
+    void plot(int x, int y, int z = 0);
     void fill();
     void line(int x1, int y1, int x2, int y2);
 
