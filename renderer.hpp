@@ -25,7 +25,7 @@ private:
     int green;
     int blue;
 
-    void plotColor(int x, int y, int z, int red, int green, int blue);
+    void plotColor(int x, int y, double z, int red, int green, int blue);
     void drawFilled(Graphics &g);
 
 public:
@@ -43,7 +43,7 @@ public:
     void enableFill();
     void disableFill();
 
-    void plot(int x, int y, int z = 0);
+    void plot(int x, int y, double z = 0.0);
     void fill();
     void line(int x1, int y1, int x2, int y2);
     void line(int x1, int y1, double z1, int x2, int y2, double z2);

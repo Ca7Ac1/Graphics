@@ -71,12 +71,12 @@ void Renderer::disableFill()
     fillEnabled = false;
 }
 
-void Renderer::plot(int x, int y, int z)
+void Renderer::plot(int x, int y, double z)
 {
     plotColor(x, y, z, red, green, blue);
 }
 
-void Renderer::plotColor(int x, int y, int z, int r, int g, int b)
+void Renderer::plotColor(int x, int y, double z, int r, int g, int b)
 {
     if (x >= 0 && x < window.getXDimension() && y >= 0 && y < window.getYDimension())
     {
