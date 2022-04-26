@@ -210,14 +210,14 @@ void Renderer::drawFilled(Graphics &g)
     std::sort(pts, pts + 3, cmprY);
 
     double x0 = pts[0].getX();
-    double deltaX0 = (pts[2].getX() - x0) / (pts[2].getY() - pts[0].getY());
+    double deltaX0 = (pts[2].getX() - pts[0].getX()) / (pts[2].getY() - pts[0].getY());
     double x1 = pts[0].getX();
-    double deltaX1 = (pts[1].getX() - x1) / (pts[1].getY() - pts[0].getY());
+    double deltaX1 = (pts[1].getX() - pts[0].getX()) / (pts[1].getY() - pts[0].getY());
 
     bool flip = false;
-    for (int y = (int)pts[0].getY(); y <= (int)pts[2].getY(); y++)
+    for (double y = pts[0].getY(); y <= pts[2].getY(); y++)
     {
-        if (y >= (int)pts[1].getY() && !flip)
+        if (y >= pts[1].getY() && !flip)
         {
             x1 = pts[1].getX();
             deltaX1 = (pts[2].getX() - x1) / (pts[2].getY() - pts[0].getY());
@@ -225,9 +225,11 @@ void Renderer::drawFilled(Graphics &g)
             flip = true;
         }
 
-        for (int i = (int)x0; i <= (int)x1; i++)
+        double left = x0 < x1 ? x0 : x1;
+        double right = x0 < x1 ? x1 : x0;
+        for (double i = left; i <= right; i++)
         {
-            plotColor(i, y, 0, cR, cG, cB);
+            plotColor((int)i, (int)y, 0, cR, cG, cB);
         }
 
         x0 += deltaX0;
