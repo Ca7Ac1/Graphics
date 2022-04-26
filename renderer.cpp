@@ -95,11 +95,18 @@ void Renderer::fill()
 
 void Renderer::line(int x1, int y1, int x2, int y2)
 {
+    line(x1, x2, 0.0, x2, y2, 0.0);
+}
+
+void Renderer::line(int x1, int y1, double z1, int x2, int y2, double z2)
+{
     int origX = x1 < x2 ? x1 : x2;
     int origY = x1 < x2 ? y1 : y2;
+    double origZ = x1 < x2 ? z1 : z2;
 
     int endX = x1 < x2 ? x2 : x1;
     int endY = x1 < x2 ? y2 : y1;
+    double endZ = x1 < x2 ? z2 : z1;
 
     // y = mx + b
     // Ax + By + C = 0
@@ -111,11 +118,12 @@ void Renderer::line(int x1, int y1, int x2, int y2)
     {
         if (endX - origX > endY - origY)
         {
+            double zStep = (endZ - origZ) / (endX - origX + 1); 
             int dist = A + (B / 2);
 
             while (origX <= endX)
             {
-                plot(origX, origY);
+                plot(origX, origY, origZ);
 
                 if (dist > 0)
                 {
@@ -125,15 +133,17 @@ void Renderer::line(int x1, int y1, int x2, int y2)
 
                 origX++;
                 dist += A;
+                origZ += zStep;
             }
         }
         else
         {
+            double zStep = (endZ - origZ) / (endY - origY + 1); 
             int dist = B + (A / 2);
 
             while (origY <= endY)
             {
-                plot(origX, origY);
+                plot(origX, origY, origZ);
 
                 if (dist < 0)
                 {
@@ -143,6 +153,7 @@ void Renderer::line(int x1, int y1, int x2, int y2)
 
                 origY++;
                 dist += B;
+                origZ += zStep;
             }
         }
     }
@@ -150,11 +161,12 @@ void Renderer::line(int x1, int y1, int x2, int y2)
     {
         if (endX - origX > origY - endY)
         {
+            double zStep = (endZ - origZ) / (endX - origX + 1); 
             int dist = A - (B / 2);
 
             while (origX <= endX)
             {
-                plot(origX, origY);
+                plot(origX, origY, origZ);
 
                 if (dist < 0)
                 {
@@ -164,15 +176,17 @@ void Renderer::line(int x1, int y1, int x2, int y2)
 
                 origX++;
                 dist += A;
+                origZ += zStep;
             }
         }
         else
         {
+            double zStep = (endZ - origZ) / (origY - endY + 1); 
             int dist = -B + (A / 2);
 
             while (origY >= endY)
             {
-                plot(origX, origY);
+                plot(origX, origY, origZ);
 
                 if (dist > 0)
                 {
@@ -182,6 +196,7 @@ void Renderer::line(int x1, int y1, int x2, int y2)
 
                 origY--;
                 dist -= B;
+                origZ += zStep;
             }
         }
     }
@@ -240,6 +255,11 @@ void Renderer::drawFilled(Graphics &g)
     double x1 = pts[0].getX();
     double deltaX1 = (pts[1].getX() - pts[0].getX()) / (pts[1].getY() - pts[0].getY());
 
+    double z0 = pts[0].getZ();
+    double deltaZ0 = (pts[2].getZ() - pts[0].getZ()) / (pts[2].getY() - pts[0].getY());
+    double z1 = pts[0].getZ();
+    double deltaZ1 = (pts[1].getZ() - pts[0].getZ()) / (pts[1].getY() - pts[0].getY());
+
     bool flip = false;
 
     int redTemp = rand();
@@ -252,19 +272,25 @@ void Renderer::drawFilled(Graphics &g)
             x1 = pts[1].getX();
             deltaX1 = (pts[2].getX() - x1) / (pts[2].getY() - pts[1].getY());
 
+            z1 = pts[1].getZ();
+            deltaZ1 = (pts[2].getZ() - z1) / (pts[2].getY() - pts[1].getY());
+
             flip = true;
         }
 
-        double left = x0 < x1 ? x0 : x1;
-        double right = x0 < x1 ? x1 : x0;
-        for (double i = left; i <= right; i++)
+        double startX = x0 < x1 ? x0 : x1;
+        double endX = x0 < x1 ? x1 : x0;
+        double startZ = z0 < z1 ? z0 : z1;
+        for (double i = 0; i <= startX - endX; i++)
         {
-            int zTemp = 0;
-            plotColor((int)i, (int)y, zTemp, redTemp, greenTemp, blueTemp);
+            plotColor((int)(i + startX), (int)y, (int)(i + startZ), redTemp, greenTemp, blueTemp);
         }
 
         x0 += deltaX0;
         x1 += deltaX1;
+
+        z0 += deltaZ0;
+        z1 += deltaZ1;
     }
 }
 

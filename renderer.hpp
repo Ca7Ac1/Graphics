@@ -46,6 +46,7 @@ public:
     void plot(int x, int y, int z = 0);
     void fill();
     void line(int x1, int y1, int x2, int y2);
+    void line(int x1, int y1, double z1, int x2, int y2, double z2);
 
     void draw(Graphics &g, bool applyContext = true);
     void draw(Graphics3D &g3d, bool applyContext = true);
