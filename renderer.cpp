@@ -2,6 +2,8 @@
 #include <float.h>
 #include <exception>
 #include <algorithm>
+#include <ctime>
+#include <stdlib.h>
 
 #include "renderer.hpp"
 #include "window.hpp"
@@ -11,8 +13,6 @@
 
 Renderer::Renderer(Window &window) : window(window),
                                      plane(),
-                                     zBuffer(window.getXDimension(), std::vector<double>(window.getYDimension(), -DBL_MAX)),
-                                     zBufferEnabled(false),
                                      fillEnabled(true),
                                      backfaceCullingEnabled(true),
                                      red(0),
@@ -28,12 +28,12 @@ void Renderer::setColor(int red, int green, int blue)
 
 void Renderer::enableZBuffer()
 {
-    zBufferEnabled = true;
+    // zBufferEnabled = true;
 }
 
 void Renderer::disableZBuffer()
 {
-    zBufferEnabled = false;
+    // zBufferEnabled = false;
 }
 
 void Renderer::enableFill()
@@ -51,11 +51,11 @@ void Renderer::plot(int x, int y, int z)
     plotColor(x, y, z, red, green, blue);
 }
 
-void Renderer::plotColor(int x, int y, int z, int red, int green, int blue)
+void Renderer::plotColor(int x, int y, int z, int r, int g, int b)
 {
     if (x >= 0 && x < window.getXDimension() && y >= 0 && y < window.getYDimension())
     {
-        window[x][y].set(red, green, blue);
+        window[x][y].set(r, g, b);
     }
 }
 
@@ -206,8 +206,11 @@ void Renderer::drawFilled(Graphics &g)
         throw "Trying to draw bad matrix";
     }
 
-    Point pts[] = {g[0], g[2], g[4]};
-    std::sort(pts, pts + 3, cmprY);
+    std::vector<Point> pts;
+    pts.push_back(g[0]);
+    pts.push_back(g[2]);
+    pts.push_back(g[4]);
+    std::sort(pts.begin(), pts.end(), cmprY);
 
     double x0 = pts[0].getX();
     double deltaX0 = (pts[2].getX() - pts[0].getX()) / (pts[2].getY() - pts[0].getY());
@@ -215,13 +218,17 @@ void Renderer::drawFilled(Graphics &g)
     double deltaX1 = (pts[1].getX() - pts[0].getX()) / (pts[1].getY() - pts[0].getY());
 
     bool flip = false;
+
+    int redTemp = rand();
+    int greenTemp = rand();
+    int blueTemp = rand();
     for (double y = pts[0].getY(); y <= pts[2].getY(); y++)
     {
         if (y >= pts[1].getY() && !flip)
         {
             x1 = pts[1].getX();
-            deltaX1 = (pts[2].getX() - x1) / (pts[2].getY() - pts[0].getY());
-            
+            deltaX1 = (pts[2].getX() - x1) / (pts[2].getY() - pts[1].getY());
+
             flip = true;
         }
 
@@ -229,7 +236,8 @@ void Renderer::drawFilled(Graphics &g)
         double right = x0 < x1 ? x1 : x0;
         for (double i = left; i <= right; i++)
         {
-            plotColor((int)i, (int)y, 0, cR, cG, cB);
+            int zTemp = 0;
+            plotColor((int)i, (int)y, zTemp, redTemp, greenTemp, blueTemp);
         }
 
         x0 += deltaX0;
