@@ -13,8 +13,10 @@
 
 Renderer::Renderer(Window &window) : window(window),
                                      plane(),
-                                     fillEnabled(true),
                                      backfaceCullingEnabled(true),
+                                     fillEnabled(true),
+                                     zBufferEnabled(true),
+                                     zBuffer(window.getXDimension(), std::vector<double>(window.getYDimension(), -DBL_MAX)),
                                      red(0),
                                      green(0),
                                      blue(0) {}
@@ -26,14 +28,31 @@ void Renderer::setColor(int red, int green, int blue)
     this->green = green;
 }
 
+void Renderer::enableBackFaceCulling()
+{
+    backfaceCullingEnabled = true;
+}
+
+void Renderer::disableBackFaceCulling()
+{
+    backfaceCullingEnabled = false;
+}
+
 void Renderer::enableZBuffer()
 {
-    // zBufferEnabled = true;
+    zBufferEnabled = true;
+    clearZBuffer();
 }
 
 void Renderer::disableZBuffer()
 {
-    // zBufferEnabled = false;
+    zBufferEnabled = false;
+    clearZBuffer();
+}
+
+void Renderer::clearZBuffer()
+{
+    zBuffer.clear();
 }
 
 void Renderer::enableFill()
@@ -55,7 +74,11 @@ void Renderer::plotColor(int x, int y, int z, int r, int g, int b)
 {
     if (x >= 0 && x < window.getXDimension() && y >= 0 && y < window.getYDimension())
     {
-        window[x][y].set(r, g, b);
+        if (!zBufferEnabled || z > zBuffer[x][y])
+        {
+            zBuffer[x][y] = z;
+            window[x][y].set(r, g, b);
+        }
     }
 }
 
@@ -65,7 +88,7 @@ void Renderer::fill()
     {
         for (int y = 0; y < window.getYDimension(); y++)
         {
-            plot(x, y);
+            plot(x, y, -DBL_MAX);
         }
     }
 }
