@@ -79,6 +79,21 @@ double &Point::operator[](int i)
     }
 }
 
+bool cmprX(const Point &a, const Point &b)
+{
+    return a.getX() < b.getX();
+}
+
+bool cmprY(const Point &a, const Point &b)
+{
+    return a.getY() < b.getY();
+}
+
+bool cmprZ(const Point &a, const Point &b)
+{
+    return a.getZ() < b.getZ();
+}
+
 Matrix::Matrix() : matrix() {}
 
 void Matrix::add(Point p)
