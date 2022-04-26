@@ -140,7 +140,7 @@ void parse(Window &w, Renderer &r, std::string fileName)
         {
             r.setColor(color[0], color[1], color[2]);
 
-            w.draw("temp.ppm");
+            w.draw("temp.ppm", false);
             w.display();
 
             // std::cin.ignore();
@@ -153,7 +153,7 @@ void parse(Window &w, Renderer &r, std::string fileName)
             std::string outputFile;
             file >> outputFile;
 
-            w.draw(outputFile);
+            w.draw(outputFile, false);
         }
         else if (cmd == "color")
         {

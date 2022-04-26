@@ -251,14 +251,6 @@ void Renderer::draw(Graphics3D &g3d, bool applyContext)
             if (fillEnabled)
             {
                 drawFilled(g3d[i]);
-
-                int tempR = red;
-                int tempG = green;
-                int tempB = blue;
-
-                setColor(0, 0, 0);
-                draw(g3d[i], false);
-                setColor(tempR, tempG, tempB);
             }
             else
             {
