@@ -124,7 +124,6 @@ void Graphics3D::addBox(int x, int y, int z, int w, int h, int d)
 void Graphics3D::addSphere(int x, int y, int z, int r, int steps, int turns)
 {
     std::vector<std::vector<Point>> *points = generateSphere(x, y, z, r, steps, turns);
-    int numPoints = points->size();
 
     for (int i = 0; i < turns; i++)
     {
@@ -152,7 +151,6 @@ void Graphics3D::addSphere(int x, int y, int z, int r, int steps, int turns)
 void Graphics3D::addTorus(int x, int y, int z, int r1, int r2, int steps, int turns)
 {
     std::vector<std::vector<Point>> *points = generateTorus(x, y, z, r1, r2, steps, turns);
-    int numPoints = points->size();
 
     for (int i = 0; i < turns; i++)
     {

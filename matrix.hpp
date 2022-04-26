@@ -31,6 +31,10 @@ public:
     double &operator[](int i);
 };
 
+bool cmprX(const Point &a, const Point &b);
+bool cmprY(const Point &a, const Point &b);
+bool cmprZ(const Point &a, const Point &b);
+
 class Matrix
 {
 private:
