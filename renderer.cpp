@@ -3,7 +3,7 @@
 #include <exception>
 #include <algorithm>
 #include <ctime>
-#include <stdlib.h>
+#include <float.h>
 
 #include "renderer.hpp"
 #include "window.hpp"
@@ -52,7 +52,13 @@ void Renderer::disableZBuffer()
 
 void Renderer::clearZBuffer()
 {
-    zBuffer.clear();
+    for (std::vector<double> &v : zBuffer)
+    {
+        for (double &depth : v)
+        {
+            depth = -DBL_MAX;
+        }
+    }
 }
 
 void Renderer::enableFill()
@@ -84,6 +90,9 @@ void Renderer::plotColor(int x, int y, int z, int r, int g, int b)
 
 void Renderer::fill()
 {
+    bool zBufferEnabled = this->zBufferEnabled;
+    disableZBuffer();
+
     for (int x = 0; x < window.getXDimension(); x++)
     {
         for (int y = 0; y < window.getYDimension(); y++)
@@ -91,6 +100,8 @@ void Renderer::fill()
             plot(x, y, -DBL_MAX);
         }
     }
+
+    this->zBufferEnabled = zBufferEnabled;
 }
 
 void Renderer::line(int x1, int y1, int x2, int y2)
@@ -118,7 +129,7 @@ void Renderer::line(int x1, int y1, double z1, int x2, int y2, double z2)
     {
         if (endX - origX > endY - origY)
         {
-            double zStep = (endZ - origZ) / (endX - origX + 1); 
+            double zStep = (endZ - origZ) / (endX - origX);
             int dist = A + (B / 2);
 
             while (origX <= endX)
@@ -138,7 +149,7 @@ void Renderer::line(int x1, int y1, double z1, int x2, int y2, double z2)
         }
         else
         {
-            double zStep = (endZ - origZ) / (endY - origY + 1); 
+            double zStep = (endZ - origZ) / (endY - origY);
             int dist = B + (A / 2);
 
             while (origY <= endY)
@@ -161,7 +172,7 @@ void Renderer::line(int x1, int y1, double z1, int x2, int y2, double z2)
     {
         if (endX - origX > origY - endY)
         {
-            double zStep = (endZ - origZ) / (endX - origX + 1); 
+            double zStep = (endZ - origZ) / (endX - origX);
             int dist = A - (B / 2);
 
             while (origX <= endX)
@@ -181,7 +192,7 @@ void Renderer::line(int x1, int y1, double z1, int x2, int y2, double z2)
         }
         else
         {
-            double zStep = (endZ - origZ) / (origY - endY + 1); 
+            double zStep = (endZ - origZ) / (origY - endY);
             int dist = -B + (A / 2);
 
             while (origY >= endY)
@@ -235,9 +246,9 @@ void Renderer::draw(Graphics &g, bool applyContext)
 
 void Renderer::drawFilled(Graphics &g)
 {
-    int cR = rand();
-    int cG = rand();
-    int cB = rand();
+    int redTemp = rand();
+    int greenTemp = rand();
+    int blueTemp = rand();
 
     if (g.getCount() != 6)
     {
@@ -261,10 +272,6 @@ void Renderer::drawFilled(Graphics &g)
     double deltaZ1 = (pts[1].getZ() - pts[0].getZ()) / (pts[1].getY() - pts[0].getY());
 
     bool flip = false;
-
-    int redTemp = rand();
-    int greenTemp = rand();
-    int blueTemp = rand();
     for (double y = pts[0].getY(); y <= pts[2].getY(); y++)
     {
         if (y >= pts[1].getY() && !flip)
@@ -280,10 +287,14 @@ void Renderer::drawFilled(Graphics &g)
 
         double startX = x0 < x1 ? x0 : x1;
         double endX = x0 < x1 ? x1 : x0;
-        double startZ = z0 < z1 ? z0 : z1;
-        for (double i = 0; i <= startX - endX; i++)
+
+        double startZ = x0 < x1 ? z0 : z1;
+        double endZ = x0 < x1 ? z1 : z0;
+
+        double deltaZ = (endZ - startZ) / (endX - startX);
+        for (double i = 0.0; i + startX <= endX; i++)
         {
-            plotColor((int)(i + startX), (int)y, (int)(i + startZ), redTemp, greenTemp, blueTemp);
+            plotColor(i + startX, y, (i * deltaZ) + startZ, redTemp, greenTemp, blueTemp);
         }
 
         x0 += deltaX0;
