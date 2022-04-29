@@ -130,6 +130,11 @@ void Renderer::line(int x1, int y1, double z1, int x2, int y2, double z2)
         if (endX - origX > endY - origY)
         {
             double zStep = (endZ - origZ) / (endX - origX);
+            if (endX - origX == 0)
+            {
+                zStep = 0;
+            }
+
             int dist = A + (B / 2);
 
             while (origX <= endX)
@@ -150,6 +155,11 @@ void Renderer::line(int x1, int y1, double z1, int x2, int y2, double z2)
         else
         {
             double zStep = (endZ - origZ) / (endY - origY);
+            if (endY - origY == 0)
+            {
+                zStep = 0;
+            }
+
             int dist = B + (A / 2);
 
             while (origY <= endY)
@@ -173,6 +183,11 @@ void Renderer::line(int x1, int y1, double z1, int x2, int y2, double z2)
         if (endX - origX > origY - endY)
         {
             double zStep = (endZ - origZ) / (endX - origX);
+            if (endX - origX == 0)
+            {
+                zStep = 0;
+            }
+
             int dist = A - (B / 2);
 
             while (origX <= endX)
@@ -193,6 +208,11 @@ void Renderer::line(int x1, int y1, double z1, int x2, int y2, double z2)
         else
         {
             double zStep = (endZ - origZ) / (origY - endY);
+            if (origY - endY == 0)
+            {
+                zStep = 0;
+            }
+
             int dist = -B + (A / 2);
 
             while (origY >= endY)
@@ -262,14 +282,14 @@ void Renderer::drawFilled(Graphics &g)
     std::sort(pts.begin(), pts.end(), cmprY);
 
     double x0 = pts[0].getX();
-    double deltaX0 = (pts[2].getX() - pts[0].getX()) / (pts[2].getY() - pts[0].getY());
+    double deltaX0 = (pts[2].getX() - pts[0].getX()) / std::max(1, (int)(pts[2].getY() - pts[0].getY()));
     double x1 = pts[0].getX();
-    double deltaX1 = (pts[1].getX() - pts[0].getX()) / (pts[1].getY() - pts[0].getY());
+    double deltaX1 = (pts[1].getX() - pts[0].getX()) / std::max(1, (int)(pts[1].getY() - pts[0].getY()));
 
     double z0 = pts[0].getZ();
-    double deltaZ0 = (pts[2].getZ() - pts[0].getZ()) / (pts[2].getY() - pts[0].getY());
+    double deltaZ0 = (pts[2].getZ() - pts[0].getZ()) / std::max(1, (int)(pts[2].getY() - pts[0].getY()));
     double z1 = pts[0].getZ();
-    double deltaZ1 = (pts[1].getZ() - pts[0].getZ()) / (pts[1].getY() - pts[0].getY());
+    double deltaZ1 = (pts[1].getZ() - pts[0].getZ()) / std::max(1, (int)(pts[1].getY() - pts[0].getY()));
 
     bool flip = false;
     for (double y = pts[0].getY(); y <= pts[2].getY(); y++)
@@ -277,10 +297,10 @@ void Renderer::drawFilled(Graphics &g)
         if (y >= pts[1].getY() && !flip)
         {
             x1 = pts[1].getX();
-            deltaX1 = (pts[2].getX() - x1) / (pts[2].getY() - pts[1].getY());
+            deltaX1 = (pts[2].getX() - x1) / std::max(1, (int)(pts[2].getY() - pts[1].getY()));
 
             z1 = pts[1].getZ();
-            deltaZ1 = (pts[2].getZ() - z1) / (pts[2].getY() - pts[1].getY());
+            deltaZ1 = (pts[2].getZ() - z1) / std::max(1, (int)(pts[2].getY() - pts[1].getY()));
 
             flip = true;
         }
@@ -292,7 +312,13 @@ void Renderer::drawFilled(Graphics &g)
         double endZ = x0 < x1 ? z1 : z0;
 
         double deltaZ = (endZ - startZ) / (endX - startX);
-        for (double i = 0.0; i + startX <= endX; i++)
+
+        if (endX - startX == 0)
+        {
+            deltaZ = 0;
+        }
+
+        for (int i = 0.0; i + startX <= endX; i++)
         {
             plotColor(i + startX, y, (i * deltaZ) + startZ, redTemp, greenTemp, blueTemp);
         }
