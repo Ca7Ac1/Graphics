@@ -13,12 +13,16 @@ private:
     int blue;
 
     int scale;
+    bool clamp;
 
 public:
     Color(int red, int green, int blue, int scale = 255);
 
     void set(int red, int green, int blue);
     void setScale(int scale);
+
+    void disableClamp();
+    void enableClamp();
 
     int getRed() const;
     int getGreen() const;

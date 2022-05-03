@@ -12,9 +12,18 @@ Color::Color(int red, int green, int blue, int scale) : red(red % scale),
 
 void Color::set(int red, int green, int blue)
 {
-    this->red = red % (scale + 1);
-    this->green = green % (scale + 1);
-    this->blue = blue % (scale + 1);
+    if (!clamp)
+    {
+        this->red = red % (scale + 1);
+        this->green = green % (scale + 1);
+        this->blue = blue % (scale + 1);
+    }
+    else
+    {
+        this->red = std::min(scale, std::max(0, red));
+        this->green = std::min(scale, std::max(0, green));
+        this->blue = std::min(scale, std::max(0, blue));
+    }
 }
 
 void Color::setScale(int scale)
@@ -24,6 +33,16 @@ void Color::setScale(int scale)
     red %= (scale + 1);
     green %= (scale + 1);
     blue %= (scale + 1);
+}
+
+void Color::enableClamp()
+{
+    clamp = true;
+}
+
+void Color::disableClamp()
+{
+    clamp = false;
 }
 
 int Color::getRed() const
