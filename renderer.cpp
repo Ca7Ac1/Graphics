@@ -272,7 +272,7 @@ void Renderer::drawFilled(Graphics &g)
 
     if (g.getCount() != 6)
     {
-        throw "Trying to draw bad matrix";
+        throw std::runtime_error("Trying to draw bad matrix");
     }
 
     std::vector<Point> pts;
