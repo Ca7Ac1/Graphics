@@ -16,7 +16,7 @@ private:
     bool clamp;
 
 public:
-    Color(int red, int green, int blue, int scale = 255);
+    Color(int red, int green, int blue, int scale = 255, bool clamp = true);
 
     void set(int red, int green, int blue);
     void setScale(int scale);
@@ -29,6 +29,12 @@ public:
     int getBlue() const;
 
     void print() const;
+
+    Color operator*(const Color &c);
+    Color operator*(double v);
+
+    Color operator+(const Color &c);
+
 };
 
 class Window

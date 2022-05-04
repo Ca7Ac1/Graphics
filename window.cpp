@@ -5,10 +5,10 @@
 
 #include "window.hpp"
 
-Color::Color(int red, int green, int blue, int scale) : red(red % scale),
-                                                        green(green % scale),
-                                                        blue(blue % scale),
-                                                        scale(scale) {}
+Color::Color(int red, int green, int blue, int scale, bool clamp) : scale(scale), clamp(clamp) 
+{
+    set(red, green, blue);
+}
 
 void Color::set(int red, int green, int blue)
 {
@@ -63,6 +63,21 @@ int Color::getBlue() const
 void Color::print() const
 {
     std::cout << "(red: " << red << ", green: " << green << ", blue: " << blue << ")\n";
+}
+
+Color Color::operator*(const Color &c)
+{
+    return Color(getRed() * c.getRed(), getGreen() * c.getGreen(), getBlue() * c.getBlue(), scale, clamp);
+}
+
+Color Color::operator*(double v)
+{
+    return Color(getRed() * v, getGreen() * v, getBlue() * v, scale, clamp);
+}
+
+Color Color::operator+(const Color &c)
+{
+    return Color(getRed() + c.getRed(), getGreen() + c.getGreen(), getBlue() + c.getBlue(), scale, clamp);
 }
 
 Window::Window(int xDimension, int yDimension) : xDimension(xDimension), yDimension(yDimension),
