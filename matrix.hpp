@@ -25,9 +25,15 @@ public:
     void setT(double t);
     void set(double x, double y, double z, double t = 1);
 
+    void normalize();
+    
     Point operator+(const Point &p) const;
     Point operator-(const Point &p) const;
 
+    Point operator+(double v) const;
+    Point operator-(double v) const;
+    Point operator*(double v) const;
+    
     double &operator[](int i);
 };
 
@@ -55,5 +61,8 @@ public:
     const Point &operator[](int i) const;
     Matrix &operator=(Matrix &m);
 };
+
+Point crossProduct(Point a, Point b);
+double dotProduct(Point a, Point b);
 
 #endif

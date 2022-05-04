@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cmath>
 
 #include "matrix.hpp"
 
@@ -52,6 +53,12 @@ void Point::set(double x, double y, double z, double t)
     setT(t);
 }
 
+void Point::normalize()
+{
+    double m = sqrt(x * x + y * y + z * z);
+    set(x / m, y / m, z / m);
+}
+
 Point Point::operator+(const Point &p) const
 {
     return Point(x + p.getX(), y + p.getY(), z + p.getZ());
@@ -60,6 +67,21 @@ Point Point::operator+(const Point &p) const
 Point Point::operator-(const Point &p) const
 {
     return Point(x - p.getX(), y - p.getY(), z - p.getZ());
+}
+
+Point Point::operator+(double v) const
+{
+    return Point(x + v, y + v, z + v);
+}
+
+Point Point::operator-(double v) const
+{
+    return Point(x - v, y - v, z - v);
+}
+
+Point Point::operator*(double v) const
+{
+    return Point(x * v, y * v, z * v);
 }
 
 double &Point::operator[](int i)
@@ -77,6 +99,21 @@ double &Point::operator[](int i)
     default:
         throw std::runtime_error("Wrong index for point");
     }
+}
+
+Point crossProduct(Point a, Point b)
+{
+    return Point(
+        a.getY() * b.getZ() - a.getZ() * b.getY(),
+        a.getZ() * b.getX() - a.getX() * b.getZ(),
+        a.getX() * b.getY() - a.getY() * b.getX());
+}
+
+double dotProduct(Point a, Point b)
+{
+    return a.getX() * b.getX() +
+           a.getY() * b.getY() +
+           a.getZ() * b.getZ();
 }
 
 bool cmprX(const Point &a, const Point &b)
