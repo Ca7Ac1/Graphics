@@ -3,6 +3,7 @@
 
 #include <vector>
 
+#include "window.hpp"
 #include "matrix.hpp"
 #include "graphics.hpp"
 #include "transform.hpp"
@@ -11,12 +12,13 @@ class Graphics3D
 {
 private:
     std::vector<Graphics> polygons;
+    
+    Color ambient;
+    Color diffuse;
+    Color specular;
 
     std::vector<std::vector<Point>> *generateSphere(int x, int y, int z, int r, int steps, int turns);
     std::vector<std::vector<Point>> *generateTorus(int x, int y, int z, int r1, int r2, int steps, int turns);
-
-    Point crossProduct(Point a, Point b) const;
-    double dotProduct(Point a, Point b) const;
 
 public:
     Graphics3D();
@@ -25,6 +27,7 @@ public:
     void addPolygon(double x1, double y1, double z1, double t1, double x2, double y2, double z2, double t2, double x3, double y3, double z3, double t3);
     void addPolygon(double x1, double y1, double z1, double x2, double y2, double z2, double x3, double y3, double z3);
 
+    Point getNormal(int i) const;
     bool drawFace(int i) const;
 
     void addBox(int x, int y, int z, int w, int h, int d);
@@ -37,6 +40,14 @@ public:
     void clear();
 
     int getCount() const;
+
+    void setAmbient(int r, int g, int b);
+    void setDiffuse(int r, int g, int b);
+    void setSpecular(int r, int g, int b);
+
+    Color getAmbient() const;
+    Color getDiffuse() const;
+    Color  getSpecular() const;
 
     Graphics &operator[](int i);
 };

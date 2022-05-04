@@ -248,6 +248,22 @@ void Renderer::transformPlane(Transform &t)
     plane.addTransformation(t);
 }
 
+void Renderer::setAmbientLight()
+{
+    lighting.setAmbientLight(red, green, blue);
+}
+
+void Renderer::addPointLight(double x, double y, double z)
+{
+    lighting.addPointLight(Color(red, green, blue), Point(x, y, z));
+}
+
+void Renderer::clearLights()
+{
+    lighting.clear();
+    lighting.setAmbientLight(1, 1, 1);
+}
+
 void Renderer::draw(Graphics &g, bool applyContext)
 {
     if (applyContext)
@@ -264,12 +280,8 @@ void Renderer::draw(Graphics &g, bool applyContext)
     g.clear();
 }
 
-void Renderer::drawFilled(Graphics &g)
+void Renderer::drawFilled(Graphics &g, Color c)
 {
-    int redTemp = rand();
-    int greenTemp = rand();
-    int blueTemp = rand();
-
     if (g.getCount() != 6)
     {
         throw std::runtime_error("Trying to draw bad matrix");
@@ -320,7 +332,7 @@ void Renderer::drawFilled(Graphics &g)
 
         for (int i = 0.0; i + startX <= endX; i++)
         {
-            plotColor(i + startX, y, (i * deltaZ) + startZ, redTemp, greenTemp, blueTemp);
+            plotColor(i + startX, y, (i * deltaZ) + startZ, c.getRed(), c.getGreen(), c.getBlue());
         }
 
         x0 += deltaX0;
@@ -344,7 +356,7 @@ void Renderer::draw(Graphics3D &g3d, bool applyContext)
         {
             if (fillEnabled)
             {
-                drawFilled(g3d[i]);
+                drawFilled(g3d[i], lighting.get(g3d, i));
             }
             else
             {

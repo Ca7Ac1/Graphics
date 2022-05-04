@@ -8,12 +8,15 @@
 #include "transform.hpp"
 #include "graphics.hpp"
 #include "graphics3d.hpp"
+#include "lighting.hpp"
 
 class Renderer
 {
 private:
     Window &window;
     Context plane;
+
+    Lighting lighting;
 
     std::vector<std::vector<double>> zBuffer;
 
@@ -26,7 +29,7 @@ private:
     int blue;
 
     void plotColor(int x, int y, double z, int red, int green, int blue);
-    void drawFilled(Graphics &g);
+    void drawFilled(Graphics &g, Color c);
 
 public:
     Renderer(Window &window);
@@ -47,6 +50,10 @@ public:
     void fill();
     void line(int x1, int y1, int x2, int y2);
     void line(int x1, int y1, double z1, int x2, int y2, double z2);
+
+    void setAmbientLight();
+    void addPointLight(double x, double y, double z);
+    void clearLights();
 
     void draw(Graphics &g, bool applyContext = true);
     void draw(Graphics3D &g3d, bool applyContext = true);
