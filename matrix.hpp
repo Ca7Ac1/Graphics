@@ -35,6 +35,7 @@ public:
     Point operator*(double v) const;
     
     double &operator[](int i);
+    double operator[](int i) const;
 };
 
 bool cmprX(const Point &a, const Point &b);

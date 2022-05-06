@@ -4,6 +4,7 @@
 #include <cstdlib>
 
 #include "window.hpp"
+#include "matrix.hpp"
 
 Color::Color(int red, int green, int blue, int scale, bool clamp) : scale(scale), clamp(clamp) 
 {
@@ -68,6 +69,11 @@ void Color::print() const
 Color Color::operator*(const Color &c)
 {
     return Color(getRed() * c.getRed(), getGreen() * c.getGreen(), getBlue() * c.getBlue(), scale, clamp);
+}
+
+Color Color::operator*(const Point &p)
+{
+    return Color(getRed() * p[0], getGreen() * p[1], getBlue() * p[2], scale, clamp);
 }
 
 Color Color::operator*(double v)

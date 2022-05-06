@@ -5,6 +5,8 @@
 #include <vector>
 #include <string>
 
+#include "matrix.hpp"
+
 class Color
 {
 private:
@@ -31,6 +33,7 @@ public:
     void print() const;
 
     Color operator*(const Color &c);
+    Color operator*(const Point &p);
     Color operator*(double v);
 
     Color operator+(const Color &c);

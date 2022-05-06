@@ -19,13 +19,16 @@ Renderer::Renderer(Window &window) : window(window),
                                      zBuffer(window.getXDimension(), std::vector<double>(window.getYDimension(), -DBL_MAX)),
                                      red(0),
                                      green(0),
-                                     blue(0) {}
+                                     blue(0),
+                                     lighting() {}
 
 void Renderer::setColor(int red, int green, int blue)
 {
     this->red = red;
     this->blue = blue;
     this->green = green;
+
+    lighting.setAmbientLight(red, green, blue);
 }
 
 void Renderer::enableBackFaceCulling()
@@ -129,7 +132,7 @@ void Renderer::line(int x1, int y1, double z1, int x2, int y2, double z2)
     {
         if (endX - origX > endY - origY)
         {
-            double zStep = (endZ - origZ) / (endX - origX);
+            double zStep = (endZ - origZ) / (endX - origX + 1);
             if (endX - origX == 0)
             {
                 zStep = 0;
@@ -154,7 +157,7 @@ void Renderer::line(int x1, int y1, double z1, int x2, int y2, double z2)
         }
         else
         {
-            double zStep = (endZ - origZ) / (endY - origY);
+            double zStep = (endZ - origZ) / (endY - origY + 1);
             if (endY - origY == 0)
             {
                 zStep = 0;
@@ -182,7 +185,7 @@ void Renderer::line(int x1, int y1, double z1, int x2, int y2, double z2)
     {
         if (endX - origX > origY - endY)
         {
-            double zStep = (endZ - origZ) / (endX - origX);
+            double zStep = (endZ - origZ) / (endX - origX + 1);
             if (endX - origX == 0)
             {
                 zStep = 0;
@@ -207,7 +210,7 @@ void Renderer::line(int x1, int y1, double z1, int x2, int y2, double z2)
         }
         else
         {
-            double zStep = (endZ - origZ) / (origY - endY);
+            double zStep = (endZ - origZ) / (origY - endY + 1);
             if (origY - endY == 0)
             {
                 zStep = 0;
@@ -294,25 +297,25 @@ void Renderer::drawFilled(Graphics &g, Color c)
     std::sort(pts.begin(), pts.end(), cmprY);
 
     double x0 = pts[0].getX();
-    double deltaX0 = (pts[2].getX() - pts[0].getX()) / std::max(1, (int)(pts[2].getY() - pts[0].getY()));
+    double deltaX0 = (pts[2].getX() - pts[0].getX()) / (int)(pts[2].getY() - pts[0].getY() + 1);
     double x1 = pts[0].getX();
-    double deltaX1 = (pts[1].getX() - pts[0].getX()) / std::max(1, (int)(pts[1].getY() - pts[0].getY()));
+    double deltaX1 = (pts[1].getX() - pts[0].getX()) / (int)(pts[1].getY() - pts[0].getY() + 1);
 
     double z0 = pts[0].getZ();
-    double deltaZ0 = (pts[2].getZ() - pts[0].getZ()) / std::max(1, (int)(pts[2].getY() - pts[0].getY()));
+    double deltaZ0 = (pts[2].getZ() - pts[0].getZ()) / (int)(pts[2].getY() - pts[0].getY() + 1);
     double z1 = pts[0].getZ();
-    double deltaZ1 = (pts[1].getZ() - pts[0].getZ()) / std::max(1, (int)(pts[1].getY() - pts[0].getY()));
+    double deltaZ1 = (pts[1].getZ() - pts[0].getZ()) / (int)(pts[1].getY() - pts[0].getY() + 1);
 
     bool flip = false;
-    for (double y = pts[0].getY(); y <= pts[2].getY(); y++)
+    for (int y = pts[0].getY(); y <= (int)pts[2].getY(); y++)
     {
-        if (y >= pts[1].getY() && !flip)
+        if (y >= (int)pts[1].getY() && !flip)
         {
             x1 = pts[1].getX();
-            deltaX1 = (pts[2].getX() - x1) / std::max(1, (int)(pts[2].getY() - pts[1].getY()));
+            deltaX1 = (pts[2].getX() - x1) / (int)(pts[2].getY() - pts[1].getY() + 1);
 
             z1 = pts[1].getZ();
-            deltaZ1 = (pts[2].getZ() - z1) / std::max(1, (int)(pts[2].getY() - pts[1].getY()));
+            deltaZ1 = (pts[2].getZ() - z1) / (int)(pts[2].getY() - pts[1].getY() + 1);
 
             flip = true;
         }
@@ -330,9 +333,9 @@ void Renderer::drawFilled(Graphics &g, Color c)
             deltaZ = 0;
         }
 
-        for (int i = 0.0; i + startX <= endX; i++)
+        for (int i = 0.0; i + (int)startX <= (int)endX; i++)
         {
-            plotColor(i + startX, y, (i * deltaZ) + startZ, c.getRed(), c.getGreen(), c.getBlue());
+            plotColor(i + startX, y, (i * (int)deltaZ) + (int)startZ, c.getRed(), c.getGreen(), c.getBlue());
         }
 
         x0 += deltaX0;
@@ -356,6 +359,7 @@ void Renderer::draw(Graphics3D &g3d, bool applyContext)
         {
             if (fillEnabled)
             {
+                Color c = lighting.get(g3d, i);
                 drawFilled(g3d[i], lighting.get(g3d, i));
             }
             else
