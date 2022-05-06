@@ -13,9 +13,9 @@ class Graphics3D
 private:
     std::vector<Graphics> polygons;
     
-    Color ambient;
-    Color diffuse;
-    Color specular;
+    Point ambient;
+    Point diffuse;
+    Point specular;
 
     std::vector<std::vector<Point>> *generateSphere(int x, int y, int z, int r, int steps, int turns);
     std::vector<std::vector<Point>> *generateTorus(int x, int y, int z, int r1, int r2, int steps, int turns);
@@ -45,9 +45,9 @@ public:
     void setDiffuse(int r, int g, int b);
     void setSpecular(int r, int g, int b);
 
-    Color getAmbient() const;
-    Color getDiffuse() const;
-    Color  getSpecular() const;
+    Point getAmbient() const;
+    Point getDiffuse() const;
+    Point getSpecular() const;
 
     Graphics &operator[](int i);
 };

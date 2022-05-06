@@ -76,7 +76,7 @@ void parse(Window &w, Renderer &r, std::string fileName)
             int radius;
 
             file >> coords[0] >> coords[1] >> coords[2] >> radius;
-            g3d.addSphere(coords[0], coords[1], coords[2], radius);
+            g3d.addSphere(coords[0], coords[1], coords[2], radius, 300, 300);
         }
         else if (cmd == "torus")
         {
@@ -84,7 +84,7 @@ void parse(Window &w, Renderer &r, std::string fileName)
             int radii[2];
 
             file >> coords[0] >> coords[1] >> coords[2] >> radii[0] >> radii[1];
-            g3d.addTorus(coords[0], coords[1], coords[2], radii[0], radii[1]);
+            g3d.addTorus(coords[0], coords[1], coords[2], radii[0], radii[1], 300, 300);
         }
         else if (cmd == "ident")
         {

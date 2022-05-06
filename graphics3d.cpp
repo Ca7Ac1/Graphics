@@ -8,9 +8,9 @@
 #include "transform.hpp"
 
 Graphics3D::Graphics3D() : polygons(),
-                           ambient(0.1, 0.1, 0.1, 255, true),
-                           diffuse(0.5, 0.5, 0.5, 255, true),
-                           specular(0.5, 0.5, 0.5, 255, true) {}
+                           ambient(0.1, 0.1, 0.1),
+                           diffuse(0.5, 0.5, 0.5),
+                           specular(0.5, 0.5, 0.5) {}
 
 void Graphics3D::addPolygon(Point p1, Point p2, Point p3)
 {
@@ -193,17 +193,17 @@ void Graphics3D::setSpecular(int r, int g, int b)
     specular.set(r, g, b);
 }
 
-Color Graphics3D::getAmbient() const
+Point Graphics3D::getAmbient() const
 {
     return ambient;
 }
 
-Color Graphics3D::getDiffuse() const
+Point Graphics3D::getDiffuse() const
 {
     return diffuse;
 }
 
-Color Graphics3D::getSpecular() const
+Point Graphics3D::getSpecular() const
 {
     return specular;
 }

@@ -101,6 +101,23 @@ double &Point::operator[](int i)
     }
 }
 
+double Point::operator[](int i) const
+{
+    switch (i)
+    {
+    case 0:
+        return x;
+    case 1:
+        return y;
+    case 2:
+        return z;
+    case 3:
+        return t;
+    default:
+        throw std::runtime_error("Wrong index for point");
+    }
+}
+
 Point crossProduct(Point a, Point b)
 {
     return Point(
