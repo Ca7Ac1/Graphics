@@ -345,7 +345,7 @@ void Renderer::drawFilled(Graphics &g, Color c)
 
         for (int i = 0.0; i + (int)startX <= (int)endX; i++)
         {
-            plotColor(i + startX, y, (i * (int)deltaZ) + (int)startZ, c.getRed(), c.getGreen(), c.getBlue());
+            plotColor(i + startX, y, (i * deltaZ) + startZ, c.getRed(), c.getGreen(), c.getBlue());
         }
 
         x0 += deltaX0;
