@@ -59,7 +59,8 @@ public:
     void draw(Graphics3D &g3d, bool applyContext = true);
 
     void addPlane();
-    void deletePlane();
+    bool deletePlane();
+    void clearPlane();
     void transformPlane(Transform &t);
 };
 

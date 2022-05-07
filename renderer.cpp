@@ -241,9 +241,19 @@ void Renderer::addPlane()
     plane.push();
 }
 
-void Renderer::deletePlane()
+bool Renderer::deletePlane()
 {
-    plane.pop();
+    return plane.pop();
+}
+
+void Renderer::clearPlane()
+{
+    while (plane.atEnd())
+    {
+        plane.pop();
+    }
+
+    plane.reset();
 }
 
 void Renderer::transformPlane(Transform &t)
