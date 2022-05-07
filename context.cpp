@@ -16,9 +16,15 @@ void Context::push()
     coordinateSystem.push(t);
 }
 
-void Context::pop()
+bool Context::pop()
 {
-    coordinateSystem.pop();
+    if (!atEnd())
+    {
+        coordinateSystem.pop();
+        return true;
+    }
+
+    return false;
 }
 
 void Context::reset()
@@ -43,6 +49,11 @@ void Context::addTransformation(Transform &t)
     
     coordinateSystem.top() = top;
 
+}
+
+bool Context::atEnd()
+{
+    return coordinateSystem.size() == 1;
 }
 
 void Context::apply(Graphics &g)

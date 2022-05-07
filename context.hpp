@@ -16,10 +16,12 @@ public:
     Context();
 
     void push();
-    void pop();
+    bool pop();
+    bool atEnd();
     void reset();
     void addTransformation(Matrix &m);
     void addTransformation(Transform &t);
+
 
     void apply(Graphics &g);
 };
