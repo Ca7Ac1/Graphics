@@ -248,7 +248,7 @@ bool Renderer::deletePlane()
 
 void Renderer::clearPlane()
 {
-    while (plane.atEnd())
+    while (!plane.atEnd())
     {
         plane.pop();
     }
