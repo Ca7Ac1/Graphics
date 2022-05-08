@@ -41,9 +41,9 @@ public:
 
     int getCount() const;
 
-    void setAmbient(int r, int g, int b);
-    void setDiffuse(int r, int g, int b);
-    void setSpecular(int r, int g, int b);
+    void setAmbient(double r, double g, double b);
+    void setDiffuse(double r, double g, double b);
+    void setSpecular(double r, double g, double b);
 
     Point getAmbient() const;
     Point getDiffuse() const;
