@@ -12,9 +12,9 @@ int main()
     Renderer r(win);
     Graphics3D g3d;
 
-    g3d.setAmbient(.5, .5, .5);
+    g3d.setAmbient(.6, .6, .6);
     g3d.setDiffuse(.1, .1, .1);
-    g3d.setSpecular(.3, .3, .3);
+    g3d.setSpecular(.25, .25, .25);
 
     win.invertY();
 
@@ -385,11 +385,11 @@ int main()
 
     for (int i = 0; i < 4; i++)
     {
-        double x = cos(3.1415 * (double)(i) / 4);
-        double y = sin(3.1415 * (double)(i) / 4);
+        double x = cos(1 * 3.1415 * (double)(i) / 4);
+        double y = cos(1 * 3.1415 * (double)(i) / 4);
 
         r.setColor(c[i].getRed(), c[i].getGreen(), c[i].getBlue());
-        r.addPointLight(y, 0, x);
+        r.addPointLight(0, y, x);
     }
 
     // r.setColor(c[0].getRed(), c[0].getGreen(), c[0].getBlue());
