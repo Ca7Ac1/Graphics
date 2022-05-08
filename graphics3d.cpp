@@ -178,17 +178,17 @@ void Graphics3D::transform(Transform &t)
     }
 }
 
-void Graphics3D::setAmbient(int r, int g, int b)
+void Graphics3D::setAmbient(double r, double g, double b)
 {  
     ambient.set(r, g, b);
 }
 
-void Graphics3D::setDiffuse(int r, int g, int b)
+void Graphics3D::setDiffuse(double r, double g, double b)
 {
     diffuse.set(r, g, b);
 }
 
-void Graphics3D::setSpecular(int r, int g, int b)
+void Graphics3D::setSpecular(double r, double g, double b)
 {
     specular.set(r, g, b);
 }
