@@ -33,6 +33,11 @@
 *.out
 *.app
 
+# Flex and Bison generated files
+lex.yy.cc
+y.tab.cpp
+y.tab.hpp
+
 # VScode
 .vscode
 
