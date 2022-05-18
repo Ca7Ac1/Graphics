@@ -229,15 +229,19 @@ Point &Matrix::operator[](int i)
     return matrix[i];
 }
 
-Matrix &Matrix::operator=(Matrix &m)
+Matrix &Matrix::operator=(const Matrix &m)
 {
     if (&m == this)
     {
         return *this;
     }
 
-    setIdentity();
-    m.mult(*this);
+    clear();
+
+    for (int i = 0; i < m.getSize(); i++)
+    {
+        add(Point(m[i][0], m[i][1], m[i][2], m[i][3]));
+    }
 
     return *this;
 }

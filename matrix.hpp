@@ -60,7 +60,7 @@ public:
 
     Point &operator[](int i);
     const Point &operator[](int i) const;
-    Matrix &operator=(Matrix &m);
+    Matrix &operator=(const Matrix &m);
 };
 
 Point crossProduct(Point a, Point b);
