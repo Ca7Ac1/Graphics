@@ -33,6 +33,9 @@
 *.out
 *.app
 
+# Flex and Bison generated files
+*.hh
+
 # VScode
 .vscode
 
