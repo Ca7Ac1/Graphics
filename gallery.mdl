@@ -1,0 +1,19 @@
+// Note: This uses the light values in the provided source code.
+constants reflective 0.1 0.7 0.2 0.1 0.7 0.2 0.1 0.7 0.2
+constants black 0 0 0 0 0 0 0 0 0
+constants white 1 1 1 1 1 1 1 1 1
+push
+move 250 250 0
+rotate y 45
+scale .8 .8 .8
+sphere reflective 0 0 0 240
+torus black 0 0 0 10 240
+push
+move 0 0 240
+push
+rotate x 90
+torus black 0 0 0 5 30
+pop
+sphere white 0 0 5 30
+display
+save pokeball.ppm
