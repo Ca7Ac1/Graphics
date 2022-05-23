@@ -219,6 +219,9 @@ void Graphics3D::printPolygons()
 void Graphics3D::clear()
 {
     polygons.clear();
+    setAmbient(.1, .1, .1);
+    setDiffuse(.5, .5, .5);
+    setSpecular(.5, .5, .5);
 }
 
 Graphics &Graphics3D::operator[](int i)
