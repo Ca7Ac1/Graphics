@@ -1,49 +1,47 @@
-OBJECTS= symtab.o print_pcode.o matrix.o my_main.o display.o draw.o gmath.o stack.o
-CFLAGS= -g
-LDFLAGS= -lm
-CC= gcc
+show: compile
+	./mdl.exe face.mdl
 
-run: parser
-	./mdl face.mdl
+gallery: compile_gallery
+	./mdl.exe gallery.mdl
 
-parser: lex.yy.c y.tab.c y.tab.h $(OBJECTS)
-	gcc -o mdl $(CFLAGS) lex.yy.c y.tab.c $(OBJECTS) $(LDFLAGS)
+flex:
+	cd mdl ; flex -I mdl.l
 
-lex.yy.c: mdl.l y.tab.h 
-	flex -I mdl.l
+bison:
+	cd mdl ; bison -d -y mdl.y
 
-y.tab.c: mdl.y symtab.h parser.h
-	bison -d -y mdl.y
+compile: y.tab.o symtab.o window.o graphics.o renderer.o matrix.o script.o transform.o graphics3d.o context.o lighting.o
+	g++ -std=c++11 -o mdl.exe y.tab.o window.o graphics.o renderer.o script.o transform.o matrix.o graphics3d.o context.o lighting.o
 
-y.tab.h: mdl.y 
-	bison -d -y mdl.y
+y.tab.o: mdl/y.tab.cpp mdl/y.tab.hpp mdl/parser.hpp mdl/symtab.hpp mdl/symtab.cpp mdl/lex.yy.cc 
+	g++ -std=c++11 -c y.tab.cpp
 
-symtab.o: symtab.c parser.h matrix.h
-	gcc -c $(CFLAGS) symtab.c
+symtab.o: mdl/symtab.cpp matrix.hpp mdl/parser.hpp mdl/symtab.hpp mdl/symtab.cpp mdl/lex.yy.cc 
+	g++ -std=c++11 -c symtab.cpp
 
-print_pcode.o: print_pcode.c parser.h matrix.h
-	gcc -c $(CFLAGS) print_pcode.c
+window.o: window.cpp window.hpp
+	g++ -std=c++11 -c window.cpp
 
-matrix.o: matrix.c matrix.h
-	gcc -c $(CFLAGS) matrix.c
+graphics.o: graphics.cpp graphics.hpp matrix.hpp transform.hpp
+	g++ -std=c++11 -c graphics.cpp
 
-my_main.o: my_main.c parser.h print_pcode.c matrix.h display.h ml6.h draw.h stack.h
-	gcc -c $(CFLAGS) my_main.c
+graphics3d.o: graphics3d.cpp graphics3d.hpp graphics.hpp matrix.hpp transform.hpp
+	g++ -std=c++11 -c graphics3d.cpp
 
-display.o: display.c display.h ml6.h matrix.h
-	$(CC) $(CFLAGS) -c display.c
+renderer.o: renderer.cpp renderer.hpp window.hpp graphics.hpp graphics3d.hpp context.hpp lighting.hpp
+	g++ -std=c++11 -c renderer.cpp
 
-draw.o: draw.c draw.h display.h ml6.h matrix.h gmath.h
-	$(CC) $(CFLAGS) -c draw.c
+context.o: context.cpp context.hpp transform.hpp graphics.hpp graphics3d.hpp
+	g++ -std=c++11 -c context.cpp
 
-gmath.o: gmath.c gmath.h matrix.h
-	$(CC) $(CFLAGS) -c gmath.c
+transform.o: transform.cpp transform.hpp graphics.hpp matrix.hpp
+	g++ -std=c++11 -c transform.cpp
 
-stack.o: stack.c stack.h matrix.h
-	$(CC) $(CFLAGS) -c stack.c
+script.o: script.cpp script.hpp window.hpp renderer.hpp graphics.hpp transform.hpp
+	g++ -std=c++11 -c script.cpp
 
-clean:
-	rm y.tab.c y.tab.h
-	rm lex.yy.c
-	rm -rf mdl.dSYM
-	rm *.o *~
+matrix.o: matrix.cpp matrix.hpp
+	g++ -std=c++11 -c matrix.cpp
+
+lighting.o: lighting.cpp lighting.hpp window.hpp matrix.hpp graphics3d.hpp
+	g++ -std=c++11 -c lighting.cpp
