@@ -147,6 +147,6 @@ struct command
 extern "C" struct command op[MAX_COMMANDS];
 
 void print_pcode();
-void my_main();
+void parse_mdl();
 
 #endif
