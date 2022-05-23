@@ -396,20 +396,20 @@ void parse_mdl()
 
 	w.invertY();
 
-	//settings for test
-	// r.setColor(255, 255, 255);
-	// r.setAmbientLight();
-	// r.addPointLight(.5, .75, 1);
-
-	//settings for gallery
+	// settings for test
 	r.setColor(255, 255, 255);
 	r.setAmbientLight();
+	r.addPointLight(.5, .75, 1);
 
-	r.setColor(255, 10, 10);
-	r.addPointLight(0, 1, 0);
+	//settings for gallery
+	// r.setColor(255, 255, 255);
+	// r.setAmbientLight();
 
-	r.setColor(255, 255, 255);
-	r.addPointLight(0, -1, 0);
+	// r.setColor(255, 10, 10);
+	// r.addPointLight(0, 1, 0);
+
+	// r.setColor(255, 255, 255);
+	// r.addPointLight(0, -1, 0);
 
 	Graphics g;
 	Graphics3D g3d;

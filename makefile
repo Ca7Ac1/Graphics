@@ -1,7 +1,7 @@
 show: compile
 	./mdl.exe face.mdl
 
-gallery: compile_gallery
+gallery: compile
 	./mdl.exe gallery.mdl
 
 flex:
@@ -11,13 +11,13 @@ bison:
 	cd mdl ; bison -d -y mdl.y
 
 compile: y.tab.o symtab.o window.o graphics.o renderer.o matrix.o script.o transform.o graphics3d.o context.o lighting.o
-	g++ -std=c++11 -o mdl.exe y.tab.o window.o graphics.o renderer.o script.o transform.o matrix.o graphics3d.o context.o lighting.o
+	g++ -std=c++11 -o mdl.exe y.tab.o symtab.o window.o graphics.o renderer.o script.o transform.o matrix.o graphics3d.o context.o lighting.o
 
 y.tab.o: mdl/y.tab.cpp mdl/y.tab.hpp mdl/parser.hpp mdl/symtab.hpp mdl/symtab.cpp mdl/lex.yy.cc 
-	g++ -std=c++11 -c y.tab.cpp
+	g++ -std=c++11 -c mdl/y.tab.cpp
 
 symtab.o: mdl/symtab.cpp matrix.hpp mdl/parser.hpp mdl/symtab.hpp mdl/symtab.cpp mdl/lex.yy.cc 
-	g++ -std=c++11 -c symtab.cpp
+	g++ -std=c++11 -c mdl/symtab.cpp
 
 window.o: window.cpp window.hpp
 	g++ -std=c++11 -c window.cpp
