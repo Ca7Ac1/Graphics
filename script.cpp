@@ -473,6 +473,7 @@ void parse_mdl()
 		for (int i = 0; i < lastop; i++)
 		{
 			std::string cppString;
+			double knob = 1.0;
 
 			g.clear();
 			g3d.clear();
@@ -554,8 +555,6 @@ void parse_mdl()
 			case SET:
 				break;
 			case MOVE:
-				double knob = 1;
-
 				if (op[i].op.move.p != NULL)
 				{
 					knob = op[i].op.move.p->s.value;
@@ -566,8 +565,6 @@ void parse_mdl()
 								op[i].op.move.d[2] * knob);
 				break;
 			case SCALE:
-				double knob = 1;
-
 				if (op[i].op.scale.p != NULL)
 				{
 					knob = op[i].op.scale.p->s.value;
@@ -579,8 +576,6 @@ void parse_mdl()
 
 				break;
 			case ROTATE:
-				double knob = 1;
-
 				if (op[i].op.rotate.p != NULL)
 				{
 					knob = op[i].op.rotate.p->s.value;
