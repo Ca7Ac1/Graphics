@@ -2,8 +2,8 @@
 #include <string>
 #include <fstream>
 #include <cstdlib>
-#include <thread>
-#include <chrono>
+#include <vector>
+#include <map>
 
 #include "window.hpp"
 #include "renderer.hpp"
@@ -398,157 +398,251 @@ void parse_mdl()
 	Graphics3D g3d;
 	Transform t;
 
+	int frames = 0;
+	std::string basename = "";
+	bool vary = false;
 	for (int i = 0; i < lastop; i++)
 	{
-		std::string cppString;
-
-		g.clear();
-		g3d.clear();
-		t.reset();
-
 		switch (op[i].opcode)
 		{
-		case LIGHT:
-			break;
-		case AMBIENT:
-			break;
-		case CONSTANTS:
-			break;
-		case SAVE_COORDS:
-			break;
-		case CAMERA:
-			break;
-		case SPHERE:
-			if (op[i].op.sphere.constants != NULL)
+		case FRAMES:
+			if (frames != 0 || op[i].op.frames.num_frames <= 0)
 			{
-				SYMTAB *t = lookup_symbol(op[i].op.sphere.constants->name);
-
-				g3d.setAmbient(t->s.c->r[0], t->s.c->g[0], t->s.c->b[0]);
-				g3d.setDiffuse(t->s.c->r[1], t->s.c->g[1], t->s.c->b[1]);
-				g3d.setSpecular(t->s.c->r[2], t->s.c->g[2], t->s.c->b[2]);
+				std::cout << "Invalid frames operation";
+				exit(-1);
 			}
 
-			g3d.addSphere(
-				op[i].op.sphere.d[0],
-				op[i].op.sphere.d[1],
-				op[i].op.sphere.d[2],
-				op[i].op.sphere.r,
-				300, 300);
-			break;
-		case TORUS:
-			if (op[i].op.torus.constants != NULL)
-			{
-				SYMTAB *t = lookup_symbol(op[i].op.box.constants->name);
-
-				g3d.setAmbient(t->s.c->r[0], t->s.c->g[0], t->s.c->b[0]);
-				g3d.setDiffuse(t->s.c->r[1], t->s.c->g[1], t->s.c->b[1]);
-				g3d.setSpecular(t->s.c->r[2], t->s.c->g[2], t->s.c->b[2]);
-			}
-
-			g3d.addTorus(op[i].op.torus.d[0],
-						 op[i].op.torus.d[1],
-						 op[i].op.torus.d[2],
-						 op[i].op.torus.r0,
-						 op[i].op.torus.r1,
-						 300, 300);
-			break;
-		case BOX:
-			if (op[i].op.sphere.constants != NULL)
-			{
-				SYMTAB *t = lookup_symbol(op[i].op.box.constants->name);
-
-				g3d.setAmbient(t->s.c->r[0], t->s.c->g[0], t->s.c->b[0]);
-				g3d.setDiffuse(t->s.c->r[1], t->s.c->g[1], t->s.c->b[1]);
-				g3d.setSpecular(t->s.c->r[2], t->s.c->g[2], t->s.c->b[2]);
-			}
-
-			g3d.addBox(op[i].op.box.d0[0],
-					   op[i].op.box.d0[1],
-					   op[i].op.box.d0[2],
-					   op[i].op.box.d1[0],
-					   op[i].op.box.d1[1],
-					   op[i].op.box.d1[2]);
-			break;
-		case LINE:
-			g.addEdge(op[i].op.line.p0[0],
-					  op[i].op.line.p0[1],
-					  op[i].op.line.p0[2],
-					  op[i].op.line.p1[0],
-					  op[i].op.line.p1[1],
-					  op[i].op.line.p1[2]);
-			break;
-		case MESH:
-			break;
-		case SET:
-			break;
-		case MOVE:
-			t.addTranslation(op[i].op.move.d[0],
-							 op[i].op.move.d[1],
-							 op[i].op.move.d[2]);
-			break;
-		case SCALE:
-			t.addDilation(op[i].op.scale.d[0],
-						  op[i].op.scale.d[1],
-						  op[i].op.scale.d[2]);
-
-			break;
-		case ROTATE:
-			if (op[i].op.rotate.axis == 0)
-			{
-				t.addRotation(op[i].op.rotate.degrees, Axis::X);
-				break;
-			}
-			else if (op[i].op.rotate.axis == 1)
-			{
-				t.addRotation(op[i].op.rotate.degrees, Axis::Y);
-				break;
-			}
-			else if (op[i].op.rotate.axis == 2)
-			{
-				t.addRotation(op[i].op.rotate.degrees, Axis::Z);
-				break;
-			}
+			frames = op[i].op.frames.num_frames;
 			break;
 		case BASENAME:
-			break;
-		case SAVE_KNOBS:
-			break;
-		case TWEEN:
-			break;
-		case FRAMES:
+			basename = op[i].op.basename.p->name;
 			break;
 		case VARY:
+			vary = true;
 			break;
-		case PUSH:
-			r.addPlane();
-			break;
-		case POP:
-			r.deletePlane();
-			break;
-		case GENERATE_RAYFILES:
-			break;
-		case SAVE:
-			cppString = op[i].op.save.p->name;
+		}
+	}
 
-			w.draw(cppString, false);
-			break;
-		case SHADING:
-			break;
-		case SETKNOBS:
-			break;
-		case FOCAL:
-			break;
-		case DISPLAY:
-			w.draw("temp.ppm", false);
-			w.display();
+	if (frames == 0 && vary)
+	{
+		std::cout << "Need frames operation if vary operation is used";
+		exit(-1);
+	}
 
-			// std::cin.ignore();
-			system("rm temp.ppm");
+	if (frames != 0 && basename == "")
+	{
+		std::cout << "Warning: no basename provided, default being used";
+		basename = "animation";
+	}
+
+	frames = std::max(1, frames);
+	std::vector<std::map<std::string, double>> varyFrames(frames, std::map<std::string, double>());
+	for (int i = 0; i < lastop; i++)
+	{
+		if (op[i].opcode == VARY)
+		{
+			int startFrame = op[i].op.vary.start_frame;
+			int endFrame = op[i].op.vary.end_frame; 
+			if (endFrame < startFrame)
+			{
+				std::cout << "Need frames operation if vary operation is used";
+				exit(-1);
+			}
+
+			double delta = (op[i].op.vary.end_val - op[i].op.vary.start_val) / (endFrame - startFrame);
+			for (int frame = 0; frame + startFrame <= endFrame; frame++)
+			{
+				std::string name = op[i].op.vary.p->name;
+				varyFrames[frame + startFrame][name] = delta * frame;
+			}
+		}
+	}
+
+	for (int frame = 0; frame < frames; frame++)
+	{
+		for (const std::pair<std::string, double> &varyVal : varyFrames[frame])
+		{
+			std::string name = varyVal.first;
+			double val = varyVal.second;
+
+			SYMTAB *sym = lookup_symbol(&(name[0]));
+
+			set_value(sym, val);
 		}
 
-		r.transformPlane(t);
+		for (int i = 0; i < lastop; i++)
+		{
+			std::string cppString;
 
-		r.draw(g);
-		r.draw(g3d);
-	}
+			g.clear();
+			g3d.clear();
+			t.reset();
+
+			switch (op[i].opcode)
+			{
+			case LIGHT:
+				break;
+			case AMBIENT:
+				break;
+			case CONSTANTS:
+				break;
+			case SAVE_COORDS:
+				break;
+			case CAMERA:
+				break;
+			case SPHERE:
+				if (op[i].op.sphere.constants != NULL)
+				{
+					SYMTAB *t = lookup_symbol(op[i].op.sphere.constants->name);
+
+					g3d.setAmbient(t->s.c->r[0], t->s.c->g[0], t->s.c->b[0]);
+					g3d.setDiffuse(t->s.c->r[1], t->s.c->g[1], t->s.c->b[1]);
+					g3d.setSpecular(t->s.c->r[2], t->s.c->g[2], t->s.c->b[2]);
+				}
+
+				g3d.addSphere(
+					op[i].op.sphere.d[0],
+					op[i].op.sphere.d[1],
+					op[i].op.sphere.d[2],
+					op[i].op.sphere.r,
+					300, 300);
+				break;
+			case TORUS:
+				if (op[i].op.torus.constants != NULL)
+				{
+					SYMTAB *t = lookup_symbol(op[i].op.box.constants->name);
+
+					g3d.setAmbient(t->s.c->r[0], t->s.c->g[0], t->s.c->b[0]);
+					g3d.setDiffuse(t->s.c->r[1], t->s.c->g[1], t->s.c->b[1]);
+					g3d.setSpecular(t->s.c->r[2], t->s.c->g[2], t->s.c->b[2]);
+				}
+
+				g3d.addTorus(op[i].op.torus.d[0],
+							op[i].op.torus.d[1],
+							op[i].op.torus.d[2],
+							op[i].op.torus.r0,
+							op[i].op.torus.r1,
+							300, 300);
+				break;
+			case BOX:
+				if (op[i].op.sphere.constants != NULL)
+				{
+					SYMTAB *t = lookup_symbol(op[i].op.box.constants->name);
+
+					g3d.setAmbient(t->s.c->r[0], t->s.c->g[0], t->s.c->b[0]);
+					g3d.setDiffuse(t->s.c->r[1], t->s.c->g[1], t->s.c->b[1]);
+					g3d.setSpecular(t->s.c->r[2], t->s.c->g[2], t->s.c->b[2]);
+				}
+
+				g3d.addBox(op[i].op.box.d0[0],
+						op[i].op.box.d0[1],
+						op[i].op.box.d0[2],
+						op[i].op.box.d1[0],
+						op[i].op.box.d1[1],
+						op[i].op.box.d1[2]);
+				break;
+			case LINE:
+				g.addEdge(op[i].op.line.p0[0],
+						op[i].op.line.p0[1],
+						op[i].op.line.p0[2],
+						op[i].op.line.p1[0],
+						op[i].op.line.p1[1],
+						op[i].op.line.p1[2]);
+				break;
+			case MESH:
+				break;
+			case SET:
+				break;
+			case MOVE:
+				double knob = 1;
+
+				if (op[i].op.move.p != NULL)
+				{
+					knob = op[i].op.move.p->s.value;
+				}
+
+				t.addTranslation(op[i].op.move.d[0] * knob,
+								op[i].op.move.d[1] * knob,
+								op[i].op.move.d[2] * knob);
+				break;
+			case SCALE:
+				double knob = 1;
+
+				if (op[i].op.scale.p != NULL)
+				{
+					knob = op[i].op.scale.p->s.value;
+				}
+
+				t.addDilation(op[i].op.scale.d[0] * knob,
+							op[i].op.scale.d[1] * knob,
+							op[i].op.scale.d[2] * knob);
+
+				break;
+			case ROTATE:
+				double knob = 1;
+
+				if (op[i].op.rotate.p != NULL)
+				{
+					knob = op[i].op.rotate.p->s.value;
+				}
+
+				if (op[i].op.rotate.axis == 0)
+				{
+					t.addRotation(op[i].op.rotate.degrees * knob, Axis::X);
+					break;
+				}
+				else if (op[i].op.rotate.axis == 1)
+				{
+					t.addRotation(op[i].op.rotate.degrees * knob, Axis::Y);
+					break;
+				}
+				else if (op[i].op.rotate.axis == 2)
+				{
+					t.addRotation(op[i].op.rotate.degrees * knob, Axis::Z);
+					break;
+				}
+				break;
+			case BASENAME:
+				break;
+			case SAVE_KNOBS:
+				break;
+			case TWEEN:
+				break;
+			case FRAMES:
+				break;
+			case VARY:
+				break;
+			case PUSH:
+				r.addPlane();
+				break;
+			case POP:
+				r.deletePlane();
+				break;
+			case GENERATE_RAYFILES:
+				break;
+			case SAVE:
+				cppString = op[i].op.save.p->name;
+
+				w.draw(cppString, false);
+				break;
+			case SHADING:
+				break;
+			case SETKNOBS:
+				break;
+			case FOCAL:
+				break;
+			case DISPLAY:
+				w.draw("temp.ppm", false);
+				w.display();
+
+				// std::cin.ignore();
+				system("rm temp.ppm");
+			}
+
+			r.transformPlane(t);
+
+			r.draw(g);
+			r.draw(g3d);
+		}
+	}	
 }
