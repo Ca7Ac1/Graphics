@@ -146,6 +146,18 @@ struct command
 
 extern "C" struct command op[MAX_COMMANDS];
 
+int num_frames;
+char name[128];
+
+struct vary_node {
+
+  char name[128];
+  double value;
+  struct vary_node *next;
+};
+struct vary_node * get_knob_node(struct vary_node * front, char * knob_name);
+struct vary_node * add_node(struct vary_node * front, char * knob_name);
+
 void print_pcode();
 void parse_mdl();
 
