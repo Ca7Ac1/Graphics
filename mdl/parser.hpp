@@ -146,9 +146,6 @@ struct command
 
 extern "C" struct command op[MAX_COMMANDS];
 
-int num_frames;
-char name[128];
-
 struct vary_node {
 
   char name[128];
