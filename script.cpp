@@ -398,21 +398,22 @@ void parse_mdl()
 	Graphics3D g3d;
 	Transform t;
 
-	int frames = 0;
+	int frameCount = 0;
 	std::string basename = "";
 	bool vary = false;
+
 	for (int i = 0; i < lastop; i++)
 	{
 		switch (op[i].opcode)
 		{
 		case FRAMES:
-			if (frames != 0 || op[i].op.frames.num_frames <= 0)
+			if (frameCount != 0 || op[i].op.frames.num_frames <= 0)
 			{
 				std::cout << "Invalid frames operation";
 				exit(-1);
 			}
 
-			frames = op[i].op.frames.num_frames;
+			frameCount = op[i].op.frames.num_frames;
 			break;
 		case BASENAME:
 			basename = op[i].op.basename.p->name;
@@ -423,20 +424,20 @@ void parse_mdl()
 		}
 	}
 
-	if (frames == 0 && vary)
+	if (frameCount == 0 && vary)
 	{
 		std::cout << "Need frames operation if vary operation is used";
 		exit(-1);
 	}
 
-	if (frames != 0 && basename == "")
+	if (frameCount != 0 && basename == "")
 	{
 		std::cout << "Warning: no basename provided, default being used";
 		basename = "animation";
 	}
 
-	frames = std::max(1, frames);
-	std::vector<std::map<std::string, double>> varyFrames(frames, std::map<std::string, double>());
+	frameCount = std::max(1, frameCount);
+	std::vector<std::map<std::string, double>> varyFrames(frameCount, std::map<std::string, double>());
 	for (int i = 0; i < lastop; i++)
 	{
 		if (op[i].opcode == VARY)
@@ -458,7 +459,7 @@ void parse_mdl()
 		}
 	}
 
-	for (int frame = 0; frame < frames; frame++)
+	for (int frame = 0; frame < frameCount; frame++)
 	{
 		for (const std::pair<std::string, double> &varyVal : varyFrames[frame])
 		{
@@ -638,6 +639,13 @@ void parse_mdl()
 
 			r.draw(g);
 			r.draw(g3d);
+		}
+
+		if (vary)
+		{
+			std::string frameCount = std::to_string(frame);
+			frameCount.insert(0, 3 - frameCount.size(), '0');
+			w.draw("anim/" + basename + "00" + std::to_string(frame) + ".ppm");
 		}
 	}	
 }
