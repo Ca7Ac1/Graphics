@@ -478,6 +478,9 @@ void parse_mdl()
 		r.clearPlane();
 		r.clearZBuffer();
 
+		r.setColor(0, 0, 0);
+		r.fill();
+
 		for (int i = 0; i < lastop; i++)
 		{
 			std::string cppString;
