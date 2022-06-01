@@ -99,7 +99,14 @@ SYMTAB *add_symbol(char *name, int type, void *data)
 		t->s.l = (struct light *)data;
 		break;
 	case SYM_VALUE:
-		t->s.value = *((double *)(int *)data);
+		if (data == NULL)
+		{
+			t->s.value = 0.0;
+		}
+		else
+		{
+			t->s.value = *((double *)(int *)data);
+		}
 		break;
 	case SYM_FILE:
 		break;
