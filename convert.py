@@ -1,16 +1,13 @@
+from subprocess import Popen, PIPE
+from os import remove
 from PIL import Image
+import imageio.v2 as imageio
+import glob
 
 import os
 import sys
 
-
-if __name__ == '__main__':
-    if len(sys.argv) != 3:
-        sys.exit("Wrong number of arguments")
-
-    orig_file = sys.argv[1]
-    new_file_extension = sys.argv[2]
-
+def convert(orig_file, new_file_extension):
     orig_extension = ''
 
     if 'ppm' in orig_file:
@@ -40,3 +37,27 @@ if __name__ == '__main__':
     orig = orig.convert('RGB')
     
     orig.save(orig_file.replace(orig_extension, new_extension), new_extension)
+
+def animate(name):
+    filenames = glob.glob("anim/" + name + "*");
+    filenames = sorted(filenames)
+    print(filenames)
+    images = []
+    for filename in filenames:
+        images.append(imageio.imread(filename))
+    imageio.mimsave(name+".gif", images, fps=60)
+
+if __name__ == '__main__':
+    if len(sys.argv) < 2:
+        sys.exit("Too few arguments")
+
+    try:
+        if sys.argv[1] == 'convert':
+            convert(sys.argv[2], sys.argv[3])
+        elif sys.argv[1] == 'animate':
+            animate(sys.argv[2])
+    except Exception as e:
+        print(e)
+        print("Incorrect number of arguments")
+
+    
