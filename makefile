@@ -4,6 +4,9 @@ show: compile
 gallery: compile
 	./mdl.exe gallery.mdl
 
+gallery: compile
+	./mdl.exe gallery.mdl
+
 flex:
 	cd mdl ; flex -I mdl.l
 
