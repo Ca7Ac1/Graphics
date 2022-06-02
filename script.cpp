@@ -458,7 +458,7 @@ void parse_mdl()
 			for (int frame = 0; frame + startFrame <= endFrame; frame++)
 			{
 				std::string name = op[i].op.vary.p->name;
-				varyFrames[frame + startFrame][name] = delta * frame;
+				varyFrames[frame + startFrame][name] = op[i].op.vary.start_val + delta * frame;
 			}
 		}
 	}
