@@ -655,7 +655,7 @@ void parse_mdl()
 		{
 			std::string frameCount = std::to_string(frame);
 			frameCount.insert(0, 3 - frameCount.size(), '0');
-			w.draw("anim/" + basename + "00" + std::to_string(frame) + ".ppm");
+			w.draw("anim/" + basename + "0" + frameCount + ".ppm");
 
 			std::cout << frame << " drawn" << std::endl;
 		}
