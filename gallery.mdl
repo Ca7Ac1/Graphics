@@ -1,15 +1,15 @@
-frames 100
+frames 180
 basename key
 
 constants silver 0.19225 0.50754 0.508273 0.19225 0.50754 0.508273 0.19225 0.50754 0.508273
 push
 move 250 250 0
 rotate y 360 turn
-box silver -30 180 -30 60 380 60
+box silver -25 180 25 50 380 50
 push
-move 0 70 -45
+move 0 70 0
 rotate x 90
-torus silver -111 0 0 30 50
-torus silver 111 0 0 30 50
+torus silver -136 0 0 35 75
+torus silver 136 0 0 35 75
 
-vary turn 0 99 0 1
+vary turn 0 179 0 1

@@ -1,11 +1,8 @@
 show: compile
-	./mdl.exe simple_anim.mdl
+	./mdl.exe simple_anim.mdl ; python3 convert.py animate simple
 
 gallery: compile
-	./mdl.exe gallery.mdl
-
-gallery: compile
-	./mdl.exe gallery.mdl
+	./mdl.exe gallery.mdl ; python3 convert.py animate key
 
 flex:
 	cd mdl ; flex -I mdl.l
