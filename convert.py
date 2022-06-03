@@ -45,7 +45,11 @@ def animate(name):
     images = []
     for filename in filenames:
         images.append(imageio.imread(filename))
-    imageio.mimsave(name+".gif", images, fps=60)
+    
+    output_gif = name+".gif"
+    imageio.mimsave(output_gif, images, fps=60)
+
+    print(output_gif)
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
