@@ -9,7 +9,7 @@
   - Shading
     - Phong Shading
     - Gouraud  Shading 
-  - Opacity
+  - Opacity (maybe)
     - Not sure about this but want to try to make 3d objects that are transparent  
   - Read external images (maybe)
     - Script that converts vector files and .obj files into mdl    
