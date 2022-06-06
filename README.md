@@ -11,5 +11,7 @@
     - Gouraud  Shading 
   - Opacity
     - Not sure about this but want to try to make 3d objects that are transparent  
+  - Read external images
+    - Script that converts vector files and .obj files into mdl    
 ---
 ## The Details
