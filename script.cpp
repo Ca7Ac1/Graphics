@@ -398,6 +398,7 @@ void parse_mdl()
 	Graphics3D g3d;
 	Transform t;
 
+	w.invertY();
 	r.setColor(255, 255, 255);
 	r.setAmbientLight();
 
