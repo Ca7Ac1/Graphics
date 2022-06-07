@@ -400,7 +400,6 @@ void parse_mdl()
 
 	r.setColor(255, 255, 255);
 	r.setAmbientLight();
-	r.addPointLight(.5, .75, 1);
 
 	int frameCount = 0;
 	std::string basename = "";
@@ -465,18 +464,21 @@ void parse_mdl()
 
 	for (int frame = 0; frame < frameCount; frame++)
 	{
+		SYMTAB *sym;
+
 		for (const std::pair<std::string, double> &varyVal : varyFrames[frame])
 		{
 			std::string name = varyVal.first;
 			double val = varyVal.second;
 
-			SYMTAB *sym = lookup_symbol(&(name[0]));
+			sym = lookup_symbol(&(name[0]));
 
 			set_value(sym, val);
 		}
 
 		r.clearPlane();
 		r.clearZBuffer();
+		r.clearLights();
 
 		r.setColor(0, 0, 0);
 		r.fill();
@@ -493,8 +495,22 @@ void parse_mdl()
 			switch (op[i].opcode)
 			{
 			case LIGHT:
+				sym = lookup_symbol(op[i].op.light.p->name);
+				
+				r.setColor(sym->s.l->l[0],
+						   sym->s.l->l[1],
+						   sym->s.l->l[2]);
+
+				r.addPointLight(sym->s.l->c[0],
+								sym->s.l->c[1],
+								sym->s.l->c[2]);
 				break;
 			case AMBIENT:
+				r.setColor(op[i].op.ambient.c[0],
+						   op[i].op.ambient.c[1],
+						   op[i].op.ambient.c[2]);
+
+				r.setAmbientLight();
 				break;
 			case CONSTANTS:
 				break;
@@ -505,11 +521,11 @@ void parse_mdl()
 			case SPHERE:
 				if (op[i].op.sphere.constants != NULL)
 				{
-					SYMTAB *t = lookup_symbol(op[i].op.sphere.constants->name);
+					sym = lookup_symbol(op[i].op.sphere.constants->name);
 
-					g3d.setAmbient(t->s.c->r[0], t->s.c->g[0], t->s.c->b[0]);
-					g3d.setDiffuse(t->s.c->r[1], t->s.c->g[1], t->s.c->b[1]);
-					g3d.setSpecular(t->s.c->r[2], t->s.c->g[2], t->s.c->b[2]);
+					g3d.setAmbient(sym->s.c->r[0], sym->s.c->g[0], sym->s.c->b[0]);
+					g3d.setDiffuse(sym->s.c->r[1], sym->s.c->g[1], sym->s.c->b[1]);
+					g3d.setSpecular(sym->s.c->r[2], sym->s.c->g[2], sym->s.c->b[2]);
 				}
 
 				g3d.addSphere(
@@ -522,11 +538,11 @@ void parse_mdl()
 			case TORUS:
 				if (op[i].op.torus.constants != NULL)
 				{
-					SYMTAB *t = lookup_symbol(op[i].op.box.constants->name);
+					sym = lookup_symbol(op[i].op.box.constants->name);
 
-					g3d.setAmbient(t->s.c->r[0], t->s.c->g[0], t->s.c->b[0]);
-					g3d.setDiffuse(t->s.c->r[1], t->s.c->g[1], t->s.c->b[1]);
-					g3d.setSpecular(t->s.c->r[2], t->s.c->g[2], t->s.c->b[2]);
+					g3d.setAmbient(sym->s.c->r[0], sym->s.c->g[0], sym->s.c->b[0]);
+					g3d.setDiffuse(sym->s.c->r[1], sym->s.c->g[1], sym->s.c->b[1]);
+					g3d.setSpecular(sym->s.c->r[2], sym->s.c->g[2], sym->s.c->b[2]);
 				}
 
 				g3d.addTorus(op[i].op.torus.d[0],
@@ -539,11 +555,11 @@ void parse_mdl()
 			case BOX:
 				if (op[i].op.sphere.constants != NULL)
 				{
-					SYMTAB *t = lookup_symbol(op[i].op.box.constants->name);
+					sym = lookup_symbol(op[i].op.box.constants->name);
 
-					g3d.setAmbient(t->s.c->r[0], t->s.c->g[0], t->s.c->b[0]);
-					g3d.setDiffuse(t->s.c->r[1], t->s.c->g[1], t->s.c->b[1]);
-					g3d.setSpecular(t->s.c->r[2], t->s.c->g[2], t->s.c->b[2]);
+					g3d.setAmbient(sym->s.c->r[0], sym->s.c->g[0], sym->s.c->b[0]);
+					g3d.setDiffuse(sym->s.c->r[1], sym->s.c->g[1], sym->s.c->b[1]);
+					g3d.setSpecular(sym->s.c->r[2], sym->s.c->g[2], sym->s.c->b[2]);
 				}
 
 				g3d.addBox(op[i].op.box.d0[0],
