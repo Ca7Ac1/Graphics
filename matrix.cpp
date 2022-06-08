@@ -118,6 +118,13 @@ double Point::operator[](int i) const
     }
 }
 
+bool Point::operator==(const Point &p) const
+{
+    return x == p.getX() &&
+           y == p.getY() &&
+           z == p.getZ();
+}
+
 Point crossProduct(Point a, Point b)
 {
     return Point(

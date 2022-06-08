@@ -16,7 +16,11 @@ Renderer::Renderer(Window &window) : window(window),
                                      backfaceCullingEnabled(true),
                                      fillEnabled(true),
                                      zBufferEnabled(true),
+                                     flatShadingEnabled(true),
+                                     gouraudShadingEnabled(false),
+                                     phongShadingEnabled(false),
                                      zBuffer(window.getXDimension(), std::vector<double>(window.getYDimension(), -DBL_MAX)),
+                                     vertexNormals(),
                                      red(0),
                                      green(0),
                                      blue(0),
@@ -72,6 +76,27 @@ void Renderer::enableFill()
 void Renderer::disableFill()
 {
     fillEnabled = false;
+}
+
+void Renderer::enableFlatShading()
+{
+    flatShadingEnabled = true;
+    gouraudShadingEnabled = false;
+    phongShadingEnabled = false;
+}
+
+void Renderer::enableGouraudShading()
+{
+    flatShadingEnabled = false;
+    gouraudShadingEnabled = true;
+    phongShadingEnabled = false;
+}
+
+void Renderer::enablePhongShading()
+{
+    flatShadingEnabled = false;
+    gouraudShadingEnabled = false;
+    phongShadingEnabled = true;
 }
 
 void Renderer::plot(int x, int y, double z)
@@ -369,8 +394,7 @@ void Renderer::draw(Graphics3D &g3d, bool applyContext)
         {
             if (fillEnabled)
             {
-                Color c = lighting.get(g3d, i);
-                drawFilled(g3d[i], lighting.get(g3d, i));
+                drawFilled(g3d[i], lighting.get(g3d, g3d.getNormal(i)));
             }
             else
             {

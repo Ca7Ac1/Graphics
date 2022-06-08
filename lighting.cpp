@@ -29,13 +29,12 @@ void Lighting::clear()
     colors.clear();
 }
 
-Color Lighting::get(const Graphics3D &g3d, int triangle)
+Color Lighting::get(const Graphics3D &g3d, Point normal)
 {
     Point kA = g3d.getAmbient();
     Point kD = g3d.getDiffuse();
     Point kS = g3d.getSpecular();
 
-    Point normal = g3d.getNormal(triangle);
     Point view(0, 0, 1);
 
     normal.normalize();    
