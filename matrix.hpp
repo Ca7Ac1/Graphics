@@ -26,17 +26,33 @@ public:
     void set(double x, double y, double z, double t = 1);
 
     void normalize();
-    
+
     Point operator+(const Point &p) const;
     Point operator-(const Point &p) const;
 
     Point operator+(double v) const;
     Point operator-(double v) const;
     Point operator*(double v) const;
-    
+
     double &operator[](int i);
     double operator[](int i) const;
+
+    bool operator==(const Point &p) const;
 };
+
+namespace std
+{
+    template <>
+    struct hash<Point>
+    {
+        size_t operator()(const Point &p) const
+        {
+            return hash<double>()(p.getX()) ^
+                   hash<double>()(p.getY()) ^
+                   hash<double>()(p.getZ()); 
+        }
+    };
+}
 
 bool cmprX(const Point &a, const Point &b);
 bool cmprY(const Point &a, const Point &b);
