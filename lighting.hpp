@@ -24,7 +24,7 @@ public:
 
     void clear();
 
-    Color get(const Graphics3D &g3d, int triangle);
+    Color get(const Graphics3D &g3d, Point normal);
 };
 
 #endif

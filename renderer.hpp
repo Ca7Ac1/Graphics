@@ -2,6 +2,7 @@
 #define RENDERER_H
 
 #include <vector>
+#include <unordered_map>
 
 #include "window.hpp"
 #include "context.hpp"
@@ -20,9 +21,15 @@ private:
 
     std::vector<std::vector<double>> zBuffer;
 
+    std::unordered_map<Point, double> vertexNormals;
+
     bool zBufferEnabled;
     bool fillEnabled;
     bool backfaceCullingEnabled;
+
+    bool flatShadingEnabled;
+    bool gouraudShadingEnabled;
+    bool phongShadingEnabled;
 
     int red;
     int green;
@@ -45,6 +52,10 @@ public:
 
     void enableFill();
     void disableFill();
+
+    void enableFlatShading();
+    void enableGouraudShading();
+    void enablePhongShading();
 
     void plot(int x, int y, double z = 0.0);
     void fill();
