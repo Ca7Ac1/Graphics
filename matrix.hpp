@@ -33,7 +33,8 @@ public:
     Point operator+(double v) const;
     Point operator-(double v) const;
     Point operator*(double v) const;
-
+    Point operator/(double v) const;
+    
     double &operator[](int i);
     double operator[](int i) const;
 

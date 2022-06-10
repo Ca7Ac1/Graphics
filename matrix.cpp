@@ -84,6 +84,12 @@ Point Point::operator*(double v) const
     return Point(x * v, y * v, z * v);
 }
 
+Point Point::operator/(double v) const
+{
+    return Point(x / v, y / v, z / v);
+}
+
+
 double &Point::operator[](int i)
 {
     switch (i)
