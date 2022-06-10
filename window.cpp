@@ -2,6 +2,7 @@
 #include <string>
 #include <fstream>
 #include <cstdlib>
+#include <cmath>
 
 #include "window.hpp"
 #include "matrix.hpp"
@@ -86,6 +87,11 @@ Color Color::operator+(const Color &c)
     return Color(getRed() + c.getRed(), getGreen() + c.getGreen(), getBlue() + c.getBlue(), scale, clamp);
 }
 
+Color Color::operator+(const Point &p)
+{
+    return Color(getRed() + p[0], getGreen() + p[1], getBlue() + p[2], scale, clamp);
+}
+
 Window::Window(int xDimension, int yDimension) : xDimension(xDimension), yDimension(yDimension),
                                                  colorScale(255), xInverted(false), yInverted(false),
                                                  window(xDimension, std::vector<Color>(yDimension, Color(0, 0, 0, colorScale))) {}
@@ -121,6 +127,52 @@ void Window::draw(const std::string &file, bool binary)
     if (!binary)
     {
         outputFile << '\n';
+    }
+}
+
+void Window::dither()
+{
+    std::vector<std::vector<Color>> dithered(xDimension, std::vector<Color>(yDimension, Color(0, 0, 0)));
+
+    for (int i = 0; i < yDimension; i++)
+    {
+        for (int j = 0; j < xDimension; j++)
+        {
+            Point orig(window[j][i].getRed(), window[j][i].getGreen(), window[j][i].getBlue());
+            Point ditherError(std::round(orig[0] / 255.0),
+                              std::round(orig[1] / 255.0),
+                              std::round(orig[2] / 255.0));
+
+            Point error = orig - ditherError;
+
+            if (j + 1 < xDimension)
+            {
+                dithered[j + 1][i] = window[j + 1][i] + error * 7.0 / 16.0;
+            }
+
+            if (j - 1 > 0 && i + 1 < yDimension)
+            {
+                dithered[j - 1][i + 1] = window[j - 1][i + 1] + error * 3.0 / 16.0;
+            }
+
+            if (i + 1 < yDimension)
+            {
+                dithered[j][i + 1] = window[j][i + 1] + error * 5.0 / 16.0;
+            }
+
+            if (j + 1 < xDimension && i + 1 < yDimension)
+            {
+                dithered[j + 1][i + 1] = window[j + 1][i + 1] + error * 1.0 / 16.0;
+            }
+        }
+    }
+
+    for (int i = 0; i < yDimension; i++)
+    {
+        for (int j = 0; j < xDimension; j++)
+        {
+            window[j][i] = dithered[j][i];
+        }
     }
 }
 

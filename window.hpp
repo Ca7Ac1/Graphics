@@ -38,6 +38,7 @@ public:
 
     Color operator+(const Color &c);
 
+    Color operator+(const Point &p);
 };
 
 class Window
@@ -60,6 +61,8 @@ public:
 
     void draw(const std::string &file, bool binary = true);
     void display();
+
+    void dither();
 
     int getXDimension() const;
     int getYDimension() const;
