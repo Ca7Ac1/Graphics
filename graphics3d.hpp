@@ -2,6 +2,7 @@
 #define GRAPHICS3D_H
 
 #include <vector>
+#include <unordered_map>
 
 #include "window.hpp"
 #include "matrix.hpp"
@@ -13,12 +14,17 @@ class Graphics3D
 private:
     std::vector<Graphics> polygons;
     
+    std::unordered_map<Point, Point> vertexNormals;
+    std::unordered_map<Point, int> vertexCount;
+    
     Point ambient;
     Point diffuse;
     Point specular;
 
     std::vector<std::vector<Point>> *generateSphere(int x, int y, int z, int r, int steps, int turns);
     std::vector<std::vector<Point>> *generateTorus(int x, int y, int z, int r1, int r2, int steps, int turns);
+
+    void addVertex();
 
 public:
     Graphics3D();
@@ -40,6 +46,8 @@ public:
     void clear();
 
     int getCount() const;
+
+    const std::unordered_map<Point, Point> &calculateNormals(); 
 
     void setAmbient(double r, double g, double b);
     void setDiffuse(double r, double g, double b);
