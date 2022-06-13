@@ -13,6 +13,10 @@ private:
 
 public:
     Point(double x, double y, double z, double t = 1);
+    Point();
+    
+    Point(const Point& other) = default;
+    Point& operator=(const Point& other) = default;
 
     double getX() const;
     double getY() const;
@@ -46,6 +50,8 @@ namespace std
     template <>
     struct hash<Point>
     {
+        hash(){}
+
         size_t operator()(const Point &p) const
         {
             return hash<double>()(p.getX()) ^

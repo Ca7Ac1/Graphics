@@ -10,6 +10,7 @@
 #include "transform.hpp"
 #include "graphics.hpp"
 #include "graphics3d.hpp"
+#include "lighting.hpp"
 
 Renderer::Renderer(Window &window) : window(window),
                                      plane(),
@@ -318,7 +319,7 @@ void Renderer::draw(Graphics &g, bool applyContext)
     g.clear();
 }
 
-void Renderer::drawFilled(Graphics &g, Color c)
+void Renderer::flat(Graphics &g, Color c)
 {
     if (g.getCount() != 6)
     {
@@ -394,7 +395,21 @@ void Renderer::draw(Graphics3D &g3d, bool applyContext)
         {
             if (fillEnabled)
             {
-                drawFilled(g3d[i], lighting.get(g3d, g3d.getNormal(i)));
+                if (flatShadingEnabled)
+                {
+                    flat(g3d[i], lighting.get(g3d.getAmbient(),
+                                              g3d.getDiffuse(),
+                                              g3d.getSpecular(), 
+                                              g3d.getNormal(i)));
+                }
+                else if (gouraudShadingEnabled)
+                {
+                    std::cout << "g shade" << std::endl;
+                }
+                else if (phongShadingEnabled)
+                {
+                    std::cout << "p shade" << std::endl;
+                }
             }
             else
             {

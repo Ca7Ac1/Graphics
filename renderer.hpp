@@ -36,7 +36,7 @@ private:
     int blue;
 
     void plotColor(int x, int y, double z, int red, int green, int blue);
-    void drawFilled(Graphics &g, Color c);
+    void flat(Graphics &g, Color c);
 
 public:
     Renderer(Window &window);
