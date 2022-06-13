@@ -4,6 +4,7 @@
 #include "matrix.hpp"
 
 Point::Point(double x, double y, double z, double t) : x(x), y(y), z(z), t(t) {}
+Point::Point() : Point(0, 0, 0) {}
 
 double Point::getX() const
 {

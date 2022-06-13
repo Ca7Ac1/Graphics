@@ -24,7 +24,7 @@ public:
 
     void clear();
 
-    Color get(const Graphics3D &g3d, Point normal);
+    Color get(Point kA, Point kD, Point kS, Point normal);
 };
 
 #endif
