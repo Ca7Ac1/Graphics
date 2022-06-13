@@ -4,6 +4,9 @@ show: compile
 gallery: compile
 	./mdl.exe gallery.mdl ; python3 convert.py animate key
 
+clean: 
+	rm -f *.o ; rm -f *.exe ; rm -f *.ppm ; rm -f *.png ; rm -f anim/*.ppm ; rm -f anim/*.png ; rm -f *.gif
+
 flex:
 	cd mdl ; flex -I mdl.l
 
