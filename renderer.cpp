@@ -22,7 +22,6 @@ Renderer::Renderer(Window &window) : window(window),
                                      gouraudShadingEnabled(false),
                                      phongShadingEnabled(false),
                                      zBuffer(window.getXDimension(), std::vector<double>(window.getYDimension(), -DBL_MAX)),
-
                                      red(0),
                                      green(0),
                                      blue(0),
@@ -414,7 +413,7 @@ void Renderer::gouraud(Graphics &g, Point kA, Point kD, Point kS, std::unordered
     {
         if (y >= (int)pts[1].getY() && !flip)
         {
-            c1 = Point(vertex1.getRed(), vertex1.getGreen(), vertex1.getBlue());
+            c1.set(vertex1.getRed(), vertex1.getGreen(), vertex1.getBlue());
             deltaC1.set((vertex2.getRed() - vertex1.getRed()) / (int)(pts[2].getY() - pts[1].getY() + 1),
                         (vertex2.getGreen() - vertex1.getGreen()) / (int)(pts[2].getY() - pts[1].getY() + 1),
                         (vertex2.getBlue() - vertex1.getRed()) / (int)(pts[2].getY() - pts[1].getY() + 1));
@@ -471,9 +470,8 @@ std::unordered_map<Point, Point> &Renderer::calculateNormals(Graphics3D &g3d)
         for (int j = 0; j < g3d[i].getCount(); j++)
         {
             Point vertex = g3d[i][j];
-            
             Point normal = g3d.getNormal(i);
-            normal.normalize();
+            // normal.normalize();
 
             if ((*normals).find(vertex) == (*normals).end())
             {
@@ -524,7 +522,6 @@ void Renderer::draw(Graphics3D &g3d, bool applyContext)
                 else if (gouraudShadingEnabled)
                 {
                     gouraud(g3d[i], g3d.getAmbient(), g3d.getDiffuse(), g3d.getSpecular(), normals);
-                    std::cout << "g shade" << std::endl;
                 }
                 else if (phongShadingEnabled)
                 {
