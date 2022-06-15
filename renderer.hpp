@@ -41,6 +41,8 @@ private:
     void flat(Graphics &g, Color c);
     void gouraud(Graphics &g, Point kA, Point kD, Point kS,
                  std::unordered_map<Point, Point> &normals);
+    void phong(Graphics &g, Point kA, Point kD, Point kS,
+                 std::unordered_map<Point, Point> &normals);
 
 public:
     Renderer(Window &window);
