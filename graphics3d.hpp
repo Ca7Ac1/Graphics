@@ -14,9 +14,6 @@ class Graphics3D
 private:
     std::vector<Graphics> polygons;
     
-    std::unordered_map<Point, Point> vertexNormals;
-    std::unordered_map<Point, int> vertexCount;
-    
     Point ambient;
     Point diffuse;
     Point specular;
@@ -46,8 +43,6 @@ public:
     void clear();
 
     int getCount() const;
-
-    const std::unordered_map<Point, Point> &calculateNormals(); 
 
     void setAmbient(double r, double g, double b);
     void setDiffuse(double r, double g, double b);

@@ -7,6 +7,7 @@
 
 #include "renderer.hpp"
 #include "window.hpp"
+#include "matrix.hpp"
 #include "transform.hpp"
 #include "graphics.hpp"
 #include "graphics3d.hpp"
@@ -21,7 +22,7 @@ Renderer::Renderer(Window &window) : window(window),
                                      gouraudShadingEnabled(false),
                                      phongShadingEnabled(false),
                                      zBuffer(window.getXDimension(), std::vector<double>(window.getYDimension(), -DBL_MAX)),
-                                     vertexNormals(),
+
                                      red(0),
                                      green(0),
                                      blue(0),
@@ -321,11 +322,6 @@ void Renderer::draw(Graphics &g, bool applyContext)
 
 void Renderer::flat(Graphics &g, Color c)
 {
-    if (g.getCount() != 6)
-    {
-        throw std::runtime_error("Trying to draw bad matrix");
-    }
-
     std::vector<Point> pts;
     pts.push_back(g[0]);
     pts.push_back(g[2]);
@@ -382,14 +378,137 @@ void Renderer::flat(Graphics &g, Color c)
     }
 }
 
-void Renderer::draw(Graphics3D &g3d, bool applyContext)
+void Renderer::gouraud(Graphics &g, Point kA, Point kD, Point kS, std::unordered_map<Point, Point> &normals)
 {
+    std::vector<Point> pts;
+    pts.push_back(g[0]);
+    pts.push_back(g[2]);
+    pts.push_back(g[4]);
+    std::sort(pts.begin(), pts.end(), cmprY);
+
+    Color vertex0 = lighting.get(kA, kD, kS, normals[pts[0]]);
+    Color vertex1 = lighting.get(kA, kD, kS, normals[pts[1]]);
+    Color vertex2 = lighting.get(kA, kD, kS, normals[pts[2]]);
+
+    Point c0(vertex0.getRed(), vertex0.getGreen(), vertex0.getBlue());
+    Point deltaC0((vertex2.getRed() - vertex0.getRed()) / (int)(pts[2].getY() - pts[0].getY() + 1),
+                  (vertex2.getGreen() - vertex0.getGreen()) / (int)(pts[2].getY() - pts[0].getY() + 1),
+                  (vertex2.getBlue() - vertex0.getRed()) / (int)(pts[2].getY() - pts[0].getY() + 1));
+    Point c1(vertex0.getRed(), vertex0.getGreen(), vertex0.getBlue());
+    Point deltaC1((vertex1.getRed() - vertex0.getRed()) / (int)(pts[1].getY() - pts[0].getY() + 1),
+                  (vertex1.getGreen() - vertex0.getGreen()) / (int)(pts[1].getY() - pts[0].getY() + 1),
+                  (vertex1.getBlue() - vertex0.getRed()) / (int)(pts[1].getY() - pts[0].getY() + 1));
+
+    double x0 = pts[0].getX();
+    double deltaX0 = (pts[2].getX() - pts[0].getX()) / (int)(pts[2].getY() - pts[0].getY() + 1);
+    double x1 = pts[0].getX();
+    double deltaX1 = (pts[1].getX() - pts[0].getX()) / (int)(pts[1].getY() - pts[0].getY() + 1);
+
+    double z0 = pts[0].getZ();
+    double deltaZ0 = (pts[2].getZ() - pts[0].getZ()) / (int)(pts[2].getY() - pts[0].getY() + 1);
+    double z1 = pts[0].getZ();
+    double deltaZ1 = (pts[1].getZ() - pts[0].getZ()) / (int)(pts[1].getY() - pts[0].getY() + 1);
+
+    bool flip = false;
+    for (int y = pts[0].getY(); y <= (int)pts[2].getY(); y++)
+    {
+        if (y >= (int)pts[1].getY() && !flip)
+        {
+            c1 = Point(vertex1.getRed(), vertex1.getGreen(), vertex1.getBlue());
+            deltaC1.set((vertex2.getRed() - vertex1.getRed()) / (int)(pts[2].getY() - pts[1].getY() + 1),
+                        (vertex2.getGreen() - vertex1.getGreen()) / (int)(pts[2].getY() - pts[1].getY() + 1),
+                        (vertex2.getBlue() - vertex1.getRed()) / (int)(pts[2].getY() - pts[1].getY() + 1));
+
+            x1 = pts[1].getX();
+            deltaX1 = (pts[2].getX() - x1) / (int)(pts[2].getY() - pts[1].getY() + 1);
+
+            z1 = pts[1].getZ();
+            deltaZ1 = (pts[2].getZ() - z1) / (int)(pts[2].getY() - pts[1].getY() + 1);
+
+            flip = true;
+        }
+
+        Point startC = x0 < x1 ? c0 : c1;
+        Point endC = x0 < x1 ? c1 : c0;
+
+        double startX = x0 < x1 ? x0 : x1;
+        double endX = x0 < x1 ? x1 : x0;
+
+        double startZ = x0 < x1 ? z0 : z1;
+        double endZ = x0 < x1 ? z1 : z0;
+
+        Point deltaC = (endC - startC) / (endX - startX);
+        double deltaZ = (endZ - startZ) / (endX - startX);
+
+        if (endX - startX == 0)
+        {
+            deltaC.set(0, 0, 0);
+            deltaZ = 0;
+        }
+
+        for (int i = 0.0; i + (int)startX <= (int)endX; i++)
+        {
+            Point currColor = (deltaC * i) + startC;
+            Color c(currColor[0], currColor[1], currColor[2]);
+
+            plotColor(i + startX, y, (i * deltaZ) + startZ, c.getRed(), c.getGreen(), c.getBlue());
+        }
+
+        x0 += deltaX0;
+        x1 += deltaX1;
+
+        z0 += deltaZ0;
+        z1 += deltaZ1;
+    }
+}
+
+std::unordered_map<Point, Point> &Renderer::calculateNormals(Graphics3D &g3d)
+{
+    std::unordered_map<Point, Point> *normals = new std::unordered_map<Point, Point>();
+
     for (int i = 0; i < g3d.getCount(); i++)
     {
-        if (applyContext)
+        for (int j = 0; j < g3d[i].getCount(); j++)
         {
-            plane.apply(g3d[i]);
+            Point vertex = g3d[i][j];
+            
+            Point normal = g3d.getNormal(i);
+            normal.normalize();
+
+            if ((*normals).find(vertex) == (*normals).end())
+            {
+                (*normals)[vertex] = normal;
+            }
+            else
+            {
+                (*normals)[vertex] = (*normals)[vertex] + normal;
+            }
         }
+    }
+
+    for (const auto &p : (*normals))
+    {
+        (*normals)[p.first].normalize();
+    }
+
+    return *normals;
+}
+
+void Renderer::draw(Graphics3D &g3d, bool applyContext)
+{
+    if (applyContext)
+    {
+        plane.apply(g3d);
+    }
+    
+    std::unordered_map<Point, Point> &normals = calculateNormals(g3d);
+
+    for (int i = 0; i < g3d.getCount(); i++)
+    {
+        // if (applyContext)
+        // {
+        //     plane.apply(g3d[i]);
+        // }
 
         if (!backfaceCullingEnabled || g3d.drawFace(i))
         {
@@ -399,11 +518,12 @@ void Renderer::draw(Graphics3D &g3d, bool applyContext)
                 {
                     flat(g3d[i], lighting.get(g3d.getAmbient(),
                                               g3d.getDiffuse(),
-                                              g3d.getSpecular(), 
+                                              g3d.getSpecular(),
                                               g3d.getNormal(i)));
                 }
                 else if (gouraudShadingEnabled)
                 {
+                    gouraud(g3d[i], g3d.getAmbient(), g3d.getDiffuse(), g3d.getSpecular(), normals);
                     std::cout << "g shade" << std::endl;
                 }
                 else if (phongShadingEnabled)
@@ -417,6 +537,8 @@ void Renderer::draw(Graphics3D &g3d, bool applyContext)
             }
         }
     }
+
+    delete &normals;
 
     g3d.clear();
 }

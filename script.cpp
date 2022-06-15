@@ -82,7 +82,7 @@ void parse(Window &w, Renderer &r, std::string fileName)
 			int radius;
 
 			file >> coords[0] >> coords[1] >> coords[2] >> radius;
-			g3d.addSphere(coords[0], coords[1], coords[2], radius, 250, 250);
+			g3d.addSphere(coords[0], coords[1], coords[2], radius, 100, 100);
 		}
 		else if (cmd == "torus")
 		{
@@ -90,7 +90,7 @@ void parse(Window &w, Renderer &r, std::string fileName)
 			int radii[2];
 
 			file >> coords[0] >> coords[1] >> coords[2] >> radii[0] >> radii[1];
-			g3d.addTorus(coords[0], coords[1], coords[2], radii[0], radii[1], 250, 250);
+			g3d.addTorus(coords[0], coords[1], coords[2], radii[0], radii[1], 100, 100);
 		}
 		else if (cmd == "ident")
 		{
@@ -534,7 +534,7 @@ void parse_mdl()
 					op[i].op.sphere.d[1],
 					op[i].op.sphere.d[2],
 					op[i].op.sphere.r,
-					250, 250);
+					100, 100);
 				break;
 			case TORUS:
 				if (op[i].op.torus.constants != NULL)
@@ -551,7 +551,7 @@ void parse_mdl()
 							op[i].op.torus.d[2],
 							op[i].op.torus.r0,
 							op[i].op.torus.r1,
-							250, 250);
+							100, 100);
 				break;
 			case BOX:
 				if (op[i].op.sphere.constants != NULL)
@@ -649,6 +649,25 @@ void parse_mdl()
 				w.draw(cppString, false);
 				break;
 			case SHADING:
+				sym = lookup_symbol(op[i].op.shading.p->name);
+				cppString = sym->name;
+
+				if (cppString == "flat")
+				{
+					r.enableFlatShading();
+				}
+				else if (cppString == "gouraud")
+				{
+					r.enableGouraudShading();
+				}
+				else if (cppString == "phong")
+				{
+					r.enablePhongShading();
+				}
+				else
+				{
+					std::cout << cppString << std::endl;
+				}
 				break;
 			case SETKNOBS:
 				break;

@@ -60,3 +60,8 @@ void Context::apply(Graphics &g)
 {
     g.transform(coordinateSystem.top());
 }
+
+void Context::apply(Graphics3D &g3d)
+{
+    g3d.transform(coordinateSystem.top());
+}

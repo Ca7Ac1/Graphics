@@ -6,6 +6,7 @@
 #include "matrix.hpp"
 #include "transform.hpp"
 #include "graphics.hpp"
+#include "graphics3d.hpp"
 
 class Context
 {
@@ -24,6 +25,7 @@ public:
 
 
     void apply(Graphics &g);
+    void apply(Graphics3D &g3d);
 };
 
 #endif
