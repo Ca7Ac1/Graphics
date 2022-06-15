@@ -15,3 +15,13 @@
     - Script that converts vector files and .obj files into mdl    
 ---
 ## The Details
+Completed:
+  - Lighting
+    - Can use multiple point lights within an mdl file
+  - Shading
+    - Gouraud Shading
+      - Works, but has some weird artifacts
+    - Phong Shading
+      - Works and doesn't have as many weird artifacts as Gouraud
+  - Read external images
+    - Did not implement mesh, but have a python script that can turn .obj into code that uses my engine (did not implement it with mdl) and used it for the teapot and diamond
