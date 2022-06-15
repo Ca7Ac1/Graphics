@@ -392,11 +392,11 @@ void Renderer::gouraud(Graphics &g, Point kA, Point kD, Point kS, std::unordered
     Point c0(vertex0.getRed(), vertex0.getGreen(), vertex0.getBlue());
     Point deltaC0((vertex2.getRed() - vertex0.getRed()) / (int)(pts[2].getY() - pts[0].getY() + 1),
                   (vertex2.getGreen() - vertex0.getGreen()) / (int)(pts[2].getY() - pts[0].getY() + 1),
-                  (vertex2.getBlue() - vertex0.getRed()) / (int)(pts[2].getY() - pts[0].getY() + 1));
+                  (vertex2.getBlue() - vertex0.getBlue()) / (int)(pts[2].getY() - pts[0].getY() + 1));
     Point c1(vertex0.getRed(), vertex0.getGreen(), vertex0.getBlue());
     Point deltaC1((vertex1.getRed() - vertex0.getRed()) / (int)(pts[1].getY() - pts[0].getY() + 1),
                   (vertex1.getGreen() - vertex0.getGreen()) / (int)(pts[1].getY() - pts[0].getY() + 1),
-                  (vertex1.getBlue() - vertex0.getRed()) / (int)(pts[1].getY() - pts[0].getY() + 1));
+                  (vertex1.getBlue() - vertex0.getBlue()) / (int)(pts[1].getY() - pts[0].getY() + 1));
 
     double x0 = pts[0].getX();
     double deltaX0 = (pts[2].getX() - pts[0].getX()) / (int)(pts[2].getY() - pts[0].getY() + 1);
@@ -414,9 +414,9 @@ void Renderer::gouraud(Graphics &g, Point kA, Point kD, Point kS, std::unordered
         if (y >= (int)pts[1].getY() && !flip)
         {
             c1.set(vertex1.getRed(), vertex1.getGreen(), vertex1.getBlue());
-            deltaC1.set((vertex2.getRed() - vertex1.getRed()) / (int)(pts[2].getY() - pts[1].getY() + 1),
-                        (vertex2.getGreen() - vertex1.getGreen()) / (int)(pts[2].getY() - pts[1].getY() + 1),
-                        (vertex2.getBlue() - vertex1.getRed()) / (int)(pts[2].getY() - pts[1].getY() + 1));
+            deltaC1.set((vertex2.getRed() - c1[0]) / (int)(pts[2].getY() - pts[1].getY() + 1),
+                        (vertex2.getGreen() - c1[1]) / (int)(pts[2].getY() - pts[1].getY() + 1),
+                        (vertex2.getBlue() - c1[2]) / (int)(pts[2].getY() - pts[1].getY() + 1));
 
             x1 = pts[1].getX();
             deltaX1 = (pts[2].getX() - x1) / (int)(pts[2].getY() - pts[1].getY() + 1);
@@ -452,6 +452,86 @@ void Renderer::gouraud(Graphics &g, Point kA, Point kD, Point kS, std::unordered
 
             plotColor(i + startX, y, (i * deltaZ) + startZ, c.getRed(), c.getGreen(), c.getBlue());
         }
+
+        c0 = c0 + deltaC0;
+        c1 = c1 + deltaC1;
+
+        x0 += deltaX0;
+        x1 += deltaX1;
+
+        z0 += deltaZ0;
+        z1 += deltaZ1;
+    }
+}
+
+void Renderer::phong(Graphics &g, Point kA, Point kD, Point kS, std::unordered_map<Point, Point> &normals)
+{
+    std::vector<Point> pts;
+    pts.push_back(g[0]);
+    pts.push_back(g[2]);
+    pts.push_back(g[4]);
+    std::sort(pts.begin(), pts.end(), cmprY);
+
+    Point v0 = normals[pts[0]];
+    Point deltaV0 = (normals[pts[2]] - normals[pts[0]]) / (int)(pts[2].getY() - pts[0].getY() + 1);
+    Point v1 = normals[pts[0]];
+    Point deltaV1 = (normals[pts[1]] - normals[pts[0]]) / (int)(pts[1].getY() - pts[0].getY() + 1);
+
+    double x0 = pts[0].getX();
+    double deltaX0 = (pts[2].getX() - pts[0].getX()) / (int)(pts[2].getY() - pts[0].getY() + 1);
+    double x1 = pts[0].getX();
+    double deltaX1 = (pts[1].getX() - pts[0].getX()) / (int)(pts[1].getY() - pts[0].getY() + 1);
+
+    double z0 = pts[0].getZ();
+    double deltaZ0 = (pts[2].getZ() - pts[0].getZ()) / (int)(pts[2].getY() - pts[0].getY() + 1);
+    double z1 = pts[0].getZ();
+    double deltaZ1 = (pts[1].getZ() - pts[0].getZ()) / (int)(pts[1].getY() - pts[0].getY() + 1);
+
+    bool flip = false;
+    for (int y = pts[0].getY(); y <= (int)pts[2].getY(); y++)
+    {
+        if (y >= (int)pts[1].getY() && !flip)
+        {
+            v1 = normals[pts[1]];
+            deltaV1 = (normals[pts[2]] - v1) / (int)(pts[2].getY() - pts[1].getY() + 1);
+
+            x1 = pts[1].getX();
+            deltaX1 = (pts[2].getX() - x1) / (int)(pts[2].getY() - pts[1].getY() + 1);
+
+            z1 = pts[1].getZ();
+            deltaZ1 = (pts[2].getZ() - z1) / (int)(pts[2].getY() - pts[1].getY() + 1);
+
+            flip = true;
+        }
+
+        Point startV = x0 < x1 ? v0 : v1;
+        Point endV = x0 < x1 ? v1 : v0;
+
+        double startX = x0 < x1 ? x0 : x1;
+        double endX = x0 < x1 ? x1 : x0;
+
+        double startZ = x0 < x1 ? z0 : z1;
+        double endZ = x0 < x1 ? z1 : z0;
+
+        Point deltaV = (endV - startV) / (endX - startX);
+        double deltaZ = (endZ - startZ) / (endX - startX);
+
+        if (endX - startX == 0)
+        {
+            deltaV.set(0, 0, 0);
+            deltaZ = 0;
+        }
+
+        for (int i = 0.0; i + (int)startX <= (int)endX; i++)
+        {
+            Point normal = (deltaV * i) + startV;
+            Color c = lighting.get(kA, kD, kS, normal);
+
+            plotColor(i + startX, y, (i * deltaZ) + startZ, c.getRed(), c.getGreen(), c.getBlue());
+        }
+
+        v0 = v0 + deltaV0;
+        v1 = v1 + deltaV1;
 
         x0 += deltaX0;
         x1 += deltaX1;
@@ -525,7 +605,7 @@ void Renderer::draw(Graphics3D &g3d, bool applyContext)
                 }
                 else if (phongShadingEnabled)
                 {
-                    std::cout << "p shade" << std::endl;
+                    phong(g3d[i], g3d.getAmbient(), g3d.getDiffuse(), g3d.getSpecular(), normals);
                 }
             }
             else
