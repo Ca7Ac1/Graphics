@@ -67,6 +67,16 @@ void Color::print() const
     std::cout << "(red: " << red << ", green: " << green << ", blue: " << blue << ")\n";
 }
 
+Color Color::operator+(const Color &c)
+{
+    return Color(getRed() + c.getRed(), getGreen() + c.getGreen(), getBlue() + c.getBlue(), scale, clamp);
+}
+
+Color Color::operator+(const Point &p)
+{
+    return Color(getRed() + p[0], getGreen() + p[1], getBlue() + p[2], scale, clamp);
+}
+
 Color Color::operator*(const Color &c)
 {
     return Color(getRed() * c.getRed(), getGreen() * c.getGreen(), getBlue() * c.getBlue(), scale, clamp);
@@ -82,14 +92,9 @@ Color Color::operator*(double v)
     return Color(getRed() * v, getGreen() * v, getBlue() * v, scale, clamp);
 }
 
-Color Color::operator+(const Color &c)
+Color Color::operator/(double v)
 {
-    return Color(getRed() + c.getRed(), getGreen() + c.getGreen(), getBlue() + c.getBlue(), scale, clamp);
-}
-
-Color Color::operator+(const Point &p)
-{
-    return Color(getRed() + p[0], getGreen() + p[1], getBlue() + p[2], scale, clamp);
+    return Color(getRed() / v, getGreen() / v, getBlue() / v, scale, clamp);
 }
 
 Window::Window(int xDimension, int yDimension) : xDimension(xDimension), yDimension(yDimension),

@@ -32,13 +32,14 @@ public:
 
     void print() const;
 
+    Color operator+(const Color &c);
+    Color operator+(const Point &p);
+
     Color operator*(const Color &c);
     Color operator*(const Point &p);
     Color operator*(double v);
 
-    Color operator+(const Color &c);
-
-    Color operator+(const Point &p);
+    Color operator/(double v);
 };
 
 class Window
