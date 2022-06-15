@@ -3,7 +3,6 @@
 #include <vector>
 #include <unordered_map>
 
-
 #include "graphics.hpp"
 #include "graphics3d.hpp"
 #include "matrix.hpp"
@@ -14,27 +13,6 @@ Graphics3D::Graphics3D() : polygons(),
                            diffuse(0.5, 0.5, 0.5),
                            specular(0.5, 0.5, 0.5) {}
 
-void Graphics3D::addVertex()
-{
-    for (int i = 0; i < polygons[polygons.size() - 1].getCount(); i++)
-    {
-        Point vertex = polygons[polygons.size() - 1][i];
-
-        if (vertexCount.find(vertex) == vertexCount.end())
-        {
-            vertexNormals[vertex] = getNormal(polygons.size() - 1);
-            vertexCount[vertex] = 1;
-        }
-        else
-        {
-            Point normal = getNormal(polygons.size() - 1);
-            normal.normalize();
-            
-            vertexNormals[vertex] = vertexNormals[vertex] + getNormal(polygons.size() - 1);
-            vertexCount[vertex]++;
-        }
-    }
-}
 
 void Graphics3D::addPolygon(Point p1, Point p2, Point p3)
 {
@@ -43,9 +21,6 @@ void Graphics3D::addPolygon(Point p1, Point p2, Point p3)
     polygons[polygons.size() - 1].addEdge(p1, p2);
     polygons[polygons.size() - 1].addEdge(p2, p3);
     polygons[polygons.size() - 1].addEdge(p3, p1);
-
-    
-    addVertex();
 }
 
 void Graphics3D::addPolygon(double x1, double y1, double z1, double t1, double x2, double y2, double z2, double t2, double x3, double y3, double z3, double t3)
@@ -189,22 +164,6 @@ int Graphics3D::getCount() const
     return polygons.size();
 }
 
-const std::unordered_map<Point, Point> &Graphics3D::calculateNormals()
-{
-    for (const std::pair<Point, Point> &p : vertexNormals)
-    {
-        Point point = p.first;
-
-        vertexNormals[point] = vertexNormals[point] / vertexCount[point];
-        vertexCount[point] = 1;
-
-        // TODO: This might be better
-        // vertexNormals[point].normalize();
-    }
-
-    return vertexNormals;
-}
-
 void Graphics3D::transform(Matrix &m)
 {
     for (Graphics &triangle : polygons)
@@ -222,7 +181,7 @@ void Graphics3D::transform(Transform &t)
 }
 
 void Graphics3D::setAmbient(double r, double g, double b)
-{  
+{
     ambient.set(r, g, b);
 }
 

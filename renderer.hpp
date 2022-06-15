@@ -5,6 +5,7 @@
 #include <unordered_map>
 
 #include "window.hpp"
+#include "matrix.hpp"
 #include "context.hpp"
 #include "transform.hpp"
 #include "graphics.hpp"
@@ -21,8 +22,6 @@ private:
 
     std::vector<std::vector<double>> zBuffer;
 
-    std::unordered_map<Point, double> vertexNormals;
-
     bool zBufferEnabled;
     bool fillEnabled;
     bool backfaceCullingEnabled;
@@ -36,7 +35,12 @@ private:
     int blue;
 
     void plotColor(int x, int y, double z, int red, int green, int blue);
+
+    std::unordered_map<Point, Point> &calculateNormals(Graphics3D &g3d);
+
     void flat(Graphics &g, Color c);
+    void gouraud(Graphics &g, Point kA, Point kD, Point kS,
+                 std::unordered_map<Point, Point> &normals);
 
 public:
     Renderer(Window &window);
