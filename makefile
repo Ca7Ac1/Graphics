@@ -1,5 +1,5 @@
 show: compile
-	./mdl.exe simple_anim.mdl ; python3 convert.py animate simple
+	./mdl.exe gallery.mdl ; python3 convert.py animate key
 
 gallery: compile
 	./mdl.exe gallery.mdl ; python3 convert.py animate key

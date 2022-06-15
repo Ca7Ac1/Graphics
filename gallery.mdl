@@ -1,0 +1,23 @@
+frames 180
+basename key
+
+shading phong
+
+ambient 255 255 255
+constants silver 0.19225 0.50754 0.508273 0.19225 0.50754 0.508273 0.19225 0.50754 0.508273
+push
+move 250 250 0
+rotate y 360 turn
+light pink 255 182 193 -1 0 0 
+light cyan 219 240 220 1 0 0 
+box silver -25 180 25 50 380 50
+push
+move 0 70 0
+rotate x 90
+light red 100 0 0 0 -1 .1
+torus silver -136 0 0 35 75
+torus silver 136 0 0 35 75
+
+vary turn 0 179 0 1
+
+//display
