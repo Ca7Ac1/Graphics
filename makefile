@@ -1,8 +1,11 @@
 show: compile
 	./mdl.exe gallery.mdl ; python3 convert.py animate key
 
-gallery: compile
-	./mdl.exe gallery.mdl ; python3 convert.py animate key
+teapot: compile
+	g++ -std=c++11 -o teapot.exe teapot.cpp  window.o graphics.o renderer.o transform.o matrix.o graphics3d.o context.o lighting.o ; ./teapot.exe
+
+diamond: compile
+	g++ -std=c++11 -o gallery.exe gallery.cpp  window.o graphics.o renderer.o transform.o matrix.o graphics3d.o context.o lighting.o ; ./gallery.exe
 
 clean: 
 	rm -f *.o ; rm -f *.exe ; rm -f *.ppm ; rm -f *.png ; rm -f anim/*.ppm ; rm -f anim/*.png ; rm -f *.gif
